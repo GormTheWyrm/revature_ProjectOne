@@ -1,0 +1,22 @@
+
+ˆ
+java:S1319("rThe type of the "accounts" object should be an interface such as "Map" rather than the implementation "Hashtable".(ØŠÞ¦
+k
+java:S1206Q"PThis class overrides "equals()" and should therefore also override "hashCode()".(Ý¢êÍýÿÿÿÿ
+l
+java:S1149("VReplace the synchronized class "Hashtable" by an unsynchronized one such as "HashMap".(ØŠÞ¦
+Q	java:S125"<This block of commented-out lines of code should be removed.(’©‡¼
+V	java:S125"<This block of commented-out lines of code should be removed.(±Ó…Ÿûÿÿÿÿ
+V	java:S125"<This block of commented-out lines of code should be removed.(ÍÅË¬þÿÿÿÿ
+1
+java:S1116'"Remove this empty statement.(ÞÑ¹"
+<
+java:S1172("&Remove these unused method parameters.(ØŠÞ¦
+V	java:S125*"<This block of commented-out lines of code should be removed.(Ôž‘ùÿÿÿÿ
+Z
+java:S1134)"DTake the required action to fix the issue indicated by this comment.(Æ“ê 
+V	java:S1251"<This block of commented-out lines of code should be removed.(Ôž‘ùÿÿÿÿ
+Q	java:S125A"<This block of commented-out lines of code should be removed.(Ý ’ì
+Z
+java:S1134?"DTake the required action to fix the issue indicated by this comment.(Þæ²˜
+V	java:S125T"<This block of commented-out lines of code should be removed.( Ï§€üÿÿÿÿ

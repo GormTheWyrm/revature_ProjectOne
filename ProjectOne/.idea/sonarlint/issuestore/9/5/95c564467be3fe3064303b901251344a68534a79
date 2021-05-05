@@ -1,0 +1,7 @@
+
+E
+java:S1481"(Remove this unused "app" local variable.(þà´²8ÏŠ×Ô“/
+T
+java:S1854"7Remove this useless assignment to local variable "app".(þà´²8ÏŠ×Ô“/
+I
+java:S1612",Replace this lambda with a method reference.(þà´²8ÏŠ×Ô“/
