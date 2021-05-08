@@ -1,4 +1,4 @@
-package org.geordin.service;
+package org.geordin.model;
 
 public class Employee extends User {
 

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GormBank</title>
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style/singlepage.css">
+
+</head>
+
+<body>
+
+    <!-- background container -->
+    <div class="background-div container-fluid">
+        <!-- main content container- fixed size -->
+        <div class="main-div container-lg">
+
+            <!-- header -->
+            <div class="row gorm-header">
+
+                <div class="col-sm-8">
+                    <h1>Gorms Banking App</h1>
+                </div>
+                <div class="col-sm-4">
+                    <!-- fix appearance of button! - get bootstrap button -->
+                    <button id="logout">Logout</button>
+                </div>
+            </div>
+            <!-- body div -->
+            <div class="body">
+                <div id="signupDiv">
+                    <form action="">
+                        <select name="signupSelect" id="signupSelect">
+                            <option value="null">Select an Option</option>
+                            <option value="customer">Sign up as a Customer</option>
+                            <option value="employee">Sign up as an Employee</option>  
+                        </select>
+                        <button id="signupSubmit">Sign Up</button> 
+                        <!-- fix span -->
+                        <p id="loginSpan">Already have an account? <span >Log in</span></p>
+                    </form>
+                </div>
+                <div id="loginDiv">
+                    <form action="">
+                        <select name="signupSelect" id="signupSelect">
+                            <option value="null">Select an Option</option>
+                            <option value="customer">Log in as a Customer</option>
+                            <option value="employee">Log in as an Employee</option>
+                        </select>
+                        <button id="loginSubmit">Log in</button>   
+                        <!-- fix span -->
+                        <p >Already have an account? <span id="signinSpan">Sign in</span></p>
+                    </form>
+                </div>
+                <div id="customerDiv">
+                    <!-- what goes in here? -->
+                </div>
+                <div class="employeeDiv">
+                    <!-- what goes in here? -->
+                </div>
+                
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- bootstrap JS-->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+        crossorigin="anonymous"></script>
+    <script src="./scripts/singlepage.js"></script>
+</body>
+
+</html>

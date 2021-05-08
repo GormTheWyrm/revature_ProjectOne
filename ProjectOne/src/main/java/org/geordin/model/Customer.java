@@ -1,16 +1,16 @@
-package org.geordin.service;
+package org.geordin.model;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Vector;
 
 //toString method needs love
 public class Customer extends User{
     //inherits username and password
     private Long id;    //may add id back in if I implement ability to change username... but should not be necessary
     private String name;
-//    Hashtable<Long, Account> accounts = new Hashtable<>();
-    ArrayList<Account> accounts = new ArrayList<>();
-    //not using accounts yet... change to set...
+    Vector<Account> accounts = new Vector<>();
+
 
 //getters, setters
     public String getName() {
@@ -19,12 +19,14 @@ public class Customer extends User{
     public void setName(String name) {
         this.name = name;
     }
-//    public Long getId(){ return this.id;}
+
     public void setId(Long id) {this.id = id;}
     public Long getId(){return this.id;}
-//    public void addAccount(Long accountNumber, Account account){ //only adds to object, not DB
-//        this.accounts.put(accountNumber, account);
-//    }
+
+    //cleaning up below...
+
+
+
     public void addAccount(Account account){
         this.accounts.add(account);
 //        return true; //may need to change to a bool... so she tells me if error
@@ -33,13 +35,11 @@ public class Customer extends User{
         this.accounts.remove(accountNumber);
     }
 
-    //need to add get account functions...no, thats a DAO thing!
-    //
     //constructors
     public Customer(){};
-    public Customer(Long id, String username, String password, String name, Hashtable<Long, Account> accounts){
+    public Customer(Long id, String username, String password, String name, Vector<Account> accounts){
         //fixme added a long id to above
-//        setId(id);
+        setId(id);
         setUsername(username);
         setPassword(password);
         setName(name);
@@ -81,9 +81,19 @@ public class Customer extends User{
     public boolean equals(Object o) {
         if (!(o instanceof Customer)){ return false;}
         Customer other = (Customer) o;
-//        for() for each account in accounts, if different retun false...
-        return this.username == other.username;
+        if (!(this.username.equals(other.username))){
+            return false;
+        }
+        if(this.accounts.size() != other.accounts.size()){
+            return false;
+        }
+        for (int i=0; i< this.accounts.size(); i++){
+            
+        }
+        return true;
         // probably need to take into account number of accounts...
+
+
     }
     //do I need to override accounts toString?
     @Override

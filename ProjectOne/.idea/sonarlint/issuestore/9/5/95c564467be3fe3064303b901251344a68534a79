@@ -1,7 +1,8 @@
 
-E
-java:S1481"(Remove this unused "app" local variable.(þà´²8ÏŠ×Ô“/
-T
-java:S1854"7Remove this useless assignment to local variable "app".(þà´²8ÏŠ×Ô“/
+t
+java:S1192"RDefine a constant instead of duplicating this literal "/api/account/:num" 4 times.(­½°‚øÿÿÿÿ8•–‚Ó”/
+X	java:S125"<This block of commented-out lines of code should be removed.(²òýà8úì Ò”/
+X	java:S125"<This block of commented-out lines of code should be removed.(¼õÎÈ8°ìËÒ”/
 I
-java:S1612",Replace this lambda with a method reference.(þà´²8ÏŠ×Ô“/
+java:S1612	",Replace this lambda with a method reference.(þà´²8â—…Ò”/
+]	java:S125e"<This block of commented-out lines of code should be removed.(¶½òìúÿÿÿÿ8€ ‡Ò”/

@@ -1,4 +1,4 @@
-package org.geordin.service;
+package org.geordin.model;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
