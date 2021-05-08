@@ -8,6 +8,7 @@ public class Account {
 //    String userId;
     String status;
     String username;
+    long approvedByEmployeeId;  //new to project 1; foriegn key to employee..
 
     public String getUsername() {
         return username;
@@ -32,7 +33,13 @@ public class Account {
     public void setBalance(double balance) {
         this.balance = balance;
     }
+    public long getApprovedByEmployeeId() {
+        return approvedByEmployeeId;
+    }
 
+    public void setApprovedByEmployeeId(long approvedByEmployeeId) {
+        this.approvedByEmployeeId = approvedByEmployeeId;
+    }
 //    public String getUserId() {
 //        return this.userId;
 //    }
