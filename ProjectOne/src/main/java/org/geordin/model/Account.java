@@ -61,7 +61,19 @@ public class Account {
     public boolean equals(Object o) { //for now, just comparing usernames should suffice
         if (!(o instanceof Account)){ return false;}
         Account other = (Account) o;
-        return this.accountNumber == other.accountNumber;
+        if (this.getAccountNumber() != other.getAccountNumber()){
+            return false;
+        }
+        if (this.getBalance() != other.getBalance()){
+            return false;
+        }
+        if (this.getStatus() != other.getStatus()){
+            return false;
+        }
+        if (this.getUsername() != other.getUsername()){
+            return false;
+        }
+        return true;
         // special thanks to https://mkyong.com/java/java-how-to-overrides-equals-and-hashcode/
     }
 }

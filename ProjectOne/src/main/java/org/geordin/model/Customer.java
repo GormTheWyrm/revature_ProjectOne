@@ -81,14 +81,16 @@ public class Customer extends User{
     public boolean equals(Object o) {
         if (!(o instanceof Customer)){ return false;}
         Customer other = (Customer) o;
-        if (!(this.username.equals(other.username))){
+        if (!(this.getUsername().equals(other.getUsername()))){
             return false;
         }
         if(this.accounts.size() != other.accounts.size()){
             return false;
         }
         for (int i=0; i< this.accounts.size(); i++){
-            
+            if (!(this.accounts.elementAt(i).equals(other.accounts.elementAt(i)))){
+                return false;
+            }
         }
         return true;
         // probably need to take into account number of accounts...
