@@ -1,6 +1,7 @@
 package org.geordin;
 
 import io.javalin.Javalin;
+import org.geordin.service.BankService;
 
 public class Server {
 
@@ -9,7 +10,7 @@ public class Server {
         Javalin app = Javalin.create(config->config.enableCorsForAllOrigins()).
                 start(9000);
         //maybe remove config..
-
+        BankService bankService = new BankService();
 
 
 
@@ -17,6 +18,7 @@ public class Server {
         app.get("/customer", ctx -> {
            //return html... login...
             //should not go here directly... but perhaps if not logged in, page shows different html, and suggests you login via button...
+
         });
         app.get("/api/customer/:username", ctx -> {
                 //get customer object (including accounts list) from business layer (via dao)
@@ -24,6 +26,10 @@ public class Server {
                         //that can be a reach goal...
 //            ctx.json(customer);
             //this could be hit on any change for min coding effort and low efficiency...
+//            bankService.
+
+
+
         });
 
     //ACCOUNTS
