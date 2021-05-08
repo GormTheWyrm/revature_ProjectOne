@@ -1,7 +1,12 @@
 package org.geordin;
 
 import io.javalin.Javalin;
+import org.geordin.model.Account;
+import org.geordin.model.Customer;
 import org.geordin.service.BankService;
+import org.geordin.service.BusinessException;
+
+import java.util.HashMap;
 
 public class Server {
 
@@ -26,17 +31,34 @@ public class Server {
                         //that can be a reach goal...
 //            ctx.json(customer);
             //this could be hit on any change for min coding effort and low efficiency...
-//            bankService.
+            try{
+                //should I remove password before returning this? probably... fixme
+                Customer customer = bankService.getCustomerByUser(ctx.pathParam("username"));
 
-
+                ctx.json(customer);
+            }
+            catch (BusinessException e){
+                //create error object for javascript
+                HashMap<String, String> errorObj = new HashMap<>();
+                errorObj.put("error", e.getMessage());
+                ctx.json(errorObj);
+            }
 
         });
 
     //ACCOUNTS
         app.get("/api/account/:num", ctx -> {   //get single account
             //get account info - used to see a single account
-            //ctx.json(account);
-//            ctx.json("Account "+ Long.parseLong(ctx.pathParam("num")));
+            try{
+                Account account = bankService.getAccountByNumber(Long.parseLong(ctx.pathParam("num")));
+                ctx.json(account);
+            }
+            catch (BusinessException e){
+                HashMap<String, String> errorObj = new HashMap<>();
+                errorObj.put("error", e.getMessage());
+                ctx.json(errorObj);
+            }
+
         });
         app.get("/api/accounts/:username", ctx -> {   //get all accounts associated with a user
             //get account info - used to see a single account

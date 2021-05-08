@@ -1,10 +1,11 @@
 package org.geordin.model;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Account {
     long accountNumber;
-    double balance; //this needs to be a bigInt...
+    BigDecimal balance; //this needs to be a bigInt...
 //    String userId;
     String status;
     String username;
@@ -27,11 +28,11 @@ public class Account {
         this.accountNumber = accountNumber;
     }
 
-    public double getBalance() {
+    public BigDecimal getBalance() {
         return this.balance;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
     public long getApprovedByEmployeeId() {

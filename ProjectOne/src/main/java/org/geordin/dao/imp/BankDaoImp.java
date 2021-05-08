@@ -75,6 +75,36 @@ public class BankDaoImp {
         } //if no results, throw exception
         return customer;
     }
+    public Customer findCustomerByUsername(String username) throws SQLException, BusinessException {
+        Customer customer = new Customer();
+        //step 2 connection
+        Connection connection = PostgresConnection.getConnection();
+        //Step 3- Create Statement
+        String sql = "SELECT username, name, password, userid from gormbank.customers WHERE username = ?;";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql); //2nd par makes keys returnable...
+        preparedStatement.setString(1, username);    //variables sent into DB
+
+        //Step 4 - Execute Query
+        ResultSet resultSet = preparedStatement.executeQuery();
+        log.trace("DAO-findCustomerByLogin");
+        //Step 5 - Process Results  THIS WILL BE IMPORTANT~
+        //        while (resultSet.next()){
+        if (resultSet.next()) {
+            customer.setUsername(resultSet.getString("username"));
+            customer.setName(resultSet.getString("name"));
+            customer.setPassword(resultSet.getString("password"));
+            customer.setId(resultSet.getLong("userid")); //userId should never leave the backend/service layers
+            //is this necessarry?
+//            log.trace("DAO loginOldCustomer: " + customer.getUsername());
+        }
+        else {
+            throw new BusinessException("No User Found");
+        } //if no results, throw exception
+        return customer;
+    }
+
+
+
     //ACCOUNTS
     public Vector<Account> findAccountsByUsername(String username) throws SQLException, BusinessException {   //used by employee and customer to view employees...
         //old function...
@@ -92,7 +122,7 @@ public class BankDaoImp {
         while (resultSet.next()) {
             Account account = new Account();
             account.setAccountNumber(resultSet.getLong("account_number"));
-            account.setBalance(resultSet.getDouble("balance"));
+            account.setBalance(resultSet.getBigDecimal("balance"));
             account.setUsername(resultSet.getString("username"));
             account.setStatus(resultSet.getString("status"));
 
@@ -122,7 +152,7 @@ public class BankDaoImp {
         while (resultSet.next()) {
             Account account = new Account();
             account.setAccountNumber(resultSet.getLong("account_number"));
-            account.setBalance(resultSet.getDouble("balance"));
+            account.setBalance(resultSet.getBigDecimal("balance"));
             account.setUsername(resultSet.getString("username"));
             account.setStatus(resultSet.getString("status"));
             accounts.add(account);
@@ -152,7 +182,7 @@ public class BankDaoImp {
         System.out.println("RESULTS\n");
         while (resultSet.next()) {
             System.out.print(" Account: " + resultSet.getLong("account_number"));
-            System.out.print(" Balance: " + resultSet.getDouble("balance")); //wrong type, fixme
+            System.out.print(" Balance: " + resultSet.getBigDecimal("balance")); //wrong type, fixme
             System.out.print(" User: " + resultSet.getString("username"));
             System.out.print(" Name: " + resultSet.getString("name"));
             System.out.print(" User: " + resultSet.getString("name"));
@@ -160,6 +190,29 @@ public class BankDaoImp {
             System.out.println("\n");
 
         } //no errors, just no results, fixme
+    }
+    public Account viewAccountByAccountNum(long accountNum) throws SQLException, BusinessException {   //singular!! fixme
+        Connection connection = PostgresConnection.getConnection();
+        String sql = "select customers.userid, customers.username, customers.name, " +
+                "accounts.account_number, accounts.balance, accounts.status " +
+                "from gormbank.customers RIGHT join gormbank.accounts on accounts.userid = customers.userid " +
+                "WHERE account_number = ?;";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setLong(1, accountNum);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        Account account = new Account();
+        if (resultSet.next()) {
+            account.setAccountNumber(resultSet.getLong("account_number"));
+            account.setBalance(resultSet.getBigDecimal("balance")); //wrong type, fixme
+            account.setUsername(resultSet.getString("username"));
+            account.setUsername(resultSet.getString("name"));
+//            account.setApprovedByEmployeeId( /. need to set this... fix DB
+            System.out.print(" Status: " + resultSet.getString("status"));
+            System.out.println("\n");
+
+        } //no errors, just no results, fixme
+        return account;
     }
     public Customer findCustomerByLoginNoPW(String username, String pw) throws SQLException, BusinessException{
         System.out.println("temp function");
