@@ -13,6 +13,8 @@ import java.util.Vector;
 public interface BankDao {
 
     Customer createNewCustomer(String username, String name, String password) throws SQLException, BusinessException;
+
+
     void applyForAccount(Customer customer) throws SQLException, BusinessException; //create account,set status to pending
     Customer findCustomerByLogin(String username, String pw) throws SQLException, BusinessException; //returns customer object when logging in with user and pw
     List<Account> findAccountsByUsername(String username) throws SQLException, BusinessException;   //used by employee to view customers... without getting pw fixme
