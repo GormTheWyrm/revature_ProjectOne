@@ -8,7 +8,8 @@ public class Account {
 //    String userId;
     String status;
     String username;
-    long approvedByEmployeeId;  //new to project 1; foriegn key to employee..
+    long approvedByEmployeeId;  //new to project 1; foreign key to employee..
+    //not added to DB yet
 
     public String getUsername() {
         return username;
