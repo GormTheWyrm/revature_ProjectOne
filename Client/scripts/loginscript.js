@@ -1,4 +1,6 @@
 //loginscript and login forms need reconfigure...
+//...need to separate employee from customer in api... for this script
+//...maybe I can get the text from a span somewhere...
 
 
 let password;
@@ -13,9 +15,7 @@ let baseUrl = "http://localhost:9000"; //update this
 //pw and user can then be sent in header for next query...
 
 let loginDiv = document.getElementById("loginDiv");
-// loginDiv.addEventListener("click", login);
-let signupDiv = document.getElementById("signupDiv");
-// signupDiv.addEventListener("click", signup);
+
 //event handlers
 let loginSubmit = document.getElementById("loginSubmit");
 loginSubmit.addEventListener("click", login);
@@ -26,14 +26,17 @@ signupSubmit.addEventListener("click", signup);
 let logoutBtn = document.getElementById("logout");
 logoutBtn.addEventListener("click", logout);
 
-let signinSpan = document.getElementById("signinSpan");
-signinSpan.addEventListener("click", showSignin);
+let signupSpan = document.getElementById("signupSpan");
+signupSpan.addEventListener("click", showSignup);
 
 let loginSpan = document.getElementById("loginSpan");
 loginSpan.addEventListener("click", showLogin);
 
-let credentialDiv = document.getElementById("credentialDiv");
-
+let bodyDiv = document.getElementById("bodyDiv"); 
+let userSpan = document.getElementById("userSpan");
+let userType = userSpan.textContent;
+//this gives us the employee or customer we need to call the api...
+console.log(userType); 
 
 function logout(){
 password = null;
@@ -71,24 +74,29 @@ function signup(event){
     //if pass, attemptSignup
         //might call attemptlogin... or make it part of signup...
     //if pass
-    //loginsuccess()
+    loginSuccess();
 }
 
 
-function showSignin(event){
+function showSignup(event){
     event.preventDefault();
-    loginDiv.style.display = "none";
-    signupDiv.style.display = "";
+    loginSubmit.style.display = "none";
+    signupSpan.style.display = "none";
+    loginSpan.style.display = "";
+    signupSubmit.style.display = "";
+    
 }
 function showLogin(event){
-    event.preventDefault(event);
-    signupDiv.style.display = "none";
-    loginDiv.style.display = "";
+    loginSubmit.style.display = "";
+    signupSpan.style.display = "";
+    loginSpan.style.display = "none";
+    signupSubmit.style.display = "none";
+    
 }
 function loginSuccess(){
     
-    credentialDiv.style.display = "none";
-    // loginDiv.style.display = "none";
+    loginDiv.style.display = "none";
+    bodyDiv.style.display = "";
     
 
 }

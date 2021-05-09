@@ -24,7 +24,7 @@
 
             <!-- header -->
             <div class="row gorm-header">
-
+<!-- change this to a dropdown via bootstrap because its objectively better -->
                 <div class="col-sm-8">
                     <h1>Gorms Banking App</h1>
                 </div>
@@ -33,36 +33,31 @@
                     <button id="logout">Logout</button>
                 </div>
             </div>
-           <!-- div for signing or logging up - NEEDS TO BE FIXED -->
-            <div id="credentialDiv">
-                <div id="signupDiv">
-                    <form action="">
-                        <select name="signupSelect" id="signupSelect">
-                            <option value="null">Select an Option</option>
-                            <option value="customer">Sign up as a Customer</option>
-                            <option value="employee">Sign up as an Employee</option>  
-                                <!-- <input type="text"> -->
+            <!-- div for signing or logging up - NEEDS TO BE FIXED -->
 
-                        </select>
-                        <button id="signupSubmit">Sign Up</button> 
-                        <!-- fix span -->
-                        <p id="loginSpan">Already have an account? <span >Log in</span></p>
-                    </form>
-                </div>
-                <div id="loginDiv">
+            <div id="loginDiv" class="row">
+                <div class="col-8-lg">
+                    <h2>Welcome <span id="userSpan">Employee</span></h2>
+                    <p>Not an employee? Click HERE</p>
+                    <!-- add a link when employee html build -->
                     <form action="">
-                        <select name="signupSelect" id="signupSelect">
-                            <option value="null">Select an Option</option>
-                            <option value="customer">Log in as a Customer</option>
-                            <option value="employee">Log in as an Employee</option>
-                        </select>
-                        <button id="loginSubmit">Log in</button>   
-                        <!-- fix span -->
-                        <p >Already have an account? <span id="signinSpan">Sign in</span></p>
+                        <label for="userInput">Username</label>
+                        <input id="userInput" type="text">
+                        <br />
+                        <label for="pwInput">Password</label>
+                        <input id="pwInput" type="text">
+                        <br />
+                        <button class="button " id="loginSubmit" style="display: none;">Log in</button>
+                        <button class="button " id="signupSubmit">Sign up</button>
+                        <!--  change button style - bootstrap -->
+                        <p id="signupSpan" style="display: none;">Already have an account? <span>Sign in</span></p>
+                        <p id="loginSpan">Already have an account? <span>Log in</span></p>
+
                     </form>
                 </div>
-                 <!-- body div, not displayed until logged in -->
-            <div id="body" style="display: none;">
+            </div>
+            <!-- body div, not displayed until logged in -->
+            <div id="bodyDiv" style="display: none;">
                 <h1>Welcome <span id="nameSpan">CUSTOMERNAME</span></h1>
                 <h3>Accounts</h3>
                 <table>

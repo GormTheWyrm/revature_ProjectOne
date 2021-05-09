@@ -1,3 +1,31 @@
 
-d
-java:S2094"BRemove this empty class, write its code or make it an "interface".(Š—ÿÀÿÿÿÿÿ8óö¶Ñ”/
+‚
+java:S1488J"`Immediately return this expression instead of assigning it to the temporary variable "accounts".(ò‘şûÿÿÿÿ8±İØó”/
+a
+java:S1134$"DTake the required action to fix the issue indicated by this comment.(ğ¨Àº8´Üøî”/
+‡
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(¾Ê ÿÿÿÿÿÿ8´Ú‰ï”/
+^
+java:S1854("<Remove this useless assignment to local variable "customer".(âî¤ ùÿÿÿÿ8ä·‘ñ”/
+{
+java:S2293+"YReplace the type specification in this constructor call with the diamond operator ("<>").(¾Ê ÿÿÿÿÿÿ8•ùñ”/
+‡
+java:S1149+"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(¾Ê ÿÿÿÿÿÿ8•ùñ”/
+`
+java:S2147Q"DCombine this catch with the one at line 77, which has the same body.(ÔÌß8Ûººó”/
+^
+java:S1854"<Remove this useless assignment to local variable "customer".(âî¤ ùÿÿÿÿ8Şÿï”/
+`
+java:S2147C"DCombine this catch with the one at line 63, which has the same body.(ÔÌß8®íŠó”/
+
+java:S1488<"_Immediately return this expression instead of assigning it to the temporary variable "account".(ê¿²ùùÿÿÿÿ8–şïñ”/
+‡
+java:S1149J"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ò‘şûÿÿÿÿ8ÃÄØó”/
+{
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(¾Ê ÿÿÿÿÿÿ8´Ú‰ï”/
+a
+java:S11348"DTake the required action to fix the issue indicated by this comment.(ğ¨Àº8•ùñ”/
+P
+java:S1128".Remove this unused import 'java.util.Scanner'.(ÒÜÅ¸úÿÿÿÿ8¯÷õî”/
+‚
+java:S1149H"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(êßÇù8×÷äó”/
