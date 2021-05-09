@@ -7,6 +7,7 @@ import org.geordin.service.BankService;
 import org.geordin.service.BusinessException;
 
 import java.util.HashMap;
+import java.util.Vector;
 
 public class Server {
 
@@ -25,7 +26,7 @@ public class Server {
             //should not go here directly... but perhaps if not logged in, page shows different html, and suggests you login via button...
 
         });
-        app.get("/api/customer/:username", ctx -> {
+        app.get("/api/customer/:username", ctx -> { //currently working
                 //get customer object (including accounts list) from business layer (via dao)
                     //should validate username and password of customer against info in the header...
                         //that can be a reach goal...
@@ -47,7 +48,7 @@ public class Server {
         });
 
     //ACCOUNTS
-        app.get("/api/account/:num", ctx -> {   //get single account
+        app.get("/api/account/:num", ctx -> {   //get single account, currently working
             //get account info - used to see a single account
             try{
                 Account account = bankService.getAccountByNumber(Long.parseLong(ctx.pathParam("num")));
@@ -60,11 +61,22 @@ public class Server {
             }
 
         });
-        app.get("/api/accounts/:username", ctx -> {   //get all accounts associated with a user
-            //get account info - used to see a single account
-            //ctx.json(account);
-//            ctx.json("Account "+ Long.parseLong(ctx.pathParam("num")));
+        app.get("/api/accounts/:username", ctx -> {   //get all accounts associated with a user - working
+            //dont immediately need this...
+            try{
+                Vector<Account> accounts = bankService.getAccountsByUser
+                        (ctx.pathParam("username"));
+                ctx.json(accounts);
+            }
+            catch (BusinessException e){
+                HashMap<String, String> errorObj = new HashMap<>();
+                errorObj.put("error", e.getMessage());
+                ctx.json(errorObj);
+            }
         });
+
+
+
         app.post("/api/accounts", ctx -> {
             //create
         });

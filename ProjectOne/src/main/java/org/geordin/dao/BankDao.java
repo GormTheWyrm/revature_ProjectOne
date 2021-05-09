@@ -14,12 +14,13 @@ public interface BankDao {
 
     //implemented
     Customer findCustomerByUsername(String username) throws SQLException, BusinessException; //returns customer object when logging in with user and pw
-    public Account viewAccountByAccountNum(long accountNum) throws SQLException, BusinessException;   //singular!! fixme
+    public Account getAccountByAccountNum(long accountNum) throws SQLException, BusinessException;   //singular!!
+    public Vector<Account> getAccountsByUsernameOnly(String username) throws SQLException, BusinessException;   //used by employee to view customers... without getting pw
+    //fixme;    no pw required
 
-
-        //not implemented but maybe good
+    //not implemented but maybe good
     Customer findCustomerByLogin(String username, String pw) throws SQLException, BusinessException; //returns customer object when logging in with user and pw
-
+        //changed name and put above
     // not implemented
 
 
@@ -39,7 +40,6 @@ public interface BankDao {
     public void createLog(long account, BigDecimal amount, String transactionType) throws SQLException, BusinessException;
     Vector<Transaction> viewAllLogs() throws SQLException, BusinessException;
 
-    public void viewAccountsByUsername(String username) throws SQLException, BusinessException;   //used by employee to view customers... without getting pw
     public void viewAccountsByAccountNum(long accountNum) throws SQLException, BusinessException;   //used by ...
 
     public void transferFunds(Customer customer, long accountNum, long accountNum2, double amount) throws SQLException, BusinessException;

@@ -57,7 +57,7 @@ public class BankService {
     }
     public Account getAccountByNumber(long num) throws BusinessException { //
         try{
-            Account account = bankImp.viewAccountByAccountNum(num);
+            Account account = bankImp.getAccountByAccountNum(num);
             return account;
         }
         catch (SQLException e){
@@ -68,8 +68,20 @@ public class BankService {
             //if found someone
             throw new BusinessException(e.getMessage()); //change message...
         }
-
-
+    }
+    public Vector<Account> getAccountsByUser(String user) throws BusinessException { //
+        try{
+            Vector<Account> accounts = bankImp.getAccountsByUsernameOnly(user);
+            return accounts;
+        }
+        catch (SQLException e){
+//            log.trace(e.getMessage()); //hopefully that logs the actual error for the developers to find
+            throw new BusinessException(e.getMessage()); //change message...
+        }
+        catch (BusinessException e){
+            //if found someone
+            throw new BusinessException(e.getMessage()); //change message...
+        }
     }
 
 
