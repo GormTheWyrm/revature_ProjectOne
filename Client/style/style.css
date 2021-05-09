@@ -1,0 +1,39 @@
+
+.background-div{
+    background-color: black;
+    min-height: 100vh;
+    margin-top: 0;
+    padding-top: 4vh;
+}
+.main-div{
+    max-width: 960px;
+    background-color: cadetblue;
+
+    padding-top: 25px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+#body{
+    padding-bottom: 4vh;
+    background-color: teal; /*temp color*/
+    margin-left: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.gorm-header{
+
+}
+#logout{
+    /* look up flex, flexbox... */
+}
+#signinSpan{
+    /* display: block; */
+}
+
+
+
+/* dark and light modes as a stretch goal */
+
+/* need to figure out how to remove margins on containers... 
+specifically main-div, body, 
+*/

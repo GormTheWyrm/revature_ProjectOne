@@ -8,19 +8,104 @@
     <title>Document</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    <link rel="stylesheet" href="./style/singlepage.css">
+    <link rel="stylesheet" href="./style/style.css">
 </head>
 
 <body>
-<!-- header 
+    <!-- header 
         apply for new account in header?
 -->
-<!-- Welcome customer mini header -->
-<!--  -->
+    <!-- Welcome customer mini header -->
+    <!--  -->
+
+    <div class="background-div container-fluid">
+        <!-- main content container- fixed size -->
+        <div class="main-div container-lg">
+
+            <!-- header -->
+            <div class="row gorm-header">
+
+                <div class="col-sm-8">
+                    <h1>Gorms Banking App</h1>
+                </div>
+                <div class="col-sm-4">
+                    <!-- fix appearance of button! - get bootstrap button -->
+                    <button id="logout">Logout</button>
+                </div>
+            </div>
+           <!-- div for signing or logging up - NEEDS TO BE FIXED -->
+            <div id="credentialDiv">
+                <div id="signupDiv">
+                    <form action="">
+                        <select name="signupSelect" id="signupSelect">
+                            <option value="null">Select an Option</option>
+                            <option value="customer">Sign up as a Customer</option>
+                            <option value="employee">Sign up as an Employee</option>  
+                                <!-- <input type="text"> -->
+
+                        </select>
+                        <button id="signupSubmit">Sign Up</button> 
+                        <!-- fix span -->
+                        <p id="loginSpan">Already have an account? <span >Log in</span></p>
+                    </form>
+                </div>
+                <div id="loginDiv">
+                    <form action="">
+                        <select name="signupSelect" id="signupSelect">
+                            <option value="null">Select an Option</option>
+                            <option value="customer">Log in as a Customer</option>
+                            <option value="employee">Log in as an Employee</option>
+                        </select>
+                        <button id="loginSubmit">Log in</button>   
+                        <!-- fix span -->
+                        <p >Already have an account? <span id="signinSpan">Sign in</span></p>
+                    </form>
+                </div>
+                 <!-- body div, not displayed until logged in -->
+            <div id="body" style="display: none;">
+                <h1>Welcome <span id="nameSpan">CUSTOMERNAME</span></h1>
+                <h3>Accounts</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">Account Number</th>
+                            <th scope="col">Balance</th>
+                        </tr>
+
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr>
+                            <td>test</td>
+                            <td>test2</td>
+                            <!-- temporary col  -->
+                            <!-- needs more space between columns -->
+                        </tr>
+                    </tbody>
+                </table>
+                <form>
+                    <h3>Perform an Action</h3>
+                    <select id="actionSelect">
+                        <option value="select">Select An Option</option>
+                        <option value="withdraw">Withdraw</option>
+                        <option value="deposit">Deposit</option>
+                        <option value="transfer">Transfer</option>
+
+                    </select>
+                    <br />
+                    <select id="selectFrom" style="display: none;">
+                        <!-- options of To, and FROM appear based on what is selected above -->
+                    </select>
+                    <select id="selectTo" style="display: none;">
+                        <!-- options of To, and FROM appear based on what is selected above -->
+                    </select>
+                </form>
+
+            </div>
+        </div>
+    </div>
 
 
-
-<!-- things a customer can do on this page
+    <!-- things a customer can do on this page
         1. apply for new account
         2. see accounts... automatic?
         3. withdraw
@@ -38,6 +123,7 @@
         integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
         crossorigin="anonymous"></script>
     <script src="./scripts/customer.js"></script>
+    <script src="./scripts/loginscript.js"></script>
 </body>
 
 </html>

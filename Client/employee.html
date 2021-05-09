@@ -29,7 +29,7 @@
                 </div>
             </div>
             <!-- body div -->
-            <div class="body">
+            <!-- <div class="body">
                 
 
                 <div class="employeeDiv">
@@ -43,9 +43,37 @@
                     <!-- what goes in here? -->
                     <!-- results of actions taken by employee!! -->
                 </div>
+                <div id="resultDiv">
+                    <!-- results from actions appear here -->
+                </div>
                 
 
-            </div>
+            </div> -->
+            <div id="body">
+                <div id="signupDiv">
+                    <form action="">
+                        <select name="signupSelect" id="signupSelect">
+                            <option value="null">Select an Option</option>
+                            <option value="customer">Sign up as a Customer</option>
+                            <option value="employee">Sign up as an Employee</option>  
+                        </select>
+                        <button id="signupSubmit">Sign Up</button> 
+                        <!-- fix span -->
+                        <p id="loginSpan">Already have an account? <span >Log in</span></p>
+                    </form>
+                </div>
+                <div id="loginDiv" style="display: none;">
+                    <form action="">
+                        <select name="signupSelect" id="signupSelect">
+                            <option value="null">Select an Option</option>
+                            <option value="customer">Log in as a Customer</option>
+                            <option value="employee">Log in as an Employee</option>
+                        </select>
+                        <button id="loginSubmit">Log in</button>   
+                        <!-- fix span -->
+                        <p >Already have an account? <span id="signinSpan">Sign in</span></p>
+                    </form>
+                </div>
 
         </div>
     </div>
