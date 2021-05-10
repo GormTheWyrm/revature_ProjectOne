@@ -1,10 +1,13 @@
 //loginscript and login forms need reconfigure...
 //...need to separate employee from customer in api... for this script
 //...maybe I can get the text from a span somewhere...
-
+//this might need to be customerScript...
 
 let password;
 let username;
+let isLoggedIn = false;
+//do I need name here?
+
 let baseUrl = "http://localhost:9000"; //update this
 // console.log("test");
 // userType = Employee or customer
@@ -67,15 +70,34 @@ function logout() {
 function login(event) {
     //called by hitting login button
     event.preventDefault();
-    console.log("this will fetch login");
-
-
-
-
-    //validation
-    //if pass, attemptLogin
+    console.log("this will fetch log in");
+    if (validateUsername()) {
+        if (validatePassword()) {
+            if (userType=="Employee"){
+                let url = baseUrl+ "/api/employee/"; //login is sngular
+                url += userInput.value;
+                attemptLogin(url);
+            }
+            else if (userType=="Customer"){
+                let url = baseUrl+ "/api/customer/";
+                url += userInput.value;
+                attemptLogin(url);
+            }
+            //NEED TO VALIDATE THESE URLS...!!!
+            
+        }
+        else {
+            //tells user password is not in acceptable format
+            console.log("bad password");
+        }
+    }
+    else {
+        //tell user username is not in acceptable format
+        console.log("username invalid")
+    }
+    //if pass, attemptSignup
+    //might call attemptlogin... or make it part of signup...
     //if pass
-    //loginsuccess()
 }
 function signup(event) {
     //called by hitting signin button...
@@ -85,12 +107,12 @@ function signup(event) {
         if (validatePassword()) {
             //attempt signup - calls success if successful
             if (userType=="Employee"){
-                let url = baseUrl+ "/employee/";
+                let url = baseUrl+ "/employees/";//signup is plural
                 url += userInput.value;
                 attemptSignup(url);
             }
             else if (userType=="Customer"){
-                let url = baseUrl+ "/customer/";
+                let url = baseUrl+ "/customers/";
                 url += userInput.value;
                 attemptSignup(url);
             }
@@ -137,12 +159,22 @@ function loginSuccess() {
 function attemptSignup(urlVar) {
     //fetch
     // fetch(url, )// replace with a post?
-    fetch(urlVar)
+    console.log("sign up fetch not connected yet");
+    fetch(urlVar, {
+        method: "POST",
+        body: JSON.stringify({
+            username: userInput.value,
+            password: pwInput.value
+        })
+
+    })
     .then(res=>{
         res.json();
     })
     .then(data=>{
-
+        //set password, username...
+        // show accounts on results...
+        //...do I need to do something for actions?
     })
     .catch(err=> {
         console.log(err);
@@ -151,9 +183,39 @@ function attemptSignup(urlVar) {
         warning.style.display = "";
         //need to figure out other possible errors
     });
-}
+}//fix me!!!!!!!!!!!!!
 function attemptLogin(urlVar) {
-    //fetch
+      //fetch
+    // fetch(url, )// replace with a post?
+    fetch(urlVar, {
+        method: "POST",
+        body: JSON.stringify({
+            username: userInput.value,
+            password: pwInput.value
+        }),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    })
+    .then(res=>{res.json()})
+    .then(data =>{
+        //set password, username...
+
+        console.log(data.json());  //this is undefined and I dont know why!
+        // for some reason body is empty on here, not json
+        // username = data.username;
+        // password = data.password;
+
+        // show accounts on results...
+        // ...do I need to do something for actions?
+    })
+    // .catch(err=> {
+    //     console.log(err);
+    //     //display some sort of warning to user
+    //     warning.innerHTML = "Failed to connect to server";
+    //     warning.style.display = "";
+    //     //need to figure out other possible errors
+    // });
 }
 
 function validateUsername() { //validates username and password

@@ -12,7 +12,7 @@ import java.sql.*;
 import java.util.Vector;
 
 public class BankDaoImp {
-
+//need to implement BankDao!!!
 
 
 // need to fix logger!
@@ -34,14 +34,14 @@ public class BankDaoImp {
         preparedStatement.setString(3, password);
         int c = preparedStatement.executeUpdate();
         //fixme - should this be executeQuery instead?
-        log.trace("Inserted "+ c + " records");
+//        log.trace("Inserted "+ c + " records");
         if (c == 1) {
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) { //this is needed to get a response
                 customer.setUsername(resultSet.getString(2)); //index 1 should be userid
                 customer.setName(resultSet.getString(3));
                 customer.setPassword(resultSet.getString(4));
-                log.trace(resultSet.getString(2)+ "added to user database");
+//                log.trace(resultSet.getString(2)+ " added to user database");
             }
         } else {
             throw new BusinessException("Failure in registration... Please retry.....");
@@ -59,7 +59,7 @@ public class BankDaoImp {
         preparedStatement.setString(2, pw);
         //Step 4 - Execute Query
         ResultSet resultSet = preparedStatement.executeQuery();
-        log.trace("DAO-findCustomerByLogin");
+//        log.trace("DAO-findCustomerByLogin");
         //Step 5 - Process Results  THIS WILL BE IMPORTANT~
         //        while (resultSet.next()){
         if (resultSet.next()) {
@@ -68,7 +68,7 @@ public class BankDaoImp {
             customer.setPassword(resultSet.getString("password"));
             customer.setId(resultSet.getLong("userid")); //userId should never leave the backend/service layers
             //is this necessarry?
-            log.trace("DAO loginOldCustomer: " + customer.getUsername());
+//            log.trace("DAO loginOldCustomer: " + customer.getUsername());
         }
         else {
             throw new BusinessException("No User Found");
@@ -86,7 +86,7 @@ public class BankDaoImp {
 
         //Step 4 - Execute Query
         ResultSet resultSet = preparedStatement.executeQuery();
-        log.trace("DAO-findCustomerByLogin");
+//        log.trace("DAO-findCustomerByLogin");
         //Step 5 - Process Results  THIS WILL BE IMPORTANT~
         //        while (resultSet.next()){
         if (resultSet.next()) {
@@ -116,7 +116,7 @@ public class BankDaoImp {
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, username);    //variables sent into sql/preparedStatement
         ResultSet resultSet = preparedStatement.executeQuery();
-        System.out.println("Query executed - replace with trace");
+//        System.out.println("Query executed - replace with trace");
         Vector<Account> accounts = new Vector<>();
 
         while (resultSet.next()) {
@@ -126,14 +126,14 @@ public class BankDaoImp {
             account.setUsername(resultSet.getString("username"));
             account.setStatus(resultSet.getString("status"));
 
-            System.out.println("DAO RESULTS");
-            System.out.print(" Account: " + resultSet.getLong("account_number"));
-            System.out.print(" Balance : " + resultSet.getDouble("balance")); //wrong type, fixme
-            System.out.print(" User: " + resultSet.getString("username"));
-            System.out.print(" Name: " + resultSet.getString("name"));
-            System.out.print(" User: " + resultSet.getString("name"));
-            System.out.print(" Status: " + resultSet.getString("status"));
-            System.out.println("\n");
+//            System.out.println("DAO RESULTS");
+//            System.out.print(" Account: " + resultSet.getLong("account_number"));
+//            System.out.print(" Balance : " + resultSet.getDouble("balance")); //wrong type, fixme
+//            System.out.print(" User: " + resultSet.getString("username"));
+//            System.out.print(" Name: " + resultSet.getString("name"));
+//            System.out.print(" User: " + resultSet.getString("name"));
+//            System.out.print(" Status: " + resultSet.getString("status"));
+//            System.out.println("\n");
             accounts.add(account);
         }
         return accounts;
@@ -147,7 +147,7 @@ public class BankDaoImp {
                 "WHERE status = 'pending';";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         ResultSet resultSet = preparedStatement.executeQuery();
-        log.trace("DAO viewPendingApplications");
+//        log.trace("DAO viewPendingApplications");
         Vector<Account> accounts = new Vector<>();
         while (resultSet.next()) {
             Account account = new Account();
@@ -194,7 +194,7 @@ public class BankDaoImp {
         return account;
     }
     public Customer findCustomerByLoginNoPW(String username, String pw) throws SQLException, BusinessException{
-        System.out.println("temp function");
+//        System.out.println("temp function");
         return new Customer();
     }
     public Vector<Account> getAccountsByUsernameOnly(String username) throws SQLException, BusinessException {   //used by employee and customer to view employees...
@@ -222,13 +222,14 @@ public class BankDaoImp {
         return accounts;
     }
 
-    public void withdrawFunds(long accountNum, BigDecimal amount, String username, String password) throws SQLException, BusinessException {    System.out.println("temp function");
+    public void withdrawFunds(long accountNum, BigDecimal amount, String username, String password) throws SQLException, BusinessException {
+//        System.out.println("temp function");
         //should i pass in customer and break it down here, or in business layer?
         //user already logged in, should be ok... but will need to be fixed for webservice
         Connection connection = PostgresConnection.getConnection();
-        log.trace("withdraw funds, DAO");
-        log.trace("amount:" + amount);
-        log.trace("account" + accountNum);
+//        log.trace("withdraw funds, DAO");
+//        log.trace("amount:" + amount);
+//        log.trace("account" + accountNum);
         String sql= "update gormbank.accounts set balance = balance - ? " +
                 "where account_number = ? and status ='active' and userid in " +
                 "(SELECT userid from gormbank.customers WHERE username = ? AND password = ?);";
@@ -247,9 +248,9 @@ public class BankDaoImp {
         //should i pass in customer and break it down here, or in business layer?
         //user already logged in, should be ok... but will need to be fixed for webservice
         Connection connection = PostgresConnection.getConnection();
-        log.trace("withdraw funds, DAO");
-        log.trace("amount:" + amount);
-        log.trace("account" + accountNum);
+//        log.trace("withdraw funds, DAO");
+//        log.trace("amount:" + amount);
+//        log.trace("account" + accountNum);
         String sql= "update gormbank.accounts set balance = balance + ? " +
                 "where account_number = ? and status ='active' and userid in " +
                 "(SELECT userid from gormbank.customers WHERE username = ? AND password = ?);";
@@ -265,7 +266,7 @@ public class BankDaoImp {
     }
 
     public void transferFunds(Customer customer, long accountNum, long accountNum2, double amount) throws SQLException, BusinessException {
-        System.out.println("temp function");
+//        System.out.println("temp function");
     }
     public void approveAccount(Long accountNum) throws SQLException, BusinessException{
         //fixme next step - might work,
@@ -276,7 +277,7 @@ public class BankDaoImp {
         preparedStatement.setLong(1, accountNum);    //variables sent into sql/preparedStatement
         int executeUpdate=preparedStatement.executeUpdate(); //need to actually run the sql...
         //I think I'm missing a step where I test results
-        log.trace("updated " + executeUpdate);
+//        log.trace("updated " + executeUpdate);
     }//still need to test to make sure this does not reset balance if applied to wrong account
 //TRANSACTIONS
 

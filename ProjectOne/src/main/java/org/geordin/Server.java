@@ -25,11 +25,13 @@ public class Server {
            //return html... login...
         });
         app.post("/api/customer/:username", ctx ->{        //login!!
-            Customer customerLogin = ctx.bodyAsClass(Customer.class);//need this for password
-//            System.out.println(customerLogin.getUsername());
+            System.out.println(ctx.body());
+
             try{
+                Customer customerLogin = ctx.bodyAsClass(Customer.class);//need this for password
                 Customer customer = bankService.signInOldCustomer(customerLogin.getUsername(),customerLogin.getPassword());
 //                customer.setPassword("null");
+                System.out.println(customer);
                 ctx.json(customer);
             }
             catch (BusinessException e){
@@ -38,17 +40,26 @@ public class Server {
                 errorObj.put("error", e.getMessage());
                 ctx.json(errorObj);
             }
-            /*
-             Employee employee = ctx.bodyAsClass(Employee.class);
-            employee = service.createEmployee(employee);
-            ctx.json(employee);
-            ~~~
-            app.before(ctx -> ctx.register(MyMapper.class, new MyMapper(ctx, otherDependency));
-             */
-
         });
+
         //post to /api/customers to create new customer
-        app.get("/api/customer/:username", ctx -> { //currently working
+        //build this fixme
+        app.post("/api/customers", ctx -> { //create new customer, little/no validation... working in postman!
+            Customer customer = ctx.bodyAsClass(Customer.class);
+            //create new customer
+            try{
+                bankService.createNewCustomer(customer.getUsername(), customer.getName(), customer.getPassword()); //user,name,pw - in that order
+            }
+            catch (BusinessException e){
+                //create error object for javascript
+                HashMap<String, String> errorObj = new HashMap<>();
+                errorObj.put("error", e.getMessage());
+                ctx.json(errorObj);
+            }
+        });
+
+
+        app.get("/api/customer/:username", ctx -> { //gets customer info and accounts, no pw. currently working
                 //get customer object (including accounts list) from business layer (via dao)
                     //should validate username and password of customer against info in the header...
                         //that can be a reach goal...

@@ -56,6 +56,26 @@ public class BankService {
         }
         //fixme exceptions need to be reworked to give more useful info... how to tell which is which?
     }
+    public Customer createNewCustomer(String user, String name, String password) throws BusinessException { //create new customer fixme
+        try{
+            Customer customer = new Customer();
+            customer = bankImp.createNewCustomer(user, name, password); //if DB has that user, create it
+            //log me!
+            Vector<Account> accounts = new Vector<Account>();
+            //may need to adjust exceptions for the above..
+            return customer;
+        }
+        catch (SQLException e){
+//            log.trace(e.getMessage()); //hopefully that logs the actual error for the developers to find
+            throw new BusinessException("Username already exists");
+        }
+        catch (BusinessException e){
+            //if found someone
+            throw new BusinessException("Error in database.");
+        }
+        //fixme exceptions need to be reworked to give more useful info... how to tell which is which?
+    } //fixme ; change this to reflect actual methos
+
     public Account getAccountByNumber(long num) throws BusinessException { //
         try{
             Account account = bankImp.getAccountByAccountNum(num);
