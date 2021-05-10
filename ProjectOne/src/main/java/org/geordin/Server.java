@@ -23,25 +23,21 @@ public class Server {
         //CUSTOMER ROUTES
         app.get("/customer", ctx -> {
            //return html... login...
-            //should not go here directly... but perhaps if not logged in, page shows different html, and suggests you login via button...
-
         });
         app.post("/api/customer/:username", ctx ->{        //login!!
-           //return info for customer only if password and username match...
-            //could use a splat to get username and password
-            
-            Customer customer = ctx.bodyAsClass(Customer.class);//
-            System.out.println(customer.getUsername());
-//
-//            System.out.println(ctx.body());
-//            System.out.println(ctx.formParam("username"));
-//            System.out.println(ctx.formParam("password"));
-//            System.out.println(ctx.queryParam("password"));
-//            Customer customer = ctx.bodyAsClass(Customer.class);
-            //send to business layer to be verified...
-//            ctx.json(customer);
-            //testing to see what happens if bad object sent in- error?
-
+            Customer customerLogin = ctx.bodyAsClass(Customer.class);//need this for password
+//            System.out.println(customerLogin.getUsername());
+            try{
+                Customer customer = bankService.signInOldCustomer(customerLogin.getUsername(),customerLogin.getPassword());
+//                customer.setPassword("null");
+                ctx.json(customer);
+            }
+            catch (BusinessException e){
+                //create error object for javascript
+                HashMap<String, String> errorObj = new HashMap<>();
+                errorObj.put("error", e.getMessage());
+                ctx.json(errorObj);
+            }
             /*
              Employee employee = ctx.bodyAsClass(Employee.class);
             employee = service.createEmployee(employee);

@@ -23,7 +23,14 @@ public class Customer extends User{
     public void setId(Long id) {this.id = id;}
     public Long getId(){return this.id;}
 
-    //cleaning up below...
+    public Vector<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(Vector<Account> accounts) {
+        this.accounts = accounts;
+    }
+//cleaning up below...
 
 
 

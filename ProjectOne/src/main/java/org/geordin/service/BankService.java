@@ -15,14 +15,15 @@ public class BankService {
 
     //getReturningCustomerInfo
     //should send customer and account info to server ...
-    public Customer signInOldCustomer(String user, String pw) throws BusinessException { //
+    public Customer signInOldCustomer(String user, String pw) throws BusinessException { //fixme not returning accoutns
         try{
             Customer customer = new Customer();
             customer = bankImp.findCustomerByLogin(user, pw); //if DB has that user, create it
             //log me!
-            Vector<Account> accounts = new Vector<Account>();
+            Vector<Account> accounts = bankImp.getAccountsByUsernameOnly(user);
             accounts.forEach(customer::addAccount);
             //may need to adjust exceptions for the above..
+//            System.out.println(customer.getAccounts());
             return customer;
         }
         catch (SQLException e){
@@ -40,7 +41,7 @@ public class BankService {
             Customer customer = new Customer();
             customer = bankImp.findCustomerByUsername(user); //if DB has that user, create it
             //log me!
-            Vector<Account> accounts = new Vector<Account>();
+            Vector<Account> accounts = bankImp.getAccountsByUsernameOnly(user);
             accounts.forEach(customer::addAccount);
             //may need to adjust exceptions for the above..
             return customer;
