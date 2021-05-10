@@ -46,7 +46,9 @@
     ...might need to move to #loginDiv in the future...
     */
 }
-
+#warning{
+    color: red;
+}
 
 
 /* dark and light modes as a stretch goal */

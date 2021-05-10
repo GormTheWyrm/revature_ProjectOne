@@ -1,5 +1,9 @@
 
-M
-java:S1854"7Remove this useless assignment to local variable "app".(şà´²
->
-java:S1481"(Remove this unused "app" local variable.(şà´²
+f
+java:S11344"DTake the required action to fix the issue indicated by this comment.(ÀÁºÚÿÿÿÿÿ8à†¦•/
+h
+java:S1192<"FDefine a constant instead of duplicating this literal "error" 3 times.(öóÈöÿÿÿÿÿ8à†¦•/
+X	java:S1251"<This block of commented-out lines of code should be removed.(²òıà8à†¦•/
+t
+java:S1192C"RDefine a constant instead of duplicating this literal "/api/account/:num" 3 times.(™Ëˆ½úÿÿÿÿ8à†¦•/
+^	java:S125º"<This block of commented-out lines of code should be removed.(¶½òìúÿÿÿÿ8à†¦•/

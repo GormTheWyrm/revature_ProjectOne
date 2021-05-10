@@ -1,7 +1,7 @@
 
+Q	java:S125-"<This block of commented-out lines of code should be removed.(Ÿë ä
+V	java:S125	"<This block of commented-out lines of code should be removed.(Õî¡Éüÿÿÿÿ
 Z
-java:S1134F"DTake the required action to fix the issue indicated by this comment.(¦œÛ¹
-Q	java:S125$"<This block of commented-out lines of code should be removed.(Ÿë ä
-V	java:S125"<This block of commented-out lines of code should be removed.(Õî¡Éüÿÿÿÿ
-å
-java:S1598"ÇThis file "Account.java" should be located in "org\geordin\service" directory, not in "C:\Users\Gorm\Documents\Revature\workspaces\projects\ProjectOne_gds\ProjectOne\src\main\java\org\geordin\model".(ÆÖş©8Óì¬Ñ”/
+java:S1134["DTake the required action to fix the issue indicated by this comment.(¦œÛ¹
+c
+java:S1126R"AReplace this if-then-else statement by a single return statement.(Æ·³“ùÿÿÿÿ8ñ†¦•/

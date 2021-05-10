@@ -53,7 +53,10 @@ public class Customer extends User{
         //naccount intentionally not set
     }
     //I might not need to use passord at all...
-
+    public Customer(String username, String password){ //no account collection
+        setUsername(username);
+        setPassword(password);
+    }
 
 
 

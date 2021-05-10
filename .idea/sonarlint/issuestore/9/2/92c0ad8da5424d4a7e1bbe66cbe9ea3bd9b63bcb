@@ -1,24 +1,19 @@
 
-ˆ
-java:S1319("rThe type of the "accounts" object should be an interface such as "Map" rather than the implementation "Hashtable".(ØŠÞ¦
-ß
-java:S1598"ÈThis file "Customer.java" should be located in "org\geordin\service" directory, not in "C:\Users\Gorm\Documents\Revature\workspaces\projects\ProjectOne_gds\ProjectOne\src\main\java\org\geordin\model".(ÆÖþ©
-k
-java:S1206Q"PThis class overrides "equals()" and should therefore also override "hashCode()".(Ý¢êÍýÿÿÿÿ
-l
-java:S1149("VReplace the synchronized class "Hashtable" by an unsynchronized one such as "HashMap".(ØŠÞ¦
-Q	java:S125"<This block of commented-out lines of code should be removed.(’©‡¼
-V	java:S125"<This block of commented-out lines of code should be removed.(±Ó…Ÿûÿÿÿÿ
-V	java:S125"<This block of commented-out lines of code should be removed.(ÍÅË¬þÿÿÿÿ
-1
-java:S1116'"Remove this empty statement.(ÞÑ¹"
-<
-java:S1172("&Remove these unused method parameters.(ØŠÞ¦
-V	java:S125*"<This block of commented-out lines of code should be removed.(Ôž‘ùÿÿÿÿ
+V	java:S1251"<This block of commented-out lines of code should be removed.(Ôž‘ùÿÿÿÿ
 Z
 java:S1134)"DTake the required action to fix the issue indicated by this comment.(Æ“ê 
-V	java:S1251"<This block of commented-out lines of code should be removed.(Ôž‘ùÿÿÿÿ
-Q	java:S125A"<This block of commented-out lines of code should be removed.(Ý ’ì
+k
+java:S1206Q"PThis class overrides "equals()" and should therefore also override "hashCode()".(Ý¢êÍýÿÿÿÿ
+1
+java:S1116'"Remove this empty statement.(ÞÑ¹"
 Z
 java:S1134?"DTake the required action to fix the issue indicated by this comment.(Þæ²˜
-V	java:S125T"<This block of commented-out lines of code should be removed.( Ï§€üÿÿÿÿ
+Q	java:S125A"<This block of commented-out lines of code should be removed.(Ý ’ì
+M
+java:S1128"0Remove this unused import 'java.util.ArrayList'.(÷‰îƒ8ì†¦•/
+‚
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(È›Ùý8ì†¦•/
+‚
+java:S1149("eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ÈÁÓý8ì†¦•/
+L
+java:S1172("/Remove this unused method parameter "accounts".(ÈÁÓý8ì†¦•/

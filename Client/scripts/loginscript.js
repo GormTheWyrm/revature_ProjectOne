@@ -7,16 +7,17 @@ let password;
 let username;
 let baseUrl = "http://localhost:9000"; //update this
 // console.log("test");
-
+// userType = Employee or customer
 
 
 //login function will use fetch to check pw and user against api
 //if correct, pw and user should be saved
 //pw and user can then be sent in header for next query...
 
+
+//element variables and event handlers
 let loginDiv = document.getElementById("loginDiv");
 
-//event handlers
 let loginSubmit = document.getElementById("loginSubmit");
 loginSubmit.addEventListener("click", login);
 
@@ -32,17 +33,23 @@ signupSpan.addEventListener("click", showSignup);
 let loginSpan = document.getElementById("loginSpan");
 loginSpan.addEventListener("click", showLogin);
 
-let bodyDiv = document.getElementById("bodyDiv"); 
+let bodyDiv = document.getElementById("bodyDiv");
+
+let userInput = document.getElementById("userInput"); //username element
+let pwInput = document.getElementById("pwInput");   //pw element
+
+let warning = document.getElementById("warning");
+
 let userSpan = document.getElementById("userSpan");
+// value variables
 let userType = userSpan.textContent;
 //this gives us the employee or customer we need to call the api...
-console.log(userType); 
 
-function logout(){
-password = null;
-username =null;
-window.location.reload();
-//need to worry about cache keeping pw and username?
+function logout() {
+    password = null;
+    username = null;
+    window.location.reload();
+    //need to worry about cache keeping pw and username?
 }
 
 
@@ -57,48 +64,128 @@ window.location.reload();
 //and employee/customer changes url...
 
 
-function login(event){
+function login(event) {
+    //called by hitting login button
     event.preventDefault();
     console.log("this will fetch login");
+
+
+
 
     //validation
     //if pass, attemptLogin
     //if pass
     //loginsuccess()
 }
-function signup(event){
-    
+function signup(event) {
+    //called by hitting signin button...
     event.preventDefault();
     console.log("this will fetch sign in");
-        //validation
+    if (validateUsername()) {
+        if (validatePassword()) {
+            //attempt signup - calls success if successful
+            if (userType=="Employee"){
+                let url = baseUrl+ "/employee/";
+                url += userInput.value;
+                attemptSignup(url);
+            }
+            else if (userType=="Customer"){
+                let url = baseUrl+ "/customer/";
+                url += userInput.value;
+                attemptSignup(url);
+            }
+            //NEED TO VALIDATE THESE URLS...!!!
+            
+        }
+        else {
+            //tells user password is not in acceptable format
+            console.log("bad password");
+        }
+    }
+    else {
+        //tell user username is not in acceptable format
+        console.log("username invalid")
+    }
     //if pass, attemptSignup
-        //might call attemptlogin... or make it part of signup...
+    //might call attemptlogin... or make it part of signup...
     //if pass
-    loginSuccess();
+
 }
 
 
-function showSignup(event){
+function showSignup(event) {
     event.preventDefault();
     loginSubmit.style.display = "none";
     signupSpan.style.display = "none";
     loginSpan.style.display = "";
     signupSubmit.style.display = "";
-    
+
 }
-function showLogin(event){
+function showLogin(event) {
     loginSubmit.style.display = "";
     signupSpan.style.display = "";
     loginSpan.style.display = "none";
     signupSubmit.style.display = "none";
-    
+
 }
-function loginSuccess(){
-    
+function loginSuccess() {
+
     loginDiv.style.display = "none";
     bodyDiv.style.display = "";
-    
-
 }
 
+function attemptSignup(urlVar) {
+    //fetch
+    // fetch(url, )// replace with a post?
+    fetch(urlVar)
+    .then(res=>{
+        res.json();
+    })
+    .then(data=>{
 
+    })
+    .catch(err=> {
+        console.log(err);
+        //display some sort of warning to user
+        warning.innerHTML = "Failed to connect to server";
+        warning.style.display = "";
+        //need to figure out other possible errors
+    });
+}
+function attemptLogin(urlVar) {
+    //fetch
+}
+
+function validateUsername() { //validates username and password
+    //return true-false
+    //if
+    console.log(userInput.value);
+    // if (userInput.value.test()){
+    if (userInput.value != "") {
+        //temp validation
+
+        console.log("username passes validation");
+        return true;
+        //search() returns index or -1; if index != 0...
+        //that may have issues...
+    }
+    else {
+        console.log("password fails validation");
+        return false;
+    }
+    //fix this!!!
+}
+function validatePassword() {
+    if (pwInput.value != "") {
+        //temp validation
+
+        console.log("password passes validation");
+        return true;
+        //search() returns index or -1; if index != 0...
+        //that may have issues...
+    }
+    else {
+        console.log("password fails validation");
+        return false;
+    }
+} //fixme !!! needs better validation no /\... at least
