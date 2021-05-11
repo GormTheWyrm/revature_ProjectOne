@@ -156,6 +156,7 @@ public class Server {
                 String password = jsonObj.getString("password");
                 long accountNum = (jsonObj.getLong("accountNumber"));
                 BigDecimal amount = jsonObj.getBigDecimal("amount");
+                amount = amount.setScale(2, BigDecimal.ROUND_FLOOR);
                 bankService.depositFunds(accountNum, amount, username, password);
                 //if success
                 HashMap<String, String> successObj = new HashMap<>();
@@ -165,12 +166,12 @@ public class Server {
             }
             catch (BusinessException e){
                 HashMap<String, String> errorObj = new HashMap<>();
-                errorObj.put("error", "Error; account not updated. Check your balance and try again."); //not sure what other errors would result in this
+                errorObj.put("error", "Error; account not updated."); //not sure what other errors would result in this
                 ctx.json(errorObj);
             }
             catch (Exception e){ //catching number exceptions and type exceptions for parsing data
                 HashMap<String, String> errorObj = new HashMap<>();
-                errorObj.put("error", "error parsing data; make sure Amount is a number and AccountNumber is a positive integer");
+                errorObj.put("error", "Amount not deposited: unable to read input type");
                 ctx.json(errorObj);
             }
 
