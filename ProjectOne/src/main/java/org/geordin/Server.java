@@ -204,8 +204,37 @@ public class Server {
 
 
 
-        app.put("/api/account/transfer/:num", ctx -> {
-            //
+        app.put("/api/account/transfer", ctx -> {   //fixme WIP;
+            //fixme verify that this is limited ot same customer
+            // only within single customers accounts... good or bad?
+            try{
+                JSONObject jsonObj = new JSONObject(ctx.body());
+                String username = jsonObj.getString("username");
+                String password = jsonObj.getString("password");
+                long accountNum1 = (jsonObj.getLong("accountNumberFrom"));
+                long accountNum2 = (jsonObj.getLong("accountNumberTo"));
+                BigDecimal amount = jsonObj.getBigDecimal("amount");
+                amount = amount.setScale(2, BigDecimal.ROUND_FLOOR);
+                //(String username, String password, long accountNum1, long accountNum2, BigDecimal amount)
+                System.out.println(amount);
+                bankService.transferFunds(username, password, accountNum1, accountNum2, amount);
+                System.out.println(amount);
+                //if success
+                HashMap<String, String> successObj = new HashMap<>();
+                successObj.put("success", "$" + amount +" transferedSuccessfully");
+                //fixme amount needs to be truncated... optimally return amount
+                ctx.json(successObj);
+            }
+            catch (BusinessException e){
+                HashMap<String, String> errorObj = new HashMap<>();
+                errorObj.put("error", e.getMessage()); //not sure what other errors would result in this
+                ctx.json(errorObj);
+            }
+            catch (Exception e){ //catching number exceptions and type exceptions for parsing data
+                HashMap<String, String> errorObj = new HashMap<>();
+                errorObj.put("error", "Amount not withdrawn: unable to read input type");
+                ctx.json(errorObj);
+            }
         });
         //may not need separate routes for withdrawal and deposit...
         app.put("/api/account/:num", ctx -> {

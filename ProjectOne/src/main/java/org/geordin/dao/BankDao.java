@@ -42,6 +42,6 @@ public interface BankDao {
 
     public void viewAccountsByAccountNum(long accountNum) throws SQLException, BusinessException;   //used by ...
 
-    public void transferFunds(Customer customer, long accountNum, long accountNum2, double amount) throws SQLException, BusinessException;
+    public void transferFunds(Customer customer, long accountNum, long accountNum2, BigDecimal amount) throws SQLException, BusinessException;
 
 }

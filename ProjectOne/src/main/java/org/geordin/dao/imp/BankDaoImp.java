@@ -274,8 +274,42 @@ public class BankDaoImp {
         }
     }
 
-    public void transferFunds(Customer customer, long accountNum, long accountNum2, double amount) throws SQLException, BusinessException {
-//        System.out.println("temp function");
+    public void transferFunds(String username, String password, long accountNum, long accountNum2, BigDecimal amount) throws SQLException, BusinessException {
+
+        Connection connection = PostgresConnection.getConnection();
+
+        System.out.println("dao transfer1");
+        String sql= "update gormbank.accounts set balance = balance - ? " +
+                "where account_number = ? and status ='active' and userid in " +
+                "(SELECT userid from gormbank.customers WHERE username = ? AND password = ?);";
+        PreparedStatement preparedStatement=connection.prepareStatement(sql);
+        preparedStatement.setBigDecimal(1, amount);
+        preparedStatement.setLong(2, accountNum);
+        preparedStatement.setString(3, username);
+        preparedStatement.setString(4, password);
+        int executeUpdate=preparedStatement.executeUpdate();
+    //fixme; execute update if statement not working!? its running first method twice
+        if (executeUpdate == 1){
+            System.out.println("dao transfer2");
+            String sql2= "update gormbank.accounts set balance = balance + ? " +
+                    "where account_number = ? and status ='active' and userid in " +
+                    "(SELECT userid from gormbank.customers WHERE username = ? AND password = ?);";
+            PreparedStatement preparedStatement2=connection.prepareStatement(sql2);
+            preparedStatement2.setBigDecimal(1, amount);
+            preparedStatement2.setLong(2, accountNum2);
+            preparedStatement2.setString(3, username);
+            preparedStatement2.setString(4, password);
+            int executeUpdate2=preparedStatement2.executeUpdate();
+            if (executeUpdate2 !=1){
+                //this needs to rollback the first transaction
+                //https://www.tutorialspoint.com/jdbc/commit-rollback.htm
+                throw new BusinessException("Critical failure: " + amount+ " failed to be added to account "+ accountNum2 + ". Contact support immediately!");
+                //this needs to be logged... and fixed
+            }
+            else if (executeUpdate !=1){
+            throw new BusinessException("Withdraw Operation failed; Transfer aborted!");
+            }
+        }
     }
     public void approveAccount(Long accountNum) throws SQLException, BusinessException{
         //fixme next step - might work,
