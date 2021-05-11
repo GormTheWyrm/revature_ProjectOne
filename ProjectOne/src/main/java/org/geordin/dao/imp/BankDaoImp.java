@@ -257,7 +257,7 @@ public class BankDaoImp {
         //should i pass in customer and break it down here, or in business layer?
         //user already logged in, should be ok... but will need to be fixed for webservice
         Connection connection = PostgresConnection.getConnection();
-//        log.trace("withdraw funds, DAO");
+//        log.trace("deposit funds, DAO");
 //        log.trace("amount:" + amount);
 //        log.trace("account" + accountNum);
         String sql= "update gormbank.accounts set balance = balance + ? " +

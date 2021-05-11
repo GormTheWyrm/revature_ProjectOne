@@ -138,5 +138,23 @@ public class BankService {
             throw new BusinessException(e.getMessage()); //change message...
         }
     }
+    public void withdrawFunds(long accountNum, BigDecimal amount, String username, String password) throws BusinessException { // fixme
+        try{
+//            //if amount <0 abort!
+            if ((amount.compareTo(BigDecimal.ZERO))<=0){    //not tested yet
+                throw new BusinessException("Amount must be greater than Zero");
+            }
+
+            bankImp.withdrawFunds(accountNum, amount, username, password);
+        }
+        catch (SQLException e){
+//            log.trace(e.getMessage()); //hopefully that logs the actual error for the developers to find
+            throw new BusinessException(e.getMessage()); //change message...
+        }
+        catch (BusinessException e){
+            //if found someone
+            throw new BusinessException(e.getMessage()); //change message...
+        }
+    }
 
 }

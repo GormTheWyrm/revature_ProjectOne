@@ -174,12 +174,36 @@ public class Server {
                 errorObj.put("error", "Amount not deposited: unable to read input type");
                 ctx.json(errorObj);
             }
+        });
+        app.put("/api/account/withdrawal/", ctx -> {
+            try{
+                JSONObject jsonObj = new JSONObject(ctx.body());
+                String username = jsonObj.getString("username");
+                String password = jsonObj.getString("password");
+                long accountNum = (jsonObj.getLong("accountNumber"));
+                BigDecimal amount = jsonObj.getBigDecimal("amount");
+                amount = amount.setScale(2, BigDecimal.ROUND_FLOOR);
+                bankService.withdrawFunds(accountNum, amount, username, password);
+                //if success
+                HashMap<String, String> successObj = new HashMap<>();
+                successObj.put("success", "$" + amount +" withdrawn Successfully");
+                //fixme amount needs to be truncated... optimally return amount
+                ctx.json(successObj);
+            }
+            catch (BusinessException e){
+                HashMap<String, String> errorObj = new HashMap<>();
+                errorObj.put("error", "Error; account not updated."); //not sure what other errors would result in this
+                ctx.json(errorObj);
+            }
+            catch (Exception e){ //catching number exceptions and type exceptions for parsing data
+                HashMap<String, String> errorObj = new HashMap<>();
+                errorObj.put("error", "Amount not withdrawn: unable to read input type");
+                ctx.json(errorObj);
+            }
+        });
 
 
-        });
-        app.put("/api/account/withdrawal/:num", ctx -> {
-            //
-        });
+
         app.put("/api/account/transfer/:num", ctx -> {
             //
         });
@@ -238,6 +262,8 @@ still need...
  - client
  - html routes...optional?
  - delete account via deny account
+ - add status codes
+ - should account be singular for deposit and withdrawal? and should it use uri or body...
  */
 
 
