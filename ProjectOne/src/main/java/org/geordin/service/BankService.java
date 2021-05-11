@@ -3,6 +3,7 @@ package org.geordin.service;
 import org.geordin.dao.imp.BankDaoImp;
 import org.geordin.model.Account;
 import org.geordin.model.Customer;
+import org.geordin.model.Employee;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -171,5 +172,51 @@ public class BankService {
         }
 
     }
+
+    //EMPLOYEE FUNCTIONS
+
+    public Employee signInOldEmployee(String user, String pw) throws BusinessException { //fixme test with data!
+        try{
+            Employee employee = new Employee();
+            employee = bankImp.findEmployeeByLogin(user, pw); //if DB has that user, create it
+            //log me!
+//            System.out.println(customer.getAccounts());
+            return employee;
+        }
+        catch (SQLException e){
+//            log.trace(e.getMessage()); //hopefully that logs the actual error for the developers to find
+            throw new BusinessException("Could not find username or password. Please check your spelling and try again.");
+        }
+        catch (BusinessException e){
+            //if found someone
+            throw new BusinessException("Username already taken.");
+        }
+        //fixme exceptions need to be reworked to give more useful info... how to tell which is which?
+    }
+    public Employee createNewEmployee(String user, String name, String password) throws BusinessException { //create new customer fixme
+        try{
+            Employee employee = new Employee();
+            employee = bankImp.createNewEmployee(user, name, password); //if DB has that user, create it
+            //log me!
+//            System.out.println(employee);
+            //may need to adjust exceptions for the above..
+            return employee;
+        }
+        catch (SQLException e){
+//            log.trace(e.getMessage()); //hopefully that logs the actual error for the developers to find
+            throw new BusinessException("Username already exists");
+        }
+        catch (BusinessException e){
+            //if found someone
+            throw new BusinessException("Error in database.");
+        }
+        //fixme exceptions need to be reworked to give more useful info... how to tell which is which?
+    } //fixme ; change this to reflect actual methos
+
+
+
+
+
+
 
     }

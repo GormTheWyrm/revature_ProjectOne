@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.geordin.dbutil.PostgresConnection;
 import org.geordin.model.Account;
 import org.geordin.model.Customer;
+import org.geordin.model.Employee;
 import org.geordin.model.Transaction;
 import org.geordin.service.BusinessException;
 
@@ -363,7 +364,63 @@ public class BankDaoImp {
         }
         return transactions;
     }
-
+// EMPLOYEE FUNCTIONS
+public Employee createNewEmployee(String username, String name, String password) throws SQLException, BusinessException {
+    //creates new customer if password, name and username exist in database
+    Employee employee = new Employee();
+    //database connection
+    Connection connection = PostgresConnection.getConnection();
+    String sql = "INSERT INTO gormbank.employees\n" +
+            "(username, \"name\", \"password\")\n" +
+            "VALUES(?, ?, ?);\n";
+    PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+    preparedStatement.setString(1, username);    //variables sent into DB
+    preparedStatement.setString(2, name);
+    preparedStatement.setString(3, password);
+    int c = preparedStatement.executeUpdate();
+    //fixme - should this be executeQuery instead?
+//        log.trace("Inserted "+ c + " records");
+    if (c == 1) {
+        ResultSet resultSet = preparedStatement.getGeneratedKeys();
+        if (resultSet.next()) { //this is needed to get a response
+            employee.setId(resultSet.getLong(1));
+            employee.setUsername(resultSet.getString(2)); //index 1 should be userid
+            employee.setName(resultSet.getString(3));
+            employee.setPassword(resultSet.getString(4));
+//                log.trace(resultSet.getString(2)+ " added to user database");
+        }
+    } else {
+        throw new BusinessException("Failure in registration... Please retry.....");
+    }
+    return employee; //this returns a customer even if it doesnt work...?
+}
+public Employee findEmployeeByLogin(String username, String pw) throws SQLException, BusinessException {
+    Employee employee = new Employee();
+    //step 2 connection
+    Connection connection = PostgresConnection.getConnection();
+    //Step 3- Create Statement
+    String sql = "SELECT username, name, password, userid from gormbank.employees WHERE username = ? AND password = ?;";
+    PreparedStatement preparedStatement = connection.prepareStatement(sql); //2nd par makes keys returnable...
+    preparedStatement.setString(1, username);    //variables sent into DB
+    preparedStatement.setString(2, pw);
+    //Step 4 - Execute Query
+    ResultSet resultSet = preparedStatement.executeQuery();
+//        log.trace("DAO-findCustomerByLogin");
+    //Step 5 - Process Results  THIS WILL BE IMPORTANT~
+    //        while (resultSet.next()){
+    if (resultSet.next()) {
+        employee.setUsername(resultSet.getString("username"));
+        employee.setName(resultSet.getString("name"));
+        employee.setPassword(resultSet.getString("password"));
+        employee.setId(resultSet.getLong("userid")); //userId should never leave the backend/service layers
+        //is this necessarry?
+//            log.trace("DAO loginOldCustomer: " + customer.getUsername());
+    }
+    else {
+        throw new BusinessException("No User Found");
+    } //if no results, throw exception
+    return employee;
+}
 
 
 

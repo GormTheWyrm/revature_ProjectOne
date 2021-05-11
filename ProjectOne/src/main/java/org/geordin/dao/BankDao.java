@@ -2,6 +2,7 @@ package org.geordin.dao;
 
 import org.geordin.model.Account;
 import org.geordin.model.Customer;
+import org.geordin.model.Employee;
 import org.geordin.model.Transaction;
 import org.geordin.service.BusinessException;
 
@@ -20,12 +21,14 @@ public interface BankDao {
 
     //not implemented but maybe good
     Customer findCustomerByLogin(String username, String pw) throws SQLException, BusinessException; //returns customer object when logging in with user and pw
-        //changed name and put above
+    Employee findEmployeeByLogin(String username, String pw) throws SQLException, BusinessException; //returns customer object when logging in with user and pw
+    //changed name and put above
     // not implemented
 
 
 
     Customer createNewCustomer(String username, String name, String password) throws SQLException, BusinessException;
+    Customer createNewEmployee(String username, String name, String password) throws SQLException, BusinessException;
     void applyForAccount(Customer customer) throws SQLException, BusinessException; //create account,set status to pending
 
 

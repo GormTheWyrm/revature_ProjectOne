@@ -3,6 +3,7 @@ package org.geordin;
 import io.javalin.Javalin;
 import org.geordin.model.Account;
 import org.geordin.model.Customer;
+import org.geordin.model.Employee;
 import org.geordin.service.BankService;
 import org.geordin.service.BusinessException;
 
@@ -32,13 +33,13 @@ public class Server {
 
 
         app.post("/api/customer/:username", ctx ->{        //login!!
-            System.out.println(ctx.body());
+//            System.out.println(ctx.body());
 
             try{
                 Customer customerLogin = ctx.bodyAsClass(Customer.class);//need this for password
                 Customer customer = bankService.signInOldCustomer(customerLogin.getUsername(),customerLogin.getPassword());
 //                customer.setPassword("null");
-                System.out.println(customer);
+//                System.out.println(customer);
                 ctx.json(customer);
             }
             catch (BusinessException e){
@@ -129,7 +130,6 @@ public class Server {
                 errorObj.put("error", e.getMessage());
                 ctx.json(errorObj);
             }
-
         });
 
 
@@ -148,7 +148,7 @@ public class Server {
 
 
 //        app.put("/api/account/deposit/:num", ctx -> {   //deposit amount  ...perhaps amount should be in uri...
-            app.put("/api/account/deposit", ctx -> {   //deposit amount, seems to work
+            app.put("/api/accounts/deposit", ctx -> {   //deposit amount, seems to work
             //need long accountNum, BigDecimal amount, String username, String password
             try{
                 JSONObject jsonObj = new JSONObject(ctx.body());
@@ -175,7 +175,7 @@ public class Server {
                 ctx.json(errorObj);
             }
         });
-        app.put("/api/account/withdrawal/", ctx -> {
+        app.put("/api/accounts/withdrawal/", ctx -> {
             try{
                 JSONObject jsonObj = new JSONObject(ctx.body());
                 String username = jsonObj.getString("username");
@@ -205,7 +205,7 @@ public class Server {
 
 
         app.put("/api/account/transfer", ctx -> {   //fixme WIP;
-            //fixme verify that this is limited ot same customer
+            //fixme need to implement rollback if withdrawal does not go through...
             // only within single customers accounts... good or bad?
             try{
                 JSONObject jsonObj = new JSONObject(ctx.body());
@@ -216,13 +216,12 @@ public class Server {
                 BigDecimal amount = jsonObj.getBigDecimal("amount");
                 amount = amount.setScale(2, BigDecimal.ROUND_FLOOR);
                 //(String username, String password, long accountNum1, long accountNum2, BigDecimal amount)
-                System.out.println(amount);
+//                System.out.println(amount);
                 bankService.transferFunds(username, password, accountNum1, accountNum2, amount);
-                System.out.println(amount);
+//                System.out.println(amount);
                 //if success
                 HashMap<String, String> successObj = new HashMap<>();
                 successObj.put("success", "$" + amount +" transferedSuccessfully");
-                //fixme amount needs to be truncated... optimally return amount
                 ctx.json(successObj);
             }
             catch (BusinessException e){
@@ -239,6 +238,7 @@ public class Server {
         //may not need separate routes for withdrawal and deposit...
         app.put("/api/account/:num", ctx -> {
             //approve
+            //should need employee credentials...
         });
 
 
@@ -250,8 +250,45 @@ public class Server {
         //
         app.get("/employee", ctx -> {
             //return html... login...
-            //should not go here directly... but perhaps if not logged in, page shows different html, and suggests you login via button...
         });
+
+
+
+        app.post("/api/employee/:username", ctx ->{        //login!! fixme test this with data!
+//            System.out.println(ctx.body());
+            try{
+                Employee employeeLogin = ctx.bodyAsClass(Employee.class);//need this for password
+                Employee employee = bankService.signInOldEmployee(employeeLogin.getUsername(),employeeLogin.getPassword());
+//                customer.setPassword("null");
+//                System.out.println(employee);
+                ctx.json(employee);
+                //fixme not utilizing route as variable, should I use it to get username?
+                //can lead to error where path doesnt matter but post request does... implying I should just change it to /employee/login
+                //employee/login vs /employee/new would be easier...
+            }
+            catch (BusinessException e){
+                //create error object for javascript
+                HashMap<String, String> errorObj = new HashMap<>();
+                errorObj.put("error", e.getMessage());
+                ctx.json(errorObj);
+            }
+        });
+        app.post("/api/employees", ctx -> { //create new employee fixme test with data
+            Employee employee = ctx.bodyAsClass(Employee.class);
+            //create new customer
+            try{
+                employee = bankService.createNewEmployee(employee.getUsername(), employee.getName(), employee.getPassword()); //user,name,pw - in that order
+           ctx.json(employee);
+            }
+            catch (BusinessException e){
+                //create error object for javascript
+                HashMap<String, String> errorObj = new HashMap<>();
+                errorObj.put("error", e.getMessage());
+                ctx.json(errorObj);
+            }
+        });
+
+
 
 
     //TRANSACTIONS
@@ -267,16 +304,23 @@ public class Server {
         //new transactions should be sent into database when account changed...
 
 
-        app.post("/customer", ctx -> {
 
-
-
-        });
 
 //        app.put("/customer")  //could be used to change username and pw... stretch goal
 
 
-
+//* As an employee, I can approve or reject an account.
+//	* 2 points
+//* As an employee, I can view a customer's bank accounts.
+//	* 1 point
+//* As a user, I can register for a customer account.
+//	* 3 points
+//* As a customer, I can post a money transfer to another account.
+//	* 3 points
+//* As a customer, I can accept a money transfer from another account.
+//	* 2 points
+//* As an employee, I can view a log of all transactions.
+//	* 2 points
 
 /*
 still need...
