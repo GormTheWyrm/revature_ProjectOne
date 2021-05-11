@@ -129,6 +129,10 @@ public class BankService {
             }
 
             bankImp.depositFunds(accountNum, amount, username, password);
+//            creating log here!
+//            public void createLog(long account, BigDecimal amount, String transactionType) throws SQLException, BusinessException;
+            bankImp.createLog(accountNum, amount, "deposit");
+            // consider error msg if create log fails but deposit goes thru... fixme
         }
         catch (SQLException e){
 //            log.trace(e.getMessage()); //hopefully that logs the actual error for the developers to find
@@ -145,8 +149,8 @@ public class BankService {
             if ((amount.compareTo(BigDecimal.ZERO))<=0){    //not tested yet
                 throw new BusinessException("Amount must be greater than Zero");
             }
-
             bankImp.withdrawFunds(accountNum, amount, username, password);
+            bankImp.createLog(accountNum, amount, "withdrawal");
         }
         catch (SQLException e){
 //            log.trace(e.getMessage()); //hopefully that logs the actual error for the developers to find
@@ -161,6 +165,9 @@ public class BankService {
         try {
             System.out.println("bankservice");
             bankImp.transferFunds(username, password, accountNum1, accountNum2, amount);
+            bankImp.createLog(accountNum1, amount, "deposit");
+            bankImp.createLog(accountNum2, amount, "withdrawal");
+            //fixme what if log fails but transaction goes thru?
         }
         catch (SQLException e){
 //            log.trace(e.getMessage()); //hopefully that logs the actual error for the developers to find
@@ -212,10 +219,6 @@ public class BankService {
         }
         //fixme exceptions need to be reworked to give more useful info... how to tell which is which?
     } //fixme ; change this to reflect actual methos
-
-
-
-
 
 
 

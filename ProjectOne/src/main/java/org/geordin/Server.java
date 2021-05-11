@@ -135,7 +135,7 @@ public class Server {
 
         app.delete("/api/account/:num", ctx -> {
             //deny new account
-            //verify count is pending before dleeting...
+            //verify count is pending before deleting...
         });
 
 
@@ -337,6 +337,8 @@ still need...
  - delete account via deny account
  - add status codes
  - should account be singular for deposit and withdrawal? and should it use uri or body...
+ ...figure out money transfer - post, accept, and rollback
+ - should logs say transfer, deposit/withdraw, or transfer-deposit, etc?
  */
 
 
