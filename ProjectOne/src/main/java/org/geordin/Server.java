@@ -6,8 +6,12 @@ import org.geordin.model.Customer;
 import org.geordin.service.BankService;
 import org.geordin.service.BusinessException;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Vector;
+
+import org.json.JSONObject;
+
 
 public class Server {
 
@@ -107,10 +111,7 @@ public class Server {
                 ctx.json(errorObj);
             }
         });
-
-
-
-        app.post("/api/accounts", ctx -> { //create new account, fixme
+        app.post("/api/accounts", ctx -> { //create new account, currently working
             //create a new account
             //pass in username via JSON, does not return the new account!
             try{
@@ -118,10 +119,10 @@ public class Server {
                 //accnum, status, userid, approvedby...
                 bankService.createNewAccount(accountObj.getUsername());
                 //if success... nothing returned here
-                //so return a response
-                HashMap<String, String> errorObj = new HashMap<>();
-                errorObj.put("success", "Account added Successfully, please allow up to 24 hours for approval");
-                ctx.json(errorObj);
+                //so return a response manually
+                HashMap<String, String> successObj = new HashMap<>();
+                successObj.put("success", "Account added Successfully, please allow up to 24 hours for approval");
+                ctx.json(successObj);
             }
             catch (BusinessException e){
                 HashMap<String, String> errorObj = new HashMap<>();
@@ -146,8 +147,34 @@ public class Server {
 
 
 
-        app.put("/api/account/deposit/:num", ctx -> {
-            //
+//        app.put("/api/account/deposit/:num", ctx -> {   //deposit amount  ...perhaps amount should be in uri...
+            app.put("/api/account/deposit", ctx -> {   //deposit amount, seems to work
+            //need long accountNum, BigDecimal amount, String username, String password
+            try{
+                JSONObject jsonObj = new JSONObject(ctx.body());
+                String username = jsonObj.getString("username");
+                String password = jsonObj.getString("password");
+                long accountNum = (jsonObj.getLong("accountNumber"));
+                BigDecimal amount = jsonObj.getBigDecimal("amount");
+                bankService.depositFunds(accountNum, amount, username, password);
+                //if success
+                HashMap<String, String> successObj = new HashMap<>();
+                successObj.put("success", "$" + amount +" deposited Successfully");
+                //fixme amount needs to be truncated... optimally return amount
+                ctx.json(successObj);
+            }
+            catch (BusinessException e){
+                HashMap<String, String> errorObj = new HashMap<>();
+                errorObj.put("error", "Error; account not updated. Check your balance and try again."); //not sure what other errors would result in this
+                ctx.json(errorObj);
+            }
+            catch (Exception e){ //catching number exceptions and type exceptions for parsing data
+                HashMap<String, String> errorObj = new HashMap<>();
+                errorObj.put("error", "error parsing data; make sure Amount is a number and AccountNumber is a positive integer");
+                ctx.json(errorObj);
+            }
+
+
         });
         app.put("/api/account/withdrawal/:num", ctx -> {
             //
@@ -174,13 +201,13 @@ public class Server {
 
 
     //TRANSACTIONS
-        app.get("/transctions", ctx -> {
+        app.get("/transactions", ctx -> {
            //get all transactions
         });
-        app.get("/transction/day/:day", ctx -> {
+        app.get("/transaction/day/:day", ctx -> {
             //get all transactions from a day...
         });
-        app.get("/transctions/account/:acc", ctx -> {
+        app.get("/transactions/account/:acc", ctx -> {
             //get all transactions for an account
         });
         //new transactions should be sent into database when account changed...
@@ -197,7 +224,20 @@ public class Server {
 
 
 
-
+/*
+still need...
+ - logs
+ - add list of needed things
+ - mocking
+ - fix logs
+ - unit testing
+ -...transaction routes...
+ -...employee routes
+ -...employee dao
+ - client
+ - html routes...optional?
+ - delete account via deny account
+ */
 
 
 

@@ -4,6 +4,7 @@ import org.geordin.dao.imp.BankDaoImp;
 import org.geordin.model.Account;
 import org.geordin.model.Customer;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.Vector;
@@ -106,7 +107,7 @@ public class BankService {
     }
 
 
-    public void createNewAccount(String user) throws BusinessException { // fixme
+    public void createNewAccount(String user) throws BusinessException { //
         try{
             bankImp.applyForAccountByUsername(user);
         }
@@ -119,6 +120,23 @@ public class BankService {
             throw new BusinessException(e.getMessage()); //change message...
         }
     }
+    public void depositFunds(long accountNum, BigDecimal amount, String username, String password) throws BusinessException { // fixme
+        try{
+//            //if amount <0 abort!
+            if ((amount.compareTo(BigDecimal.ZERO))<=0){    //not tested yet
+                throw new BusinessException("Amount must be greater than Zero");
+            }
 
+            bankImp.depositFunds(accountNum, amount, username, password);
+        }
+        catch (SQLException e){
+//            log.trace(e.getMessage()); //hopefully that logs the actual error for the developers to find
+            throw new BusinessException(e.getMessage()); //change message...
+        }
+        catch (BusinessException e){
+            //if found someone
+            throw new BusinessException(e.getMessage()); //change message...
+        }
+    }
 
 }
