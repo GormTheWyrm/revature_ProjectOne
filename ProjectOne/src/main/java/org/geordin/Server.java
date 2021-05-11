@@ -23,7 +23,10 @@ public class Server {
         //CUSTOMER ROUTES
         app.get("/customer", ctx -> {
            //return html... login...
-        });
+        }); //fixme
+
+
+
         app.post("/api/customer/:username", ctx ->{        //login!!
             System.out.println(ctx.body());
 
@@ -41,9 +44,6 @@ public class Server {
                 ctx.json(errorObj);
             }
         });
-
-        //post to /api/customers to create new customer
-        //build this fixme
         app.post("/api/customers", ctx -> { //create new customer, little/no validation... working in postman!
             Customer customer = ctx.bodyAsClass(Customer.class);
             //create new customer
@@ -57,8 +57,6 @@ public class Server {
                 ctx.json(errorObj);
             }
         });
-
-
         app.get("/api/customer/:username", ctx -> { //gets customer info and accounts, no pw. currently working
                 //get customer object (including accounts list) from business layer (via dao)
                     //should validate username and password of customer against info in the header...
@@ -79,6 +77,8 @@ public class Server {
             }
 
         });
+
+
 
     //ACCOUNTS
         app.get("/api/account/:num", ctx -> {   //get single account, currently working
@@ -110,8 +110,25 @@ public class Server {
 
 
 
-        app.post("/api/accounts", ctx -> {
-            //create
+        app.post("/api/accounts", ctx -> { //create new account, fixme
+            //create a new account
+            //pass in username via JSON, does not return the new account!
+            try{
+                Account accountObj = ctx.bodyAsClass(Account.class);   //should be null except username
+                //accnum, status, userid, approvedby...
+                bankService.createNewAccount(accountObj.getUsername());
+                //if success... nothing returned here
+                //so return a response
+                HashMap<String, String> errorObj = new HashMap<>();
+                errorObj.put("success", "Account added Successfully, please allow up to 24 hours for approval");
+                ctx.json(errorObj);
+            }
+            catch (BusinessException e){
+                HashMap<String, String> errorObj = new HashMap<>();
+                errorObj.put("error", e.getMessage());
+                ctx.json(errorObj);
+            }
+
         });
 
 

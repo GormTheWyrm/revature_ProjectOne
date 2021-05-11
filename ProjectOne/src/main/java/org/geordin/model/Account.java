@@ -58,6 +58,13 @@ public class Account {
         this.status = status;
     }
 
+    public Account(){}
+    public Account(String username){
+        this.username=username;
+    }
+
+
+
     @Override
     public int hashCode() {
         return Objects.hash(this.accountNumber);

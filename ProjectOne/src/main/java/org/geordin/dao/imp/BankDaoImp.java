@@ -169,6 +169,15 @@ public class BankDaoImp {
         int executeUpdate=preparedStatement.executeUpdate();
         // no error handling yet!
     }
+    public void applyForAccountByUsername(String username) throws SQLException, BusinessException { //fixme current
+        Connection connection = PostgresConnection.getConnection();
+        String sql="INSERT INTO gormbank.accounts (balance, status, userid) VALUES(0, 'pending', " +
+                "(select userid from gormbank.customers c where username = ?));";
+        PreparedStatement preparedStatement=connection.prepareStatement(sql);
+        preparedStatement.setString(1, username);
+        int executeUpdate=preparedStatement.executeUpdate();
+        // no error handling yet!
+    }
 
 
     public Account getAccountByAccountNum(long accountNum) throws SQLException, BusinessException {   //singular!! fixme

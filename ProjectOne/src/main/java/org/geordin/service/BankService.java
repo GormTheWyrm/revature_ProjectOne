@@ -106,5 +106,19 @@ public class BankService {
     }
 
 
+    public void createNewAccount(String user) throws BusinessException { // fixme
+        try{
+            bankImp.applyForAccountByUsername(user);
+        }
+        catch (SQLException e){
+//            log.trace(e.getMessage()); //hopefully that logs the actual error for the developers to find
+            throw new BusinessException(e.getMessage()); //change message...
+        }
+        catch (BusinessException e){
+            //if found someone
+            throw new BusinessException(e.getMessage()); //change message...
+        }
+    }
+
 
 }

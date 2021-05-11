@@ -178,6 +178,7 @@ function attemptSignup(urlVar) {
     })
     .catch(err=> {
         console.log(err);
+        //data.error //would display the errormsg 
         //display some sort of warning to user
         warning.innerHTML = "Failed to connect to server";
         warning.style.display = "";
