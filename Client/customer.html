@@ -88,21 +88,28 @@
                         <option value="withdraw">Withdraw</option>
                         <option value="deposit">Deposit</option>
                         <option value="transfer">Transfer</option>
-
+                        <option value="apply">Apply for New Account</option>
+                        <!-- refresh balance option? -->
                     </select>
                     <br />
                     <select id="selectFrom" style="display: none;">
                         <!-- options of To, and FROM appear based on what is selected above -->
                     </select>
+                    <br />
                     <label for="amountInput">Amount</label>
                     <input type="number" id="amountInput">
                     <!-- need to validate above to 2 decimals! -->
                     <select id="selectTo" style="display: none;">
                         <!-- options of To, and FROM appear based on what is selected above -->
                     </select>
+                    <br />
+                    <!-- maybe put button in a div... -->
                     <button id="updateButton">Update Account</button>
                     <!-- need better text on this button! -->
                 </form>
+                <div id="resultsDiv">
+
+                </div>
 
             </div>
         </div>

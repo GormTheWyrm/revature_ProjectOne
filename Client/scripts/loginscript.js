@@ -6,7 +6,7 @@
 let password;
 let username;
 let isLoggedIn = false;
-let accounts =[];
+let accounts = [];
 let customerName;
 //do I need name here?
 
@@ -50,6 +50,7 @@ let accountSelect = document.getElementById("accountSelect");
 let selectFrom = document.getElementById("selectFrom");
 let selectTo = document.getElementById("selectTo");
 
+let amountInput = document.getElementById("amountInput");//amount to transfer, deposit or withdraw
 
 let userSpan = document.getElementById("userSpan");
 // value variables
@@ -82,16 +83,16 @@ function login(event) {
     if (validateUsername()) {
         if (validatePassword()) {
             // if (userType=="Employee"){
-                // let url = baseUrl+ "/api/employee/"; //login is sngular
-                // url += userInput.value;
-                // console.log(url);
-                // attemptLogin(url);
+            // let url = baseUrl+ "/api/employee/"; //login is sngular
+            // url += userInput.value;
+            // console.log(url);
+            // attemptLogin(url);
             // }
             // else if (userType=="Customer"){
-                let url = baseUrl+ "/api/customer/";
-                url += userInput.value;
-                console.log(url);
-                attemptLogin(url);
+            let url = baseUrl + "/api/customer/";
+            url += userInput.value;
+            console.log(url);
+            attemptLogin(url);
             // }
             //NEED TO VALIDATE THESE URLS...!!!
             //changing this to be customer specific!
@@ -122,9 +123,9 @@ function signup(event) {
             //     attemptSignup(url);
             // }
             // else if (userType=="Customer"){
-                let url = baseUrl+ "/api/customer/";
-                url += userInput.value;
-                attemptSignup(url);
+            let url = baseUrl + "/api/customer/";
+            url += userInput.value;
+            attemptSignup(url);
             // }
             //NEED TO VALIDATE THESE URLS...!!!
             //change this to just have customers?
@@ -166,7 +167,7 @@ function loginSuccess() {
     bodyDiv.style.display = "";
 }
 
-function hideLoginDiv(){
+function hideLoginDiv() {
     loginDiv.style.display = "none";
     bodyDiv.style.display = "";
 }
@@ -183,26 +184,25 @@ function attemptSignup(urlVar) {
         })
 
     })
-    .then(res=>{
-        res.json();
-    })
-    .then(data=>{
-        //set password, username...
-        // show accounts on results...
-        //...do I need to do something for actions?
-    })
-    .catch(err=> {
-        console.log(err);
-        //data.error //would display the errormsg 
-        //display some sort of warning to user
-        warning.innerHTML = "Failed to connect to server";
-        warning.style.display = "";
-        //need to figure out other possible errors
-    });
+        .then(res => {
+            res.json();
+        })
+        .then(data => {
+            //set password, username...
+            // show accounts on results...
+            //...do I need to do something for actions?
+        })
+        .catch(err => {
+            console.log(err);
+            //data.error //would display the errormsg 
+            //display some sort of warning to user
+            warning.innerHTML = "Failed to connect to server";
+            warning.style.display = "";
+            //need to figure out other possible errors
+        });
 }//fix me!!!!!!!!!!!!!
-function attemptLogin(urlVar) {
-      //fetch
-    // fetch(url, )// replace with a post?
+function attemptLogin(urlVar) { //LOGIN
+    warning.style.display = "none"; //clears old warning
     fetch(urlVar, {
         method: "POST",
         body: JSON.stringify({
@@ -213,55 +213,40 @@ function attemptLogin(urlVar) {
             "Content-type": "application/json; charset=UTF-8"
         }
     })
-    .then(res=>res.json())
-    .then(data =>{
-        //set password, username...
-        // console.log(data)
-        // console.log(data.json());  //this is undefined and I dont know why!
-        // for some reason body is empty on here, not json
-        
-        //if statement here!!!
-        username = data.username;
-        password = data.password;
-        customerName = data.name;
-        nameSpan.innerText = username;
-        console.log(data);
-        // now save accounts... or at least appendthem...
-        hideLoginDiv(); //hides login and shows body
-        let htmlStr = "";
-        for (i=0; i<data.accounts.length; i++){
-            let account = data.accounts[i];
-            // console.log(account);
-            //accountNumber, approvedByEmployeeId
-            //balance, status, username
-            htmlStr += `<tr><td>${account.accountNumber}</td><td>${account.balance}</td><td>${account.status}</td></tr>`;
-            //also need to update selectActions...
-
-            let ele = document.createElement("OPTION");
-            ele.value = data.accounts[i].accountNumber;
-            ele.innerText = "Account Number: "+data.accounts[i].accountNumber;
-            selectFrom.appendChild(ele);
-            ele = document.createElement("OPTION");
-            ele.value = data.accounts[i].accountNumber;
-            ele.innerText = "Account Number: "+data.accounts[i].accountNumber;
-            selectTo.appendChild(ele);
-        }
-        // let accountTable = document.getElementById("accountTable");
-
-        let tableBody = document.getElementById("tableBody");
-        tableBody.innerHTML =htmlStr; //will not work on IE...
-        // tableBody is problematic... for IE
-        //WORKING HERE!!~~~~~~~~~~~~
-        // show accounts on results...
-        // ...do I need to do something for actions?
-    })
-    .catch(err=> {
-        console.log(err);
-        //display some sort of warning to user
-        warning.innerHTML = "Failed to connect to server";
-        warning.style.display = "";
-        //need to figure out other possible errors
-    });
+        .then(res => res.json())
+        .then(data => {
+            if (data) {
+                username = data.username;
+                password = data.password;
+                customerName = data.name;
+                nameSpan.innerText = username;
+                hideLoginDiv(); //hides login and shows body
+                let htmlStr = "";
+                for (i = 0; i < data.accounts.length; i++) {
+                    let account = data.accounts[i];
+                    //set account info to a table row
+                    htmlStr += `<tr><td>${account.accountNumber}</td><td>${account.balance}</td><td>${account.status}</td></tr>`;
+                    //update select options with account numbers
+                    let ele = document.createElement("OPTION");
+                    ele.value = data.accounts[i].accountNumber;
+                    ele.innerText = "From Account Number: " + data.accounts[i].accountNumber;
+                    selectFrom.appendChild(ele);
+                    ele = document.createElement("OPTION");
+                    ele.value = data.accounts[i].accountNumber;
+                    ele.innerText = "Into Account Number: " + data.accounts[i].accountNumber;
+                    selectTo.appendChild(ele);
+                }
+                let tableBody = document.getElementById("tableBody");
+                tableBody.innerHTML = htmlStr; //will not work on IE...
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            //display some sort of warning to user
+            warning.innerHTML = "Failed to connect to server";
+            warning.style.display = "";
+            //need to figure out other possible errors
+        });
 }
 
 function validateUsername() { //validates username and password
@@ -312,31 +297,40 @@ function validatePassword() {
 
 
 //onSelect functions:
-actionSelect.addEventListener("change", function(){
-    if(actionSelect.value == "withdraw"){
+actionSelect.addEventListener("change", function () {
+    if (actionSelect.value == "withdraw") {
         showFrom();
     }
-    else if(actionSelect.value == "deposit"){
+    else if (actionSelect.value == "deposit") {
         showTo();
     }
-    else if(actionSelect.value == "transfer"){
+    else if (actionSelect.value == "transfer") {
         showFromTo();
     }
+    else if (actionSelect.value == "apply") {
+        hideFromToAmount();
+    }
 })
-function showFrom(){
-console.log("test")
-selectFrom.style.display = "";
-selectTo.style.display = "none";
+function showFrom() {
+    selectFrom.style.display = "";
+    selectTo.style.display = "none";
+    amountInput.style.display = "";
 }
-function showTo(){
+function showTo() {
     selectFrom.style.display = "none";
     selectTo.style.display = "";
+    amountInput.style.display = "";
 }
-function showFromTo(){
+function showFromTo() {
     selectFrom.style.display = "";
     selectTo.style.display = "";
+    amountInput.style.display = "";
 }
-
+function hideFromToAmount() {
+    selectFrom.style.display = "none";
+    selectTo.style.display = "none";
+    amountInput.style.display = "none";
+}
 // need to set up options when get data...
 //get options info from accounts array!
 // ...updates to array...
@@ -344,110 +338,150 @@ function showFromTo(){
 //update select actions function? as part of above!
 
 let updateButton = document.getElementById("updateButton");
-updateButton.addEventListener("click", function(event){
+updateButton.addEventListener("click", function (event) {
     event.preventDefault();
     //this needs to updateaccounts and selectActions...
     console.log("accountSelect");
     //first set url based on what method being used...
     //ifs...
     console.log(actionSelect);
-    if(actionSelect.value == "withdraw"){
+    let fetchUrl = baseUrl;
+    //VALIDATE THE AMOUNT BEFORE RUNNINGTHIS
+    if (actionSelect.value == "withdraw") {
         console.log("this will withdraw");
+        // url = baseUrl + 
+        fetchUrl += "/api/accounts/withdraw";
+        //fetch to change DB
+        fetch(fetchUrl, {
+            method: "PUT",
+            body: JSON.stringify({
+                username: username,
+                password: password,
+                accountNumber: selectFrom.value,
+                amount: amountInput.value             
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        .then(res=>res.json())
+        .then(data =>{
+            //might need to catch "error" response and tell user what went wrong...
+            //...but its not vital
+        })
+        .catch(err => {
+            console.log(err);
+            //display some sort of warning to user
+            warning.innerHTML = "Failed to connect to server";
+            warning.style.display = "";
+            //need to figure out other possible errors
+        });
     }
-    else if (actionSelect.value == "deposit"){
+    else if (actionSelect.value == "deposit") {
         console.log("this will deposit");
+        fetchUrl += "/api/accounts/deposit";
+        fetch(fetchUrl, {
+            method: "PUT",
+            body: JSON.stringify({
+                username: username,
+                password: password,
+                accountNumber: selectTo.value,
+                amount: amountInput.value             
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        .then(res=>res.json())
+        .then(data =>{
+            //might need to catch "error" response and tell user what went wrong...
+            //...but its not vital
+        })
+        .catch(err => {
+            console.log(err);
+            //display some sort of warning to user
+            warning.innerHTML = "Failed to connect to server";
+            warning.style.display = "";
+            //need to figure out other possible errors
+        });
     }
-    else if (actionSelect.value == "transfer"){
+    else if (actionSelect.value == "transfer") {
         console.log("this will transfer");
+        fetchUrl += "/api/accounts/transfer";
+        fetch(fetchUrl, {
+            method: "PUT",
+            body: JSON.stringify({
+                username: username,
+                password: password,
+                accountNumberFrom: selectFrom.value,
+                accountNumberTo: selectTo.value,
+                amount: amountInput.value             
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        .then(res=>res.json())
+        .then(data =>{
+            //might need to catch "error" response and tell user what went wrong...
+            //...but its not vital
+        })
+        .catch(err => {
+            console.log(err);
+            //display some sort of warning to user
+            warning.innerHTML = "Failed to connect to server";
+            warning.style.display = "";
+            //need to figure out other possible errors
+        });
+    }
+    else if (actionSelect.value == "apply") {
+        //apply for account
+        fetchUrl += "/api/accounts/withdraw";
     }
     // add new actions /features here!
-    else{
-
+    else {
+        //avoid fetch somehow...
     }
-    //need an applyforaccount option - that should disable amount
-    // - no; it should have an amount!
-    // - means rewriting the apply for new customer method...in dao
-
-    //withdrawal, deposit, transfer...
-
-    //then fetch...
-
-
-
-
-///WIP function!
-/*
-    fetch(urlVar, {
-        method: "POST",
-        body: JSON.stringify({
-            username: userInput.value,
-            password: pwInput.value
-        }),
-        headers: {
-            "Content-type": "application/json; charset=UTF-8"
-        }
-    })
-    .then(res=>res.json())
-    .then(data =>{
-        //set password, username...
-        // console.log(data)
-        // console.log(data.json());  //this is undefined and I dont know why!
-        // for some reason body is empty on here, not json
-        
-        //if statement here!!!
-        username = data.username;
-        password = data.password;
-        customerName = data.name;
-        nameSpan.innerText = username;
-        console.log(data);
-        // now save accounts... or at least appendthem...
-        hideLoginDiv(); //hides login and shows body
-        let htmlStr = "";
-        for (i=0; i<data.accounts.length; i++){
-            let account = data.accounts[i];
-            // console.log(account);
-            //accountNumber, approvedByEmployeeId
-            //balance, status, username
-            htmlStr += `<tr><td>${account.accountNumber}</td><td>${account.balance}</td><td>${account.status}</td></tr>`;
-            //also need to update selectActions...
-
-            let ele = document.createElement("OPTION");
-            ele.value = data.accounts[i].accountNumber;
-            ele.innerText = "Account Number: "+data.accounts[i].accountNumber;
-            selectFrom.appendChild(ele);
-            ele = document.createElement("OPTION");
-            ele.value = data.accounts[i].accountNumber;
-            ele.innerText = "Account Number: "+data.accounts[i].accountNumber;
-            selectTo.appendChild(ele);
-        }
-        // let accountTable = document.getElementById("accountTable");
-
-        let tableBody = document.getElementById("tableBody");
-        tableBody.innerHTML =htmlStr; //will not work on IE...
-        // tableBody is problematic... for IE
-        //WORKING HERE!!~~~~~~~~~~~~
-        // show accounts on results...
-        // ...do I need to do something for actions?
-    })
-    .catch(err=> {
-        console.log(err);
-        //display some sort of warning to user
-        warning.innerHTML = "Failed to connect to server";
-        warning.style.display = "";
-        //need to figure out other possible errors
-    });
-
-*/
-
-
-
-
-
-
-
-
-
-
-
+    updateAccounts(); //gets new account info
 });
+///WIP function!
+function updateAccounts() { //pass in url to fetch too
+    //fetches from customer who is logged in
+    let url = baseUrl + "/api/customer/"+ username;
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            if (data) {
+                // hideLoginDiv(); //hides login and shows body
+                let htmlStr = "";
+                for (i = 0; i < data.accounts.length; i++) {
+                    let account = data.accounts[i];
+                    //set account info to a table row
+                    htmlStr += `<tr><td>${account.accountNumber}</td><td>${account.balance}</td><td>${account.status}</td></tr>`;
+                    //update select options with account numbers
+                    let ele = document.createElement("OPTION");
+                    ele.value = data.accounts[i].accountNumber;
+                    ele.innerText = "From Account Number: " + data.accounts[i].accountNumber;
+                    selectFrom.appendChild(ele);
+                    ele = document.createElement("OPTION");
+                    ele.value = data.accounts[i].accountNumber;
+                    ele.innerText = "Into Account Number: " + data.accounts[i].accountNumber;
+                    selectTo.appendChild(ele);
+                }
+                let tableBody = document.getElementById("tableBody");
+                tableBody.innerHTML = htmlStr; //will not work on IE...
+            }
+            else {
+                warning.innerHTML = "Failed to connect to server";
+                warning.style.display = "";
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            //display some sort of warning to user
+            warning.innerHTML = "Failed to connect to server";
+            warning.style.display = "";
+            //need to figure out other possible errors
+        });
 
+}

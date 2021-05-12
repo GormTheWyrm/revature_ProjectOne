@@ -64,15 +64,10 @@ public class Server {
             }
         });
         app.get("/api/customer/:username", ctx -> { //gets customer info and accounts, no pw. currently working
-                //get customer object (including accounts list) from business layer (via dao)
-                    //should validate username and password of customer against info in the header...
-                        //that can be a reach goal...
-//            ctx.json(customer);
             //this could be hit on any change for min coding effort and low efficiency...
             try{
-                //should I remove password before returning this? probably... fixme
                 Customer customer = bankService.getCustomerByUser(ctx.pathParam("username"));
-                    customer.setPassword("null");
+                    customer.setPassword("null"); //removing password so its not as insecure
                 ctx.json(customer);
             }
             catch (BusinessException e){
@@ -179,7 +174,7 @@ public class Server {
                 ctx.json(errorObj);
             }
         });
-        app.put("/api/accounts/withdrawal/", ctx -> {
+        app.put("/api/accounts/withdraw/", ctx -> {
             try{
                 JSONObject jsonObj = new JSONObject(ctx.body());
                 String username = jsonObj.getString("username");
@@ -208,7 +203,7 @@ public class Server {
 
 
 
-        app.put("/api/account/transfer", ctx -> {   //fixme WIP;
+        app.put("/api/accounts/transfer", ctx -> {   //fixme WIP;
             //fixme need to implement rollback if withdrawal does not go through...
             // only within single customers accounts... good or bad?
             try{
