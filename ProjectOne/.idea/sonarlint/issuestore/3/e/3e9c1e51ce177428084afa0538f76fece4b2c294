@@ -1,0 +1,117 @@
+
+¦
+java:S1192$"Define a constant instead of duplicating this literal "Could not find username or password. Please check your spelling and try again." 3 times.(¬»±ñ
+n
+java:S1192O"SDefine a constant instead of duplicating this literal "Error in database." 5 times.(‚¤âÿÿÿÿÿ
+s
+java:S1192("XDefine a constant instead of duplicating this literal "Username already taken." 3 times.(ü—²˜úÿÿÿÿ
+s
+java:S1192K"XDefine a constant instead of duplicating this literal "Username already exists" 3 times.(òæ‹–üÿÿÿÿ
+z
+java:S1488V"_Immediately return this expression instead of assigning it to the temporary variable "account".(ê¿²ùùÿÿÿÿ
+{
+java:S1488d"`Immediately return this expression instead of assigning it to the temporary variable "accounts".(ò‘şûÿÿÿÿ
+€
+java:S1488æ"dImmediately return this expression instead of assigning it to the temporary variable "transactions".(©‚µûÿÿÿÿ
+{
+java:S1488ÿ"dImmediately return this expression instead of assigning it to the temporary variable "transactions".(²µşÁ
+
+java:S1488"dImmediately return this expression instead of assigning it to the temporary variable "transactions".(–¹Ğ.8˜ Úô•/
+K
+java:S1128"0Remove this unused import 'java.time.LocalDate'.(›‘¬èıÿÿÿÿ
+I
+java:S1128".Remove this unused import 'java.util.Scanner'.(ÒÜÅ¸úÿÿÿÿ
+€
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ò‘şûÿÿÿÿ
+€
+java:S11491"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ò‘şûÿÿÿÿ
+€
+java:S1149E"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(¾Ê ÿÿÿÿÿÿ
+{
+java:S1149b"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(êßÇù
+€
+java:S1149d"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ò‘şûÿÿÿÿ
+|
+java:S1149ä"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ó’‡­
+
+java:S1149æ"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(©‚µûÿÿÿÿ
+|
+java:S1149ò"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(üï¿ä
+|
+java:S1149ÿ"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(²µşÁ
+|
+java:S1149‹"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(åÂš
+‚
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(–¹Ğ.8õêÙô•/
+W
+java:S1854"<Remove this useless assignment to local variable "customer".(âî¤ ùÿÿÿÿ
+_
+java:S1134"DTake the required action to fix the issue indicated by this comment.(œ©Ç—ûÿÿÿÿ
+Q	java:S125"<This block of commented-out lines of code should be removed.(æ­¾ƒ
+Z
+java:S1134*"DTake the required action to fix the issue indicated by this comment.(ğ¨Àº
+W
+java:S1854."<Remove this useless assignment to local variable "customer".(âî¤ ùÿÿÿÿ
+Z
+java:S1134>"DTake the required action to fix the issue indicated by this comment.(ğ¨Àº
+W
+java:S1854B"<Remove this useless assignment to local variable "customer".(âî¤ ùÿÿÿÿ
+W
+java:S1854E"<Remove this useless assignment to local variable "accounts".(¾Ê ÿÿÿÿÿÿ
+_
+java:S1134@"DTake the required action to fix the issue indicated by this comment.(ºÎÿşÿÿÿÿ
+t
+java:S2293E"YReplace the type specification in this constructor call with the diamond operator ("<>").(¾Ê ÿÿÿÿÿÿ
+Z
+java:S1134Q"DTake the required action to fix the issue indicated by this comment.(ğ¨Àº
+Z
+java:S1134R"DTake the required action to fix the issue indicated by this comment.(Ñüü
+Y
+java:S2147]"DCombine this catch with the one at line 89, which has the same body.(ÔÌß
+Z
+java:S2147k"ECombine this catch with the one at line 103, which has the same body.(ÔÌß
+Z
+java:S2147z"ECombine this catch with the one at line 118, which has the same body.(ÔÌß
+[
+java:S2147"ECombine this catch with the one at line 140, which has the same body.(ÔÌß
+Z
+java:S1134"DTake the required action to fix the issue indicated by this comment.(êÒÖ
+R	java:S125ˆ"<This block of commented-out lines of code should be removed.(¤Ä†„
+[
+java:S1134Š"DTake the required action to fix the issue indicated by this comment.(ÔÄ¸û
+[
+java:S2147¢"ECombine this catch with the one at line 158, which has the same body.(ÔÌß
+`
+java:S1134•"DTake the required action to fix the issue indicated by this comment.(µ†úòøÿÿÿÿ
+[
+java:S2147³"ECombine this catch with the one at line 175, which has the same body.(ÔÌß
+`
+java:S1134§"DTake the required action to fix the issue indicated by this comment.(óÊ”›øÿÿÿÿ
+T	java:S106©"9Replace this use of System.out or System.err by a logger.(’¿‚ÿøÿÿÿÿ
+`
+java:S1134­"DTake the required action to fix the issue indicated by this comment.(ïÄô¸úÿÿÿÿ
+X
+java:S1854¾"<Remove this useless assignment to local variable "employee".(Ğ÷è¤úÿÿÿÿ
+`
+java:S1134¼"DTake the required action to fix the issue indicated by this comment.(Ìáüæøÿÿÿÿ
+R	java:S125Á"<This block of commented-out lines of code should be removed.(æ­¾ƒ
+[
+java:S1134Ì"DTake the required action to fix the issue indicated by this comment.(ğ¨Àº
+X
+java:S1854Ğ"<Remove this useless assignment to local variable "employee".(Ğ÷è¤úÿÿÿÿ
+`
+java:S1134Î"DTake the required action to fix the issue indicated by this comment.(òìä‘şÿÿÿÿ
+W	java:S125Ó"<This block of commented-out lines of code should be removed.(‘­…„şÿÿÿÿ
+[
+java:S1134ß"DTake the required action to fix the issue indicated by this comment.(ğ¨Àº
+[
+java:S1134à"DTake the required action to fix the issue indicated by this comment.(Ñüü
+W	java:S125ø"<This block of commented-out lines of code should be removed.(š„£üıÿÿÿÿ
+O	java:S106û"9Replace this use of System.out or System.err by a logger.(¥ÍÓ
+N	java:S106ü"9Replace this use of System.out or System.err by a logger.(ÙÔ›\
+[
+java:S1134û"DTake the required action to fix the issue indicated by this comment.(¥ÍÓ
+Z
+java:S1134ü"DTake the required action to fix the issue indicated by this comment.(ÙÔ›\
+H
+java:S1481E"-Remove this unused "accounts" local variable.(¾Ê ÿÿÿÿÿÿ

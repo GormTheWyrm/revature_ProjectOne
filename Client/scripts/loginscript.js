@@ -6,6 +6,8 @@
 let password;
 let username;
 let isLoggedIn = false;
+let accounts =[];
+let customerName;
 //do I need name here?
 
 let baseUrl = "http://localhost:9000"; //update this
@@ -42,6 +44,7 @@ let userInput = document.getElementById("userInput"); //username element
 let pwInput = document.getElementById("pwInput");   //pw element
 
 let warning = document.getElementById("warning");
+
 
 let userSpan = document.getElementById("userSpan");
 // value variables
@@ -157,6 +160,11 @@ function loginSuccess() {
     bodyDiv.style.display = "";
 }
 
+function hideLoginDiv(){
+    loginDiv.style.display = "none";
+    bodyDiv.style.display = "";
+}
+
 function attemptSignup(urlVar) {
     //fetch
     // fetch(url, )// replace with a post?
@@ -202,22 +210,40 @@ function attemptLogin(urlVar) {
     .then(res=>res.json())
     .then(data =>{
         //set password, username...
-        console.log(data)
+        // console.log(data)
         // console.log(data.json());  //this is undefined and I dont know why!
         // for some reason body is empty on here, not json
-        // username = data.username;
-        // password = data.password;
+        //iff statement here? or catch is ook?
+        username = data.username;
+        password = data.password;
+        customerName = data.name;
+        // now save accounts... or at least appendthem...
+        hideLoginDiv(); //hides login and shows body
+        let htmlStr = "";
+        for (i=0; i<data.accounts.length; i++){
+            let account = data.accounts[i];
+            // console.log(account);
+            //accountNumber, approvedByEmployeeId
+            //balance, status, username
+            htmlStr += `<tr><td>${account.accountNumber}</td><td>${account.balance}</td><td>${account.status}</td></tr>`;
 
+        }
+        // let accountTable = document.getElementById("accountTable");
+
+        let tableBody = document.getElementById("tableBody");
+        tableBody.innerHTML =htmlStr; //will not work on IE...
+        // tableBody is problematic... for IE
+        //WORKING HERE!!~~~~~~~~~~~~
         // show accounts on results...
         // ...do I need to do something for actions?
     })
-    // .catch(err=> {
-    //     console.log(err);
-    //     //display some sort of warning to user
-    //     warning.innerHTML = "Failed to connect to server";
-    //     warning.style.display = "";
-    //     //need to figure out other possible errors
-    // });
+    .catch(err=> {
+        console.log(err);
+        //display some sort of warning to user
+        warning.innerHTML = "Failed to connect to server";
+        warning.style.display = "";
+        //need to figure out other possible errors
+    });
 }
 
 function validateUsername() { //validates username and password

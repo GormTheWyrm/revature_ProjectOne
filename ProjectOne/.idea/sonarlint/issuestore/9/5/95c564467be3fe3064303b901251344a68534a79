@@ -1,0 +1,58 @@
+
+b
+java:S11921"GDefine a constant instead of duplicating this literal "error" 17 times.(öóÈöÿÿÿÿÿ
+`
+java:S1192 "IDefine a constant instead of duplicating this literal "password" 3 times.(Ô½›ã
+c
+java:S1192¢"GDefine a constant instead of duplicating this literal "amount" 3 times.(’ÉëÒşÿÿÿÿ
+c
+java:S1192~"HDefine a constant instead of duplicating this literal "success" 4 times.(¹À¡ıÿÿÿÿ
+m
+java:S1192Z"RDefine a constant instead of duplicating this literal "/api/account/:num" 3 times.(™Ëˆ½úÿÿÿÿ
+d
+java:S1192J"IDefine a constant instead of duplicating this literal "username" 5 times.(³Œ÷‘üÿÿÿÿ
+€
+java:S1149j"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ÂËó®ûÿÿÿÿ
+
+java:S1149·"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ı¥Õ§ûÿÿÿÿ
+{
+java:S1149Æ"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ÿÃ‡b
+
+java:S1149Ô"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ƒŠ‰Ùûÿÿÿÿ
+h
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 34 to the 15 allowed.(Çµí‘
+B
+java:S1612",Replace this lambda with a method reference.(şà´²
+Z
+java:S1134 "DTake the required action to fix the issue indicated by this comment.(¿÷â
+V	java:S125%"<This block of commented-out lines of code should be removed.(±úô¦úÿÿÿÿ
+V	java:S125*"<This block of commented-out lines of code should be removed.(µ¸Í‚üÿÿÿÿ
+Q	java:S125F"<This block of commented-out lines of code should be removed.(²òıà
+_
+java:S1134I"DTake the required action to fix the issue indicated by this comment.(ÀÁºÚÿÿÿÿÿ
+W	java:S125Œ"<This block of commented-out lines of code should be removed.(ñ¥ùšøÿÿÿÿ
+W	java:S125"<This block of commented-out lines of code should be removed.(éØ»Úûÿÿÿÿ
+`
+java:S1134¨"DTake the required action to fix the issue indicated by this comment.(µì˜Æúÿÿÿÿ
+`
+java:S1134Â"DTake the required action to fix the issue indicated by this comment.(µì˜Æúÿÿÿÿ
+R	java:S125Ó"<This block of commented-out lines of code should be removed.(ôÏ„ù
+[
+java:S1134Ó"DTake the required action to fix the issue indicated by this comment.(ôÏ„ù
+`
+java:S1134Ô"DTake the required action to fix the issue indicated by this comment.(ÙùÆ’ıÿÿÿÿ
+W	java:S125ß"<This block of commented-out lines of code should be removed.(úµÌşÿÿÿÿ
+W	java:S125á"<This block of commented-out lines of code should be removed.(úµÌşÿÿÿÿ
+W	java:S125ö"<This block of commented-out lines of code should be removed.(ñ¥ùšøÿÿÿÿ
+[
+java:S1134û"DTake the required action to fix the issue indicated by this comment.(˜±Çÿ
+W	java:S125"<This block of commented-out lines of code should be removed.(±úô¦úÿÿÿÿ
+`
+java:S1134"DTake the required action to fix the issue indicated by this comment.(¢ıœúÿÿÿÿ
+W	java:S125’"<This block of commented-out lines of code should be removed.(µ¸Í‚üÿÿÿÿ
+`
+java:S1134•"DTake the required action to fix the issue indicated by this comment.(‰©¼ùÿÿÿÿ
+[
+java:S1134 "DTake the required action to fix the issue indicated by this comment.(§À¿
+R	java:S125ß"<This block of commented-out lines of code should be removed.(”ìäù
+W	java:S125¨"<This block of commented-out lines of code should be removed.(¶½òìúÿÿÿÿ
