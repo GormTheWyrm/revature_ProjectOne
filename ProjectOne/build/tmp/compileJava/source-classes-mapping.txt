@@ -1,5 +1,5 @@
-org/geordin/Server.java
- org.geordin.Server
+org/geordin/service/BankService.java
+ org.geordin.service.BankService
 org/geordin/model/Transaction.java
  org.geordin.model.Transaction
 org/geordin/model/Employee.java
@@ -18,5 +18,5 @@ org/geordin/dao/BankDao.java
  org.geordin.dao.BankDao
 org/geordin/dao/imp/BankDaoImp.java
  org.geordin.dao.imp.BankDaoImp
-org/geordin/service/BankService.java
- org.geordin.service.BankService
+org/geordin/Server.java
+ org.geordin.Server

@@ -81,6 +81,7 @@ function login(event) {
             else if (userType=="Customer"){
                 let url = baseUrl+ "/api/customer/";
                 url += userInput.value;
+                console.log(url);
                 attemptLogin(url);
             }
             //NEED TO VALIDATE THESE URLS...!!!
@@ -107,17 +108,17 @@ function signup(event) {
         if (validatePassword()) {
             //attempt signup - calls success if successful
             if (userType=="Employee"){
-                let url = baseUrl+ "/employees/";//signup is plural
+                let url = baseUrl+ "/api/employee/";//signup is plural
                 url += userInput.value;
                 attemptSignup(url);
             }
             else if (userType=="Customer"){
-                let url = baseUrl+ "/customers/";
+                let url = baseUrl+ "/api/customer/";
                 url += userInput.value;
                 attemptSignup(url);
             }
             //NEED TO VALIDATE THESE URLS...!!!
-            
+            //change this to just have customers?
         }
         else {
             //tells user password is not in acceptable format
@@ -198,11 +199,11 @@ function attemptLogin(urlVar) {
             "Content-type": "application/json; charset=UTF-8"
         }
     })
-    .then(res=>{res.json()})
+    .then(res=>res.json())
     .then(data =>{
         //set password, username...
-
-        console.log(data.json());  //this is undefined and I dont know why!
+        console.log(data)
+        // console.log(data.json());  //this is undefined and I dont know why!
         // for some reason body is empty on here, not json
         // username = data.username;
         // password = data.password;

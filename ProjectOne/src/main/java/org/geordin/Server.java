@@ -137,6 +137,9 @@ public class Server {
         app.delete("/api/account/:num", ctx -> {
             //deny new account
             //verify count is pending before deleting...
+//            try{
+
+//            }
         });
 
 
@@ -240,6 +243,14 @@ public class Server {
         app.put("/api/account/:num", ctx -> {
             //approve
             //should need employee credentials...
+//            try{
+//                bankService.approveAccount(Long.parseLong(ctx.pathParam("num")));
+//                //get
+//
+//            }
+            //fixme approve account
+
+
         });
 
 
@@ -362,13 +373,17 @@ public class Server {
 
 /*
 do next
- 1. view logs
- 2. view logs by user
- 3. view lgs date...
- 4. get customer accounts by customer id?
- 5. get account by id- done?
+ 1. approve account
+ 2. option to see who approved account
+ 3. frontend...
+ 4. mockito
+ 5. unit tests
+ 6. logs
+ 7. aws
+ 8. present
+ - refactor uri endpoints...
 
-
+//need to fix approved by
 
 still need...
  - logs
