@@ -264,7 +264,17 @@ public class BankService {
             throw new BusinessException("Error in database.");
         }
     }
-
-
+    public Vector<Transaction> getLogsByUser(String user) throws BusinessException {
+        try {
+            Vector<Transaction> transactions = bankImp.viewLogsByUser(user);
+            return transactions;
+        } catch (SQLException e) {
+//            log.trace(e.getMessage()); //hopefully that logs the actual error for the developers to find
+            throw new BusinessException(e.getMessage());
+        } catch (BusinessException e) {
+            //if found someone
+            throw new BusinessException("Error in database.");
+        }
+    }
 
     }

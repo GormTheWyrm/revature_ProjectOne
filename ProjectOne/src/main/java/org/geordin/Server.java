@@ -322,11 +322,25 @@ public class Server {
                 ctx.json(errorObj);
             }
         });
-        app.get("/transactions/account/:acc", ctx -> {
+        app.get("/transactions/user/:user", ctx -> {
             //get all transactions for an account
+            try{
+                //need to pass logs into here...
+                Vector<Transaction> transactions = bankService.getLogsByUser(ctx.pathParam("user"));
+                        ctx.json(transactions);
+            }
+            catch (BusinessException e){
+                //create error object for javascript
+                HashMap<String, String> errorObj = new HashMap<>();
+                errorObj.put("error", e.getMessage());
+                ctx.json(errorObj);
+            }
         });
         //new transactions should be sent into database when account changed...
-
+        //app.get("/transactions/account/:num", ctx -> {
+//        app.get("/transactions/id/:id", ctx -> {
+//        by transaction id, type,customerid,accountno,date
+//        not a priority yet
 
 
 

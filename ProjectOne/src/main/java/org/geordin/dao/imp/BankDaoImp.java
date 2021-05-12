@@ -435,11 +435,44 @@ public Employee findEmployeeByLogin(String username, String pw) throws SQLExcept
                 "AND " +
                 "time <= ?;";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        //fixme
-
-        preparedStatement.setTimestamp(1, time);    //variables sent into DB
+               preparedStatement.setTimestamp(1, time);    //variables sent into DB
         preparedStatement.setTimestamp(2, time2);
+        ResultSet resultSet = preparedStatement.executeQuery();
 
+        Vector<Transaction> transactions = new Vector<>();
+        while (resultSet.next()){
+            Transaction transaction = new Transaction();
+            transaction.setTransactionId(resultSet.getLong("transaction_id"));
+            transaction.setAccountNumber(resultSet.getLong("account_number"));
+            transaction.setTransactionType(resultSet.getString("transaction_type"));
+            transaction.setAmount(resultSet.getBigDecimal("amount"));
+            transaction.setTimestamp(resultSet.getTimestamp("time"));
+            transactions.add(transaction);
+//            System.out.println("dao");
+//            System.out.println(transaction);
+        }
+        return transactions;
+    }
+
+    public Vector<Transaction> viewLogsByUser(String user) throws SQLException, BusinessException { //fixme
+        Connection connection = PostgresConnection.getConnection();
+//        String sql = "select transaction_id, account_number, transaction_type, amount, time, username " +
+//                "FROM gormbank.transactions join gormbank.customers c on transaction_id = userid WHERE username = ?;";
+
+
+        String sql =
+        "select transaction_id, a.account_number, transaction_type, amount, time " +
+        "from gormbank.customers c " +
+        "inner join gormbank.accounts a " +
+        "on c.userid = a.userid " +
+        "inner join gormbank.transactions t " +
+        "on a.account_number = t.account_number " +
+        "WHERE username = ?;";
+
+
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1, user);    //variables sent into DB
         ResultSet resultSet = preparedStatement.executeQuery();
 //    if (!resultSet.next()){
 //        throw new BusinessException("No logs to view");
@@ -459,8 +492,6 @@ public Employee findEmployeeByLogin(String username, String pw) throws SQLExcept
         }
         return transactions;
     }
-
-
 
 
 
