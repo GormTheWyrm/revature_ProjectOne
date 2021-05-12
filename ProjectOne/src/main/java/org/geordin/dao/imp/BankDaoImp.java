@@ -341,29 +341,7 @@ public class BankDaoImp {
         // no error handling yet!
 
     }
-    public Vector<Transaction> viewAllLogs() throws SQLException, BusinessException { //fixme
-        Connection connection = PostgresConnection.getConnection();
-        String sql = "select transaction_id, account_number, transaction_type, amount, time " +
-                "from gormbank.transactions;";
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ResultSet resultSet = preparedStatement.executeQuery();
-//    if (!resultSet.next()){
-//        throw new BusinessException("No logs to view");
-//    }
-        Vector<Transaction> transactions = new Vector<>();
-        while (resultSet.next()){
-            Transaction transaction = new Transaction();
-            transaction.setTransactionId(resultSet.getLong("transaction_id"));
-            transaction.setAccountNumber(resultSet.getLong("account_number"));
-            transaction.setTransactionType(resultSet.getString("transaction_type"));
-            transaction.setAmount(resultSet.getBigDecimal("amount"));
-            transaction.setTimestamp(resultSet.getTimestamp("time"));
-            transactions.add(transaction);
 
-//        System.out.println("dao test, log: " + transaction.getTransactionType());
-        }
-        return transactions;
-    }
 // EMPLOYEE FUNCTIONS
 public Employee createNewEmployee(String username, String name, String password) throws SQLException, BusinessException {
     //creates new customer if password, name and username exist in database
@@ -425,7 +403,83 @@ public Employee findEmployeeByLogin(String username, String pw) throws SQLExcept
 
 
 
+    public Vector<Transaction> viewAllLogs() throws SQLException, BusinessException { //fixme
+        Connection connection = PostgresConnection.getConnection();
+        String sql = "select transaction_id, account_number, transaction_type, amount, time " +
+                "from gormbank.transactions;";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ResultSet resultSet = preparedStatement.executeQuery();
+//    if (!resultSet.next()){
+//        throw new BusinessException("No logs to view");
+//    }
+        Vector<Transaction> transactions = new Vector<>();
+        while (resultSet.next()){
+            Transaction transaction = new Transaction();
+            transaction.setTransactionId(resultSet.getLong("transaction_id"));
+            transaction.setAccountNumber(resultSet.getLong("account_number"));
+            transaction.setTransactionType(resultSet.getString("transaction_type"));
+            transaction.setAmount(resultSet.getBigDecimal("amount"));
+            transaction.setTimestamp(resultSet.getTimestamp("time"));
+            transactions.add(transaction);
+
+//        System.out.println("dao test, log: " + transaction.getTransactionType());
+        }
+        return transactions;
+    }
+    public Vector<Transaction> viewLogsByDay(Timestamp time, Timestamp time2) throws SQLException, BusinessException { //fixme
+        Connection connection = PostgresConnection.getConnection();
+        String sql = "select transaction_id, account_number, transaction_type, amount, time " +
+                "from gormbank.transactions " +
+                "where " +
+                "time >= ? " +
+                "AND " +
+                "time <= ?;";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        //fixme
+
+        preparedStatement.setTimestamp(1, time);    //variables sent into DB
+        preparedStatement.setTimestamp(2, time2);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+//    if (!resultSet.next()){
+//        throw new BusinessException("No logs to view");
+//    }
+        Vector<Transaction> transactions = new Vector<>();
+        while (resultSet.next()){
+            Transaction transaction = new Transaction();
+            transaction.setTransactionId(resultSet.getLong("transaction_id"));
+            transaction.setAccountNumber(resultSet.getLong("account_number"));
+            transaction.setTransactionType(resultSet.getString("transaction_type"));
+            transaction.setAmount(resultSet.getBigDecimal("amount"));
+            transaction.setTimestamp(resultSet.getTimestamp("time"));
+            transactions.add(transaction);
+            System.out.println("dao");
+            System.out.println(transaction);
+//        System.out.println("dao test, log: " + transaction.getTransactionType());
+        }
+        return transactions;
+    }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+//    select transaction_id, account_number, transaction_type, amount, time
+//    from gormbank.transactions
+//            where
+//    time >= '2021-05-11 00:00:00'
+//    AND
+//    time <= '2021-05-11 23:59:59'
 
 }

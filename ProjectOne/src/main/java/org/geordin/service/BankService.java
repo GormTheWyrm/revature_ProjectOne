@@ -4,9 +4,12 @@ import org.geordin.dao.imp.BankDaoImp;
 import org.geordin.model.Account;
 import org.geordin.model.Customer;
 import org.geordin.model.Employee;
+import org.geordin.model.Transaction;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -219,6 +222,48 @@ public class BankService {
         }
         //fixme exceptions need to be reworked to give more useful info... how to tell which is which?
     } //fixme ; change this to reflect actual methos
+
+
+
+    public Vector<Transaction> getAllLogs() throws BusinessException{
+        try{
+            Vector<Transaction> transactions = bankImp.viewAllLogs();
+            return transactions;
+        }
+        catch (SQLException e){
+//            log.trace(e.getMessage()); //hopefully that logs the actual error for the developers to find
+            throw new BusinessException("Username already exists");
+        }
+        catch (BusinessException e){
+            //if found someone
+            throw new BusinessException("Error in database.");
+        }
+    }
+    public Vector<Transaction> getLogsByDay(String time) throws BusinessException{
+        try{
+            //needs to come in "2021-02-11" format
+            //need to turn a day into a timestamp..
+            //get a day, month, year...as 1 str...
+        //yyyy-mm-dd hh:mm:ss[.fffffffff]
+//            String myTime = year + "-" + day + "-" + month + " 00:00:00";
+                String myTime = time + " 00:00:00";
+                String myTime2 = time + " 24:00:00";
+            System.out.println(myTime); //fixme
+            System.out.println(Timestamp.valueOf(myTime)); //fixme
+            Timestamp time1 = Timestamp.valueOf(myTime);
+            Timestamp time2 = Timestamp.valueOf(myTime2);
+            Vector<Transaction> transactions = bankImp.viewLogsByDay(time1, time2);
+            return transactions;
+        }
+        catch (SQLException e){
+//            log.trace(e.getMessage()); //hopefully that logs the actual error for the developers to find
+            throw new BusinessException(e.getMessage());
+        }
+        catch (BusinessException e){
+            //if found someone
+            throw new BusinessException("Error in database.");
+        }
+    }
 
 
 

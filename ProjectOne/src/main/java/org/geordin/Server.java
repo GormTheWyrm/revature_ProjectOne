@@ -4,6 +4,7 @@ import io.javalin.Javalin;
 import org.geordin.model.Account;
 import org.geordin.model.Customer;
 import org.geordin.model.Employee;
+import org.geordin.model.Transaction;
 import org.geordin.service.BankService;
 import org.geordin.service.BusinessException;
 
@@ -292,11 +293,34 @@ public class Server {
 
 
     //TRANSACTIONS
-        app.get("/transactions", ctx -> {
+        app.get("/api/transactions", ctx -> {
            //get all transactions
+            try{
+                //need to pass logs into here...
+                Vector<Transaction> transactions = bankService.getAllLogs();
+                ctx.json(transactions);
+            }
+            catch (BusinessException e){
+                //create error object for javascript
+                HashMap<String, String> errorObj = new HashMap<>();
+                errorObj.put("error", e.getMessage());
+                ctx.json(errorObj);
+            }
         });
-        app.get("/transaction/day/:day", ctx -> {
+        app.get("/api/transactions/day/:day", ctx -> {
             //get all transactions from a day...
+            //needs to come in "2021-02-11" format
+            try{
+                //need to pass logs into here...
+                Vector<Transaction> transactions = bankService.getLogsByDay(ctx.pathParam("day"));
+                ctx.json(transactions);
+            }
+            catch (BusinessException e){
+                //create error object for javascript
+                HashMap<String, String> errorObj = new HashMap<>();
+                errorObj.put("error", e.getMessage());
+                ctx.json(errorObj);
+            }
         });
         app.get("/transactions/account/:acc", ctx -> {
             //get all transactions for an account
@@ -323,6 +347,15 @@ public class Server {
 //	* 2 points
 
 /*
+do next
+ 1. view logs
+ 2. view logs by user
+ 3. view lgs date...
+ 4. get customer accounts by customer id?
+ 5. get account by id- done?
+
+
+
 still need...
  - logs
  - add list of needed things

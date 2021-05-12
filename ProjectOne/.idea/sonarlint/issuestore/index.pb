@@ -1,8 +1,6 @@
 
 M
 src/test/java/ModelTests.java,7\c\7cc26501db5e18ca5f6e68d4685b7a4d4a3fd0a6
-`
-0src/main/java/org/geordin/model/Transaction.java,1\6\167b22c423545009e6a422d9666f5e503e46d234
 h
 8src/main/java/org/geordin/dbutil/PostgresConnection.java,c\d\cd482553d56394ae2cdc055cc89a02b6093985a7
 h
