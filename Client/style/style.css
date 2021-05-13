@@ -47,7 +47,7 @@
     ...might need to move to #loginDiv in the future...
     */
 }
-#warning{
+.warning{
     color: red;
 }
 

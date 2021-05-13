@@ -154,52 +154,54 @@ function attemptSignup(urlVar) {
             name: nameInput.value
         })
     })
-    .then(res => res.json())    //copied from login
-    .then(data => {
-        if (data) {
-            if(data.username){
-                username = data.username;
-                password = data.password;
-                customerName = data.name;
-                nameSpan.innerText = username;
-                hideLoginDiv(); //hides login and shows body
-                let htmlStr = "";
-                for (i = 0; i < data.accounts.length; i++) {
-                    let account = data.accounts[i];
-                    //set account info to a table row
-                    htmlStr += `<tr><td>${account.accountNumber}</td><td>${account.balance}</td><td>${account.status}</td></tr>`;
-                    //update select options with account numbers
-                    let ele = document.createElement("OPTION");
-                    ele.value = data.accounts[i].accountNumber;
-                    ele.innerText = "From Account Number: " + data.accounts[i].accountNumber;
-                    selectFrom.appendChild(ele);
-                    ele = document.createElement("OPTION");
-                    ele.value = data.accounts[i].accountNumber;
-                    ele.innerText = "Into Account Number: " + data.accounts[i].accountNumber;
-                    selectTo.appendChild(ele);
+        .then(res => res.json())    //copied from login
+        .then(data => {
+            if (data) {
+                if (data.username) {
+                    username = data.username;
+                    password = data.password;
+                    customerName = data.name;
+                    nameSpan.innerText = username;
+                    hideLoginDiv(); //hides login and shows body
+                    let htmlStr = "";
+                    for (i = 0; i < data.accounts.length; i++) {
+                        let account = data.accounts[i];
+                        //set account info to a table row
+                        htmlStr += `<tr><td>${account.accountNumber}</td><td>${account.balance}</td><td>${account.status}</td></tr>`;
+                        //update select options with account numbers
+                        if (account.status == "active") {
+                            let ele = document.createElement("OPTION");
+                            ele.value = data.accounts[i].accountNumber;
+                            ele.innerText = "From Account Number: " + data.accounts[i].accountNumber;
+                            selectFrom.appendChild(ele);
+                            ele = document.createElement("OPTION");
+                            ele.value = data.accounts[i].accountNumber;
+                            ele.innerText = "Into Account Number: " + data.accounts[i].accountNumber;
+                            selectTo.appendChild(ele);
+                        }
+                    }
+                    let tableBody = document.getElementById("tableBody");
+                    tableBody.innerHTML = htmlStr; //will not work on IE...
                 }
-                let tableBody = document.getElementById("tableBody");
-                tableBody.innerHTML = htmlStr; //will not work on IE...
+                else if (data.error) {
+                    warning.innerHTML = "Username or Password incorrect";
+                    warning.style.display = "";
+                }
+
             }
-            else if (data.error){
-                warning.innerHTML = "Username or Password incorrect";
+            else {
+                //if no data but no error... inform user there was a problem
+                warning.innerHTML = "Error processing request";
                 warning.style.display = "";
             }
-
-        }
-        else{
-            //if no data but no error... inform user there was a problem
-            warning.innerHTML = "Error processing request";
+        })
+        .catch(err => {
+            console.log(err);
+            //display some sort of warning to user
+            warning.innerHTML = "Failed to connect to server";
             warning.style.display = "";
-        }
-    })
-    .catch(err => {
-        console.log(err);
-        //display some sort of warning to user
-        warning.innerHTML = "Failed to connect to server";
-        warning.style.display = "";
-        //need to figure out other possible errors
-    });
+            //need to figure out other possible errors
+        });
 }
 function attemptLogin(urlVar) { //LOGIN
     warning.style.display = "none"; //clears old warning
@@ -216,7 +218,7 @@ function attemptLogin(urlVar) { //LOGIN
         .then(res => res.json())
         .then(data => {
             if (data) {
-                if(data.username){
+                if (data.username) {
                     username = data.username;
                     password = data.password;
                     customerName = data.name;
@@ -228,6 +230,7 @@ function attemptLogin(urlVar) { //LOGIN
                         //set account info to a table row
                         htmlStr += `<tr><td>${account.accountNumber}</td><td>${account.balance}</td><td>${account.status}</td></tr>`;
                         //update select options with account numbers
+                        if (account.status == "active") {
                         let ele = document.createElement("OPTION");
                         ele.value = data.accounts[i].accountNumber;
                         ele.innerText = "From Account Number: " + data.accounts[i].accountNumber;
@@ -236,17 +239,18 @@ function attemptLogin(urlVar) { //LOGIN
                         ele.value = data.accounts[i].accountNumber;
                         ele.innerText = "Into Account Number: " + data.accounts[i].accountNumber;
                         selectTo.appendChild(ele);
+                        }
                     }
                     let tableBody = document.getElementById("tableBody");
                     tableBody.innerHTML = htmlStr; //will not work on IE...
                 }
-                else if (data.error){
+                else if (data.error) {
                     warning.innerHTML = "Username or Password incorrect";
                     warning.style.display = "";
                 }
 
             }
-            else{
+            else {
                 //if no data but no error... inform user there was a problem
                 warning.innerHTML = "Error processing request";
                 warning.style.display = "";
@@ -304,12 +308,12 @@ function validatePassword() {
     }
     else {
         console.log("password fails validation");
-        
+
         warning.innerHTML = "password cannot be empty";
         warning.style.display = "";
         return false;
     }
-} 
+}
 
 
 
@@ -368,7 +372,7 @@ updateButton.addEventListener("click", function (event) {
     let fetchUrl = baseUrl;
     //VALIDATE THE AMOUNT BEFORE RUNNINGTHIS
     if (amountInput.value > 0) {
-            bodyWarning.style.display = "none";
+        bodyWarning.style.display = "none";
         if (actionSelect.value == "withdraw") {
             console.log("this will withdraw");
             // url = baseUrl + 
@@ -388,7 +392,7 @@ updateButton.addEventListener("click", function (event) {
             })
                 .then(res => res.json())
                 .then(data => {
-                    if (data.error){
+                    if (data.error) {
                         bodyWarning.innerHTML = "Withdrawal Failed";
                         bodyWarning.style.display = "";
                     }
@@ -420,7 +424,7 @@ updateButton.addEventListener("click", function (event) {
             })
                 .then(res => res.json())
                 .then(data => {
-                    if (data.error){
+                    if (data.error) {
                         bodyWarning.innerHTML = "Deposit Failed";
                         bodyWarning.style.display = "";
                     }
@@ -453,7 +457,7 @@ updateButton.addEventListener("click", function (event) {
             })
                 .then(res => res.json())
                 .then(data => {
-                    if (data.error){
+                    if (data.error) {
                         bodyWarning.innerHTML = "transfer Failed";
                         bodyWarning.style.display = "";
                     }
@@ -484,14 +488,21 @@ updateButton.addEventListener("click", function (event) {
             })
                 .then(res => res.json())
                 .then(data => {
-                    if (data.error){
-                        bodyWarning.innerHTML = "ApplicationFailed";
+                    console.log(data);
+                    if (data.error) {
+                        bodyWarning.innerHTML = "Application Failed";
                         bodyWarning.style.display = "";
                     }
-
-                    //might need to catch "error" response and tell user what went wrong...
-                    //...but its not vital
-                    updateAccounts(); //gets new account info
+                    else if (data){
+                        
+                            bodyWarning.innerHTML = "Application successful. Please allow up to 48 hours for approval";
+                            bodyWarning.style.display = "";
+                        updateAccounts(); //gets new account info
+                    }
+                    else{
+                        bodyWarning.innerHTML = "An error occurred. Application May Have Failed";
+                        bodyWarning.style.display = "";
+                    }                    
                 })
                 .catch(err => {
                     console.log(err);
@@ -507,8 +518,9 @@ updateButton.addEventListener("click", function (event) {
             updateAccounts(); //gets new account info
         }
     }
-    else{
-        
+    else {
+        bodyWarning.innerHTML = "Amount must be greater than zero";
+        bodyWarning.style.display = "";
     }
 
 });
@@ -527,6 +539,7 @@ function updateAccounts() { //pass in url to fetch too
                     //set account info to a table row
                     htmlStr += `<tr><td>${account.accountNumber}</td><td>${account.balance}</td><td>${account.status}</td></tr>`;
                     //update select options with account numbers
+                    if (account.status == "active") {
                     let ele = document.createElement("OPTION");
                     ele.value = data.accounts[i].accountNumber;
                     ele.innerText = "From Account Number: " + data.accounts[i].accountNumber;
@@ -535,6 +548,7 @@ function updateAccounts() { //pass in url to fetch too
                     ele.value = data.accounts[i].accountNumber;
                     ele.innerText = "Into Account Number: " + data.accounts[i].accountNumber;
                     selectTo.appendChild(ele);
+                    }
                 }
                 let tableBody = document.getElementById("tableBody");
                 tableBody.innerHTML = htmlStr; //will not work on IE...
