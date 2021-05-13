@@ -312,17 +312,29 @@ public class BankDaoImp {
             }
         }
     }
-    public void approveAccount(Long accountNum) throws SQLException, BusinessException{
-        //fixme next step - might work,
+    public void approveAccount(Long accountNum, BigDecimal amount, String username, String password) throws SQLException, BusinessException{
+        //fixme next step - might work, test again (updated)
         Connection connection = PostgresConnection.getConnection();
-        String sql = "update gormbank.accounts set balance = 25, status ='active' " +
-                "where account_number = ?;";
+//        String sql = "update gormbank.accounts set balance = balance + ?, status ='active' " +
+//                "where account_number = ? AND status = 'pending';";
+
+        String sql = "update gormbank.accounts set balance = balance + ?, status ='active', approved_by = " +
+                "(select userid from gormbank.employees e " +
+                "where username = ? and password = ?)" +
+                "where account_number = ? AND status = 'pending';";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setLong(1, accountNum);    //variables sent into sql/preparedStatement
-        int executeUpdate=preparedStatement.executeUpdate(); //need to actually run the sql...
-        //I think I'm missing a step where I test results
-//        log.trace("updated " + executeUpdate);
-    }//still need to test to make sure this does not reset balance if applied to wrong account
+        preparedStatement.setBigDecimal(1, amount);
+        preparedStatement.setLong(4, accountNum);
+        preparedStatement.setString(2, username);
+        preparedStatement.setString(3, password);
+        int executeUpdate=preparedStatement.executeUpdate();
+        //need an if pw=pw and if user=user...
+        if (executeUpdate !=1){
+            throw new BusinessException("Operation failed; Account not updated!");
+        }
+    //fixme ; need to set approvedbyid...
+        //use subquery
+    }
 //TRANSACTIONS
 
 //        public void viewAllLogs () throws SQLException, BusinessException {}
@@ -390,7 +402,7 @@ public Employee findEmployeeByLogin(String username, String pw) throws SQLExcept
         employee.setUsername(resultSet.getString("username"));
         employee.setName(resultSet.getString("name"));
         employee.setPassword(resultSet.getString("password"));
-        employee.setId(resultSet.getLong("userid")); //userId should never leave the backend/service layers
+        employee.setId(resultSet.getLong("userid"));
         //is this necessarry?
 //            log.trace("DAO loginOldCustomer: " + customer.getUsername());
     }

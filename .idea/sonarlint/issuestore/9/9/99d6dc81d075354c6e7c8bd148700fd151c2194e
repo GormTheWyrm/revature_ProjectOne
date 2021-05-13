@@ -1,7 +1,7 @@
 
-Q	java:S125-"<This block of commented-out lines of code should be removed.(Ÿë ä
 V	java:S125	"<This block of commented-out lines of code should be removed.(Õî¡Éüÿÿÿÿ
-Z
-java:S1134["DTake the required action to fix the issue indicated by this comment.(¦œÛ¹
+Q	java:S125-"<This block of commented-out lines of code should be removed.(Ÿë ä
 c
-java:S1126R"AReplace this if-then-else statement by a single return statement.(Æ·³“ùÿÿÿÿ8ñ†¦•/
+java:S1126Y"AReplace this if-then-else statement by a single return statement.(Æ·³“ùÿÿÿÿ8ñ†¦•/
+Z
+java:S1134b"DTake the required action to fix the issue indicated by this comment.(¦œÛ¹

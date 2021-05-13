@@ -235,19 +235,38 @@ public class Server {
             }
         });
         //may not need separate routes for withdrawal and deposit...
-        app.put("/api/account/:num", ctx -> {
-            //approve
-            //should need employee credentials...
-//            try{
-//                bankService.approveAccount(Long.parseLong(ctx.pathParam("num")));
-//                //get
-//
-//            }
-            //fixme approve account
+        app.put("/api/accounts/approve", ctx -> {
+            //fixme cannot test this until can create an employee
+            try{
+                JSONObject jsonObj = new JSONObject(ctx.body());
+                String username = jsonObj.getString("username");
+                String password = jsonObj.getString("password");
+                long accountNum = (jsonObj.getLong("accountNumber"));
+                BigDecimal amount = jsonObj.getBigDecimal("amount");
+                // accnum, amount, user, pw
+                bankService.approveAccount(accountNum, amount, username, password);
+                //if no exception, return successObject
+                HashMap<String, String> successObj = new HashMap<>();
+                successObj.put("success", "account approved");
+                ctx.json(successObj);
+            }
+            catch (BusinessException e){
+                HashMap<String, String> errorObj = new HashMap<>();
+                errorObj.put("error", e.getMessage()); //not sure what other errors would result in this
+                ctx.json(errorObj);
+            }
+            catch (Exception e){ //catching number exceptions and type exceptions for parsing data
+                HashMap<String, String> errorObj = new HashMap<>();
+                errorObj.put("error", e.getMessage());
+                ctx.json(errorObj);
+            }
 
 
         });
+        app.get("/accounts/pending", ctx ->{
 
+            //
+        });
 
 
 

@@ -277,4 +277,28 @@ public class BankService {
         }
     }
 
+    public void approveAccount(Long accountNum, BigDecimal amount, String username, String password) throws BusinessException{
+        try{
+            bankImp.approveAccount(accountNum, amount, username, password);
+        }
+        catch (SQLException e) {
+//            log.trace(e.getMessage()); //hopefully that logs the actual error for the developers to find
+            throw new BusinessException(e.getMessage());
+        } catch (BusinessException e) {
+            //if found someone
+            throw new BusinessException("Error in database.");
+        }
+        //need to put employee id in account!
+
+    }
+
+
+
+
+
+
+
+
+
+
     }
