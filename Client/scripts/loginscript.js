@@ -199,6 +199,8 @@ function attemptSignup(urlVar) {
             warning.innerHTML = "Failed to connect to server";
             warning.style.display = "";
             //need to figure out other possible errors
+            //reset username and pw! ...right?
+
         });
 }//fix me!!!!!!!!!!!!!
 function attemptLogin(urlVar) { //LOGIN
@@ -308,7 +310,7 @@ actionSelect.addEventListener("change", function () {
         showFromTo();
     }
     else if (actionSelect.value == "apply") {
-        hideFromToAmount();
+        hideFromTo();
     }
 })
 function showFrom() {
@@ -326,10 +328,15 @@ function showFromTo() {
     selectTo.style.display = "";
     amountInput.style.display = "";
 }
-function hideFromToAmount() {
+function hideFromToAmount() {   //depreciated
     selectFrom.style.display = "none";
     selectTo.style.display = "none";
     amountInput.style.display = "none";
+}
+function hideFromTo() {
+    selectFrom.style.display = "none";
+    selectTo.style.display = "none";
+    amountInput.style.display = "";
 }
 // need to set up options when get data...
 //get options info from accounts array!
@@ -368,6 +375,7 @@ updateButton.addEventListener("click", function (event) {
         .then(data =>{
             //might need to catch "error" response and tell user what went wrong...
             //...but its not vital
+            updateAccounts(); //gets new account info
         })
         .catch(err => {
             console.log(err);
@@ -375,6 +383,7 @@ updateButton.addEventListener("click", function (event) {
             warning.innerHTML = "Failed to connect to server";
             warning.style.display = "";
             //need to figure out other possible errors
+            updateAccounts(); //gets new account info
         });
     }
     else if (actionSelect.value == "deposit") {
@@ -396,6 +405,7 @@ updateButton.addEventListener("click", function (event) {
         .then(data =>{
             //might need to catch "error" response and tell user what went wrong...
             //...but its not vital
+            updateAccounts(); //gets new account info
         })
         .catch(err => {
             console.log(err);
@@ -403,6 +413,7 @@ updateButton.addEventListener("click", function (event) {
             warning.innerHTML = "Failed to connect to server";
             warning.style.display = "";
             //need to figure out other possible errors
+            updateAccounts(); //gets new account info
         });
     }
     else if (actionSelect.value == "transfer") {
@@ -425,6 +436,7 @@ updateButton.addEventListener("click", function (event) {
         .then(data =>{
             //might need to catch "error" response and tell user what went wrong...
             //...but its not vital
+            updateAccounts(); //gets new account info
         })
         .catch(err => {
             console.log(err);
@@ -432,17 +444,46 @@ updateButton.addEventListener("click", function (event) {
             warning.innerHTML = "Failed to connect to server";
             warning.style.display = "";
             //need to figure out other possible errors
+            updateAccounts(); //gets new account info
         });
     }
     else if (actionSelect.value == "apply") {
         //apply for account
-        fetchUrl += "/api/accounts/withdraw";
+        fetchUrl += "/api/accounts";
+        fetch(fetchUrl, {
+            method: "POST",
+            body: JSON.stringify({
+                username: username,
+                password: password,
+                amount: amountInput.value             
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        .then(res=>res.json())
+        .then(data =>{
+            //might need to catch "error" response and tell user what went wrong...
+            //...but its not vital
+            updateAccounts(); //gets new account info
+        })
+        .catch(err => {
+            console.log(err);
+            //display some sort of warning to user
+            warning.innerHTML = "Failed to connect to server";
+            warning.style.display = "";
+            //need to figure out other possible errors
+            updateAccounts(); //gets new account info
+        });
     }
     // add new actions /features here!
+    else if(actionSelect.value == "refresh"){
+        updateAccounts(); //gets new account info
+    }
     else {
         //avoid fetch somehow...
     }
-    updateAccounts(); //gets new account info
+    
 });
 ///WIP function!
 function updateAccounts() { //pass in url to fetch too
