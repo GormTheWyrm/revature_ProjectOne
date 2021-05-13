@@ -142,7 +142,7 @@ public class BankDaoImp {
 
     public Vector<Account> viewPendingApplications() throws SQLException, BusinessException {
         Connection connection = PostgresConnection.getConnection();
-        String sql = "select customers.userid, customers.username, customers.name, " +
+        String sql = "select customers.userid, customers.username, customers.name, approved_by, " +
                 "accounts.account_number, accounts.balance, accounts.status " +
                 "from gormbank.customers RIGHT join gormbank.accounts on accounts.userid = customers.userid " +
                 "WHERE status = 'pending';";
@@ -197,7 +197,7 @@ public class BankDaoImp {
 
     public Account getAccountByAccountNum(long accountNum) throws SQLException, BusinessException {   //singular!! fixme
         Connection connection = PostgresConnection.getConnection();
-        String sql = "select customers.userid, customers.username, customers.name, " +
+        String sql = "select customers.userid, customers.username, customers.name, approved_by " +
                 "accounts.account_number, accounts.balance, accounts.status " +
                 "from gormbank.customers RIGHT join gormbank.accounts on accounts.userid = customers.userid " +
                 "WHERE account_number = ?;";
@@ -210,7 +210,7 @@ public class BankDaoImp {
             account.setBalance(resultSet.getBigDecimal("balance")); //wrong type, fixme
             account.setUsername(resultSet.getString("username"));
             account.setUsername(resultSet.getString("name"));
-//            account.setApprovedByEmployeeId( /. need to set this... fix DB
+            account.setApprovedByEmployeeId(resultSet.getLong("approved_by"));
             account.setStatus(resultSet.getString("status"));
 
 
@@ -224,7 +224,7 @@ public class BankDaoImp {
     public Vector<Account> getAccountsByUsernameOnly(String username) throws SQLException, BusinessException {   //used by employee and customer to view employees...
         //fixme
         Connection connection = PostgresConnection.getConnection();
-        String sql = "select customers.userid, customers.username, customers.name, " +
+        String sql = "select customers.userid, customers.username, customers.name, accounts.approved_by, " +
                 "accounts.account_number, accounts.balance, accounts.status " +
                 "from gormbank.customers RIGHT join gormbank.accounts on accounts.userid = customers.userid " +
                 "WHERE username = ?;";
@@ -238,7 +238,7 @@ public class BankDaoImp {
             account.setBalance(resultSet.getBigDecimal("balance")); //wrong type, fixme
             account.setUsername(resultSet.getString("username"));
             account.setUsername(resultSet.getString("name"));
-//            account.setApprovedByEmployeeId( /. need to set this... fix DB
+//            account.setApprovedByEmployeeId(resultSet.getLong("approved_by"));
             account.setStatus(resultSet.getString("status"));
             accounts.add(account);
 

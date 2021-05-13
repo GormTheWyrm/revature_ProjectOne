@@ -49,11 +49,13 @@ public class BankService {
             Vector<Account> accounts = bankImp.getAccountsByUsernameOnly(user);
             accounts.forEach(customer::addAccount);
             //may need to adjust exceptions for the above..
+//            System.out.println(customer);
             return customer;
         }
         catch (SQLException e){
 //            log.trace(e.getMessage()); //hopefully that logs the actual error for the developers to find
-            throw new BusinessException("Could not find username or password. Please check your spelling and try again.");
+//            throw new BusinessException("Could not find username. Please check your spelling and try again.");
+            throw new BusinessException(e.getMessage());
         }
         catch (BusinessException e){
             //if found someone

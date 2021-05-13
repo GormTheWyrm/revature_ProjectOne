@@ -66,6 +66,7 @@ public class Server {
         app.get("/api/customer/:username", ctx -> { //gets customer info and accounts, no pw. currently working
             //this could be hit on any change for min coding effort and low efficiency...
             try{
+//                System.out.println("hit ");
                 Customer customer = bankService.getCustomerByUser(ctx.pathParam("username"));
                     customer.setPassword("null"); //removing password so its not as insecure
                 ctx.json(customer);
@@ -117,6 +118,9 @@ public class Server {
 //            try{
 
 //            }
+
+
+
         });
 
 
@@ -238,7 +242,7 @@ public class Server {
                 ctx.json(errorObj);
             }
         });
-        app.post("/api/accounts", ctx -> {   //create new account!
+        app.post("/api/accounts", ctx -> {   //create-apply for new account!
             //need long accountNum, BigDecimal amount, String username, String password
             try{
                 JSONObject jsonObj = new JSONObject(ctx.body());
@@ -423,19 +427,6 @@ still need...
  - should logs say transfer, deposit/withdraw, or transfer-deposit, etc?
  */
 
-
-
-        //GET
-
-
-
-        //POST
-
-        //PUT
-
-        //patch?
-
-        //delete?
 
     }
 
