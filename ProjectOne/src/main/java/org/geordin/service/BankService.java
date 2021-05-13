@@ -111,9 +111,12 @@ public class BankService {
     }
 
 
-    public void createNewAccount(String user) throws BusinessException { //
+    public void createNewAccount(String user, String password, BigDecimal amount) throws BusinessException { //
         try{
-            bankImp.applyForAccountByUsername(user);
+            if ((amount.compareTo(BigDecimal.ZERO))<=0){
+                throw new BusinessException("Amount must be greater than Zero");
+            }
+            bankImp.applyForAccountByUsernamePassword(user, password, amount);
         }
         catch (SQLException e){
 //            log.trace(e.getMessage()); //hopefully that logs the actual error for the developers to find
@@ -127,7 +130,7 @@ public class BankService {
     public void depositFunds(long accountNum, BigDecimal amount, String username, String password) throws BusinessException { // fixme
         try{
 //            //if amount <0 abort!
-            if ((amount.compareTo(BigDecimal.ZERO))<=0){    //not tested yet
+            if ((amount.compareTo(BigDecimal.ZERO))<=0){
                 throw new BusinessException("Amount must be greater than Zero");
             }
 
@@ -277,9 +280,9 @@ public class BankService {
         }
     }
 
-    public void approveAccount(Long accountNum, BigDecimal amount, String username, String password) throws BusinessException{
+    public void approveAccount(Long accountNum, String username, String password) throws BusinessException{
         try{
-            bankImp.approveAccount(accountNum, amount, username, password);
+            bankImp.approveAccount(accountNum, username, password);
         }
         catch (SQLException e) {
 //            log.trace(e.getMessage()); //hopefully that logs the actual error for the developers to find

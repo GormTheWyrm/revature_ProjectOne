@@ -108,25 +108,7 @@ public class Server {
                 ctx.json(errorObj);
             }
         });
-        app.post("/api/accounts", ctx -> { //create new account, currently working
-            //create a new account
-            //pass in username via JSON, does not return the new account!
-            try{
-                Account accountObj = ctx.bodyAsClass(Account.class);   //should be null except username
-                //accnum, status, userid, approvedby...
-                bankService.createNewAccount(accountObj.getUsername());
-                //if success... nothing returned here
-                //so return a response manually
-                HashMap<String, String> successObj = new HashMap<>();
-                successObj.put("success", "Account added Successfully, please allow up to 24 hours for approval");
-                ctx.json(successObj);
-            }
-            catch (BusinessException e){
-                HashMap<String, String> errorObj = new HashMap<>();
-                errorObj.put("error", e.getMessage());
-                ctx.json(errorObj);
-            }
-        });
+
 
 
         app.delete("/api/account/:num", ctx -> {
@@ -200,9 +182,6 @@ public class Server {
                 ctx.json(errorObj);
             }
         });
-
-
-
         app.put("/api/accounts/transfer", ctx -> {   //fixme WIP;
             //fixme need to implement rollback if withdrawal does not go through...
             // only within single customers accounts... good or bad?
@@ -236,15 +215,13 @@ public class Server {
         });
         //may not need separate routes for withdrawal and deposit...
         app.put("/api/accounts/approve", ctx -> {
-            //fixme cannot test this until can create an employee
             try{
                 JSONObject jsonObj = new JSONObject(ctx.body());
                 String username = jsonObj.getString("username");
                 String password = jsonObj.getString("password");
                 long accountNum = (jsonObj.getLong("accountNumber"));
-                BigDecimal amount = jsonObj.getBigDecimal("amount");
                 // accnum, amount, user, pw
-                bankService.approveAccount(accountNum, amount, username, password);
+                bankService.approveAccount(accountNum, username, password);
                 //if no exception, return successObject
                 HashMap<String, String> successObj = new HashMap<>();
                 successObj.put("success", "account approved");
@@ -260,8 +237,34 @@ public class Server {
                 errorObj.put("error", e.getMessage());
                 ctx.json(errorObj);
             }
+        });
+        app.post("/api/accounts", ctx -> {   //create new account!
+            //need long accountNum, BigDecimal amount, String username, String password
+            try{
+                JSONObject jsonObj = new JSONObject(ctx.body());
+                String username = jsonObj.getString("username");
+                String password = jsonObj.getString("password");
+                BigDecimal amount = jsonObj.getBigDecimal("amount");
+                amount = amount.setScale(2, BigDecimal.ROUND_FLOOR);
+//                bankService.depositFunds(accountNum, amount, username, password);
+                bankService.createNewAccount(username, password, amount);
+                //if success
 
-
+                HashMap<String, String> successObj = new HashMap<>();
+                successObj.put("success", "$" + amount +" deposited Successfully");
+                //fixme amount needs to be truncated... optimally return amount
+                ctx.json(successObj);
+            }
+            catch (BusinessException e){
+                HashMap<String, String> errorObj = new HashMap<>();
+                errorObj.put("error", "Error; account not created."); //not sure what other errors would result in this
+                ctx.json(errorObj);
+            }
+            catch (Exception e){ //catching number exceptions and type exceptions for parsing data
+                HashMap<String, String> errorObj = new HashMap<>();
+                errorObj.put("error", "Amount not created: unable to read input type");
+                ctx.json(errorObj);
+            }
         });
         app.get("/accounts/pending", ctx ->{
 
@@ -387,6 +390,9 @@ public class Server {
 
 /*
 do next
+0. fix approve and apply methods - approve currently has the amount and apply does not
+    - how to show the amount?
+    - just have amount be in the account but status of pending!?
  1. approve account
  2. option to see who approved account
  3. frontend...

@@ -179,6 +179,20 @@ public class BankDaoImp {
         int executeUpdate=preparedStatement.executeUpdate();
         // no error handling yet!
     }
+    public void applyForAccountByUsernamePassword(String username, String password, BigDecimal amount) throws SQLException, BusinessException { //fixme current
+        Connection connection = PostgresConnection.getConnection();
+        String sql="INSERT INTO gormbank.accounts (balance, status, userid) VALUES(?, 'pending', " +
+                "(select userid from gormbank.customers c where username = ? AND password = ?));";
+        PreparedStatement preparedStatement=connection.prepareStatement(sql);
+        preparedStatement.setBigDecimal(1, amount);
+        preparedStatement.setString(2, username);
+        preparedStatement.setString(3, password);
+        int executeUpdate=preparedStatement.executeUpdate();
+        // no error handling yet!
+        if (executeUpdate !=1){
+            throw new BusinessException("Operation failed; Account not updated!");
+        }
+    }
 
 
     public Account getAccountByAccountNum(long accountNum) throws SQLException, BusinessException {   //singular!! fixme
@@ -291,7 +305,7 @@ public class BankDaoImp {
         int executeUpdate=preparedStatement.executeUpdate();
     //fixme; execute update if statement not working!? its running first method twice
         if (executeUpdate == 1){
-            System.out.println("dao transfer2");
+//            System.out.println("dao transfer2");
             String sql2= "update gormbank.accounts set balance = balance + ? " +
                     "where account_number = ? and status ='active' and userid in " +
                     "(SELECT userid from gormbank.customers WHERE username = ? AND password = ?);";
@@ -312,21 +326,21 @@ public class BankDaoImp {
             }
         }
     }
-    public void approveAccount(Long accountNum, BigDecimal amount, String username, String password) throws SQLException, BusinessException{
+    public void approveAccount(Long accountNum, String username, String password) throws SQLException, BusinessException{
         //fixme next step - might work, test again (updated)
         Connection connection = PostgresConnection.getConnection();
 //        String sql = "update gormbank.accounts set balance = balance + ?, status ='active' " +
 //                "where account_number = ? AND status = 'pending';";
 
-        String sql = "update gormbank.accounts set balance = balance + ?, status ='active', approved_by = " +
+        String sql = "update gormbank.accounts set status ='active', approved_by = " +
                 "(select userid from gormbank.employees e " +
                 "where username = ? and password = ?)" +
                 "where account_number = ? AND status = 'pending';";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setBigDecimal(1, amount);
-        preparedStatement.setLong(4, accountNum);
-        preparedStatement.setString(2, username);
-        preparedStatement.setString(3, password);
+
+        preparedStatement.setLong(3, accountNum);
+        preparedStatement.setString(1, username);
+        preparedStatement.setString(2, password);
         int executeUpdate=preparedStatement.executeUpdate();
         //need an if pw=pw and if user=user...
         if (executeUpdate !=1){
