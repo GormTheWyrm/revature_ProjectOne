@@ -50,11 +50,12 @@ public class Server {
                 ctx.json(errorObj);
             }
         });
-        app.post("/api/customers", ctx -> { //create new customer, little/no validation... working in postman!
-            Customer customer = ctx.bodyAsClass(Customer.class);
+        app.post("/api/customers", ctx -> { //create new customer,  working in postman!
+            Customer customerObj = ctx.bodyAsClass(Customer.class);
             //create new customer
             try{
-                bankService.createNewCustomer(customer.getUsername(), customer.getName(), customer.getPassword()); //user,name,pw - in that order
+                Customer customer = bankService.createNewCustomer(customerObj.getUsername(), customerObj.getName(), customerObj.getPassword()); //user,name,pw - in that order
+                ctx.json(customer);
             }
             catch (BusinessException e){
                 //create error object for javascript
@@ -270,7 +271,7 @@ public class Server {
                 ctx.json(errorObj);
             }
         });
-        app.get("/accounts/pending", ctx ->{
+        app.get("/api/accounts/pending", ctx ->{
 
             //
         });

@@ -227,7 +227,8 @@ public class BankDaoImp {
         String sql = "select customers.userid, customers.username, customers.name, accounts.approved_by, " +
                 "accounts.account_number, accounts.balance, accounts.status " +
                 "from gormbank.customers RIGHT join gormbank.accounts on accounts.userid = customers.userid " +
-                "WHERE username = ?;";
+                "WHERE username = ? " +
+                "order by accounts.account_number;";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, username);    //variables sent into sql/preparedStatement
         ResultSet resultSet = preparedStatement.executeQuery();

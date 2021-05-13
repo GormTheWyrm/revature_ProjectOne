@@ -8,10 +8,15 @@
     <title>Document</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    <link rel="stylesheet" href="./style/singlepage.css">
+    <link rel="stylesheet" href="./style/style.css">
 </head>
 
 <body>
+    <!-- header 
+        apply for new account in header?
+-->
+    <!-- Welcome employee mini header -->
+    <!--  -->
 
     <div class="background-div container-fluid">
         <!-- main content container- fixed size -->
@@ -19,7 +24,7 @@
 
             <!-- header -->
             <div class="row gorm-header">
-
+<!-- change this to a dropdown via bootstrap because its objectively better -->
                 <div class="col-sm-8">
                     <h1>Gorms Banking App</h1>
                 </div>
@@ -28,65 +33,98 @@
                     <button id="logout">Logout</button>
                 </div>
             </div>
-            <!-- body div -->
-            <!-- <div class="body">
-                
+            <!-- div for signing or logging up - NEEDS TO BE FIXED -->
 
-                <div class="employeeDiv">
-                    <!-- what goes in here? -->
-                    <!-- options for employee actions! -->
-
-
-                </div>
-
-                <div id="businessDiv">
-                    <!-- what goes in here? -->
-                    <!-- results of actions taken by employee!! -->
-                </div>
-                <div id="resultDiv">
-                    <!-- results from actions appear here -->
-                </div>
-                
-
-            </div> -->
-            <div id="body">
-                <div id="signupDiv">
+            <div id="loginDiv" class="row">
+                <div class="col-8-lg">
+                    <h2>Welcome <span id="userSpan">employee</span></h2>
+                    <p>Not an employee? Click HERE</p>
+                    <!-- add a link when employee html build -->
                     <form action="">
-                        <select name="signupSelect" id="signupSelect">
-                            <option value="null">Select an Option</option>
-                            <option value="customer">Sign up as a Customer</option>
-                            <option value="employee">Sign up as an Employee</option>  
-                        </select>
-                        <button id="signupSubmit">Sign Up</button> 
-                        <!-- fix span -->
-                        <p id="loginSpan">Already have an account? <span >Log in</span></p>
+                        <label for="userInput">Username</label>
+                        <input id="userInput" type="text">
+                        <br />
+                        <label for="pwInput">Password</label>
+                        <input id="pwInput" type="password">
+                        <br />
+                        <button class="button " id="loginSubmit" >Log in</button>
+                        <button class="button " id="signupSubmit" style="display: none;">Sign up</button>
+                        <!--  change button style - bootstrap -->
+                        <p id="signupSpan" >Don't have an account? <span>Sign in</span></p>
+                        <p id="loginSpan" style="display: none;">Already have an account? <span>Log in</span></p>
+                        <p id="warning" style="display: none;"></p>
                     </form>
                 </div>
-                <div id="loginDiv" style="display: none;">
-                    <form action="">
-                        <select name="signupSelect" id="signupSelect">
-                            <option value="null">Select an Option</option>
-                            <option value="customer">Log in as a Customer</option>
-                            <option value="employee">Log in as an Employee</option>
-                        </select>
-                        <button id="loginSubmit">Log in</button>   
-                        <!-- fix span -->
-                        <p >Already have an account? <span id="signinSpan">Sign in</span></p>
-                    </form>
+            </div>
+            <!-- body div, not displayed until logged in -->
+            <div id="bodyDiv" style="display: none;" class="table">
+                <h1>Welcome <span id="nameSpan">employeeNAME</span></h1>
+                <h3>Accounts</h3>
+                <table id="accountTable">
+                    <!-- fix the thead, since it will be replaced... -->
+                    <thead>
+                        <tr>
+                            <th scope="col">Account Number</th>
+                            <th scope="col">Balance</th>
+                            <th scope="col">Status</th>
+                        </tr>
+
+                    </thead>
+                    <!-- need to set the headers and such properly, with styles... -->
+                    <tbody id="tableBody">
+                   
+                        <tr>
+                            <td>test</td>
+                            <td>test2</td>
+                            <!-- temporary col  -->
+                            <!-- needs more space between columns -->
+                        </tr>
+                    </tbody>
+                </table>
+                <form>
+                    <h3>Perform an Action</h3>
+                    <select id="actionSelect">
+                        <option value="select">Select An Option</option>
+                        <option value="withdraw">Withdraw</option>
+                        <option value="deposit">Deposit</option>
+                        <option value="transfer">Transfer</option>
+                        <option value="apply">Apply for New Account</option>
+                        <!-- refresh balance option? -->
+                    </select>
+                    <br />
+                    <select id="selectFrom" style="display: none;">
+                        <!-- options of To, and FROM appear based on what is selected above -->
+                    </select>
+                    <br />
+                    <label for="amountInput">Amount</label>
+                    <input type="number" id="amountInput">
+                    <!-- need to validate above to 2 decimals! -->
+                    <select id="selectTo" style="display: none;">
+                        <!-- options of To, and FROM appear based on what is selected above -->
+                    </select>
+                    <br />
+                    <!-- maybe put button in a div... -->
+                    <button id="updateButton">Update Account</button>
+                    <!-- need better text on this button! -->
+                </form>
+                <div id="resultsDiv">
+
                 </div>
 
+            </div>
         </div>
     </div>
 
 
-    <!-- 
-        things an employer should be able to do (from this page)
-            1. approve or reject accounts
-            2. view bank acounts
-            3. view logs of transactions 
-            4. view who approved an account - should this be account or customer?
-     -->
+    <!-- things a customer can do on this page
+        1. apply for new account
+        2. see accounts... automatic?
+        3. withdraw
+        4. deposit
+        5. transfer
 
+
+-->
 
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -95,7 +133,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
         crossorigin="anonymous"></script>
-    <script src="./scripts/employee.js"></script>
+<script src="./scripts/employee.js"></script>
 </body>
 
 </html>

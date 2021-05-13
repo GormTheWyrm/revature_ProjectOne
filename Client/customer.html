@@ -24,7 +24,7 @@
 
             <!-- header -->
             <div class="row gorm-header">
-<!-- change this to a dropdown via bootstrap because its objectively better -->
+                <!-- change this to a dropdown via bootstrap because its objectively better -->
                 <div class="col-sm-8">
                     <h1>Gorms Banking App</h1>
                 </div>
@@ -41,16 +41,39 @@
                     <p>Not an employee? Click HERE</p>
                     <!-- add a link when employee html build -->
                     <form action="">
-                        <label for="userInput">Username</label>
-                        <input id="userInput" type="text">
-                        <br />
-                        <label for="pwInput">Password</label>
-                        <input id="pwInput" type="password">
-                        <br />
-                        <button class="button " id="loginSubmit" >Log in</button>
+                        <table class="table">
+                            <tr>
+                                <td>
+                                    <label for="userInput">Username</label>
+                                </td>
+                                <td>
+                                    <input id="userInput" type="text">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="pwInput">Password</label>
+                                </td>
+                                <td>
+                                    <input id="pwInput" type="password">
+                                </td>
+                            </tr>
+                            <tr id="nameRow" style="display: none;">
+                                <td>
+                                    <label for="nameInput">Enter your name</label>
+                                </td>
+                                <td>
+                                    <input id="nameInput" type="text">
+                                </td>
+                                <!-- make invisible -->
+                            </tr>
+                            <!--  change button style - bootstrap -->
+                            <!-- make form look nicer - remove lines? -->
+                        </table>
+                        <button class="button " id="loginSubmit">Log in</button>
                         <button class="button " id="signupSubmit" style="display: none;">Sign up</button>
-                        <!--  change button style - bootstrap -->
-                        <p id="signupSpan" >Don't have an account? <span>Sign in</span></p>
+
+                        <p id="signupSpan">Don't have an account? <span>Sign in</span></p>
                         <p id="loginSpan" style="display: none;">Already have an account? <span>Log in</span></p>
                         <p id="warning" style="display: none;"></p>
                     </form>
@@ -72,7 +95,7 @@
                     </thead>
                     <!-- need to set the headers and such properly, with styles... -->
                     <tbody id="tableBody">
-                   
+
                         <tr>
                             <td>test</td>
                             <td>test2</td>
@@ -117,12 +140,13 @@
 
 
     <!-- things a customer can do on this page
-        1. apply for new account
-        2. see accounts... automatic?
-        3. withdraw
-        4. deposit
-        5. transfer
-
+NEED TO VALIDATE FORMS FOR CUSTOMER!
+        - prevent amount from containing letter
+        - prevent amount from being negative
+        - 
+        - prevent username and pw from contiaining certain symbols...
+            - how? which symbols?
+            - 
 
 -->
 
@@ -133,8 +157,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
         crossorigin="anonymous"></script>
-    <!-- <script src="./scripts/customer.js"></script> -->
-    <script src="./scripts/loginscript.js"></script>
+    <script src="./scripts/customer.js"></script>
 </body>
 
 </html>
