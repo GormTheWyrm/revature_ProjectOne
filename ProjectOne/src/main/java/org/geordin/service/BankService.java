@@ -88,8 +88,8 @@ public class BankService {
             //if found someone
             throw new BusinessException("Error in database.");
         }
-        //fixme exceptions need to be reworked to give more useful info... how to tell which is which?
-    } //fixme ; change this to reflect actual methos
+        //
+    }
 
     public Account getAccountByNumber(long num) throws BusinessException { //
         try{
@@ -305,19 +305,19 @@ public class BankService {
         //need to put employee id in account!
 
     }
-//    public void denyAccount(long accountNum, String employeeUser, String password){
-//        try{
-//            bankImp.denyAccount(accountNum, employeeUser, password);
-//        }
-//        catch (SQLException e) {
-////            log.trace(e.getMessage()); //hopefully that logs the actual error for the developers to find
-//            throw new BusinessException(e.getMessage());
-//        } catch (BusinessException e) {
-//            //if found someone
-//            throw new BusinessException("Error in database.");
-//        }
-//        //need to put employee id in account!
-//    }
+    public void denyAccount(long accountNum) throws BusinessException {
+        try{
+            bankImp.denyAccount(accountNum);
+        }
+        catch (SQLException e) {
+//            log.trace(e.getMessage()); //hopefully that logs the actual error for the developers to find
+            throw new BusinessException(e.getMessage());
+        } catch (BusinessException e) {
+            //if found someone
+            throw new BusinessException("Error in database.");
+        }
+        //need to put employee id in account!
+    }
 
     //get pending
 

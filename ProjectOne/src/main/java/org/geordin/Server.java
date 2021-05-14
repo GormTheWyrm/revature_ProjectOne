@@ -46,7 +46,7 @@ public class Server {
             catch (BusinessException e){
                 //create error object for javascript
                 HashMap<String, String> errorObj = new HashMap<>();
-                errorObj.put("error", e.getMessage());
+                errorObj.put("error", "user or password not found");
                 ctx.json(errorObj);
             }
         });
@@ -60,7 +60,7 @@ public class Server {
             catch (BusinessException e){
                 //create error object for javascript
                 HashMap<String, String> errorObj = new HashMap<>();
-                errorObj.put("error", e.getMessage());
+                errorObj.put("error", "failed to create customer");
                 ctx.json(errorObj);
             }
         });
@@ -75,7 +75,7 @@ public class Server {
             catch (BusinessException e){
                 //create error object for javascript
                 HashMap<String, String> errorObj = new HashMap<>();
-                errorObj.put("error", e.getMessage());
+                errorObj.put("error", "failed to get user info");
                 ctx.json(errorObj);
             }
 
@@ -92,7 +92,7 @@ public class Server {
             }
             catch (BusinessException e){
                 HashMap<String, String> errorObj = new HashMap<>();
-                errorObj.put("error", e.getMessage());
+                errorObj.put("error", "no accounts found");
                 ctx.json(errorObj);
             }
 
@@ -106,7 +106,7 @@ public class Server {
             }
             catch (BusinessException e){
                 HashMap<String, String> errorObj = new HashMap<>();
-                errorObj.put("error", e.getMessage());
+                errorObj.put("error", "no accounts found by that username");
                 ctx.json(errorObj);
             }
         });
@@ -116,9 +116,14 @@ public class Server {
         app.delete("/api/account/:num", ctx -> {
             //deny new account
             //verify count is pending before deleting...
-//            try{
-
-//            }
+            try{
+                bankService.denyAccount(Long.parseLong(ctx.pathParam("num")));
+            }
+            catch (BusinessException e){
+                HashMap<String, String> errorObj = new HashMap<>();
+                errorObj.put("error", "failed to delete account");
+                ctx.json(errorObj);
+            }
 
 
 
@@ -208,7 +213,7 @@ public class Server {
             }
             catch (BusinessException e){
                 HashMap<String, String> errorObj = new HashMap<>();
-                errorObj.put("error", e.getMessage()); //not sure what other errors would result in this
+                errorObj.put("error", "transfer failed!"); //not sure what other errors would result in this
                 ctx.json(errorObj);
             }
             catch (Exception e){ //catching number exceptions and type exceptions for parsing data
@@ -233,12 +238,12 @@ public class Server {
             }
             catch (BusinessException e){
                 HashMap<String, String> errorObj = new HashMap<>();
-                errorObj.put("error", e.getMessage()); //not sure what other errors would result in this
+                errorObj.put("error", "failed to approve account"); //not sure what other errors would result in this
                 ctx.json(errorObj);
             }
             catch (Exception e){ //catching number exceptions and type exceptions for parsing data
                 HashMap<String, String> errorObj = new HashMap<>();
-                errorObj.put("error", e.getMessage());
+                errorObj.put("error", "error: wrong variable types");
                 ctx.json(errorObj);
             }
         });
@@ -302,7 +307,7 @@ public class Server {
             catch (BusinessException e){
                 //create error object for javascript
                 HashMap<String, String> errorObj = new HashMap<>();
-                errorObj.put("error", e.getMessage());
+                errorObj.put("error", "no password or username found");
                 ctx.json(errorObj);
             }
         });
@@ -316,7 +321,7 @@ public class Server {
             catch (BusinessException e){
                 //create error object for javascript
                 HashMap<String, String> errorObj = new HashMap<>();
-                errorObj.put("error", e.getMessage());
+                errorObj.put("error", "failure to create employee");
                 ctx.json(errorObj);
             }
         });
@@ -335,7 +340,7 @@ public class Server {
             catch (BusinessException e){
                 //create error object for javascript
                 HashMap<String, String> errorObj = new HashMap<>();
-                errorObj.put("error", e.getMessage());
+                errorObj.put("error", "no transactions found");
                 ctx.json(errorObj);
             }
         });
@@ -350,7 +355,7 @@ public class Server {
             catch (BusinessException e){
                 //create error object for javascript
                 HashMap<String, String> errorObj = new HashMap<>();
-                errorObj.put("error", e.getMessage());
+                errorObj.put("error", "no transactions found on that day");
                 ctx.json(errorObj);
             }
         });
@@ -364,7 +369,7 @@ public class Server {
             catch (BusinessException e){
                 //create error object for javascript
                 HashMap<String, String> errorObj = new HashMap<>();
-                errorObj.put("error", e.getMessage());
+                errorObj.put("error", "no transactions found for that user");
                 ctx.json(errorObj);
             }
         });

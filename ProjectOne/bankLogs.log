@@ -41,3 +41,113 @@ FATAL: password authentication failed for user "Gorm"
 \db.properties (The system cannot find the file specified)
 \build\db.properties (The system cannot find the path specified)
 \ProjectOne\build\db.properties (The system cannot find the path specified)
+DAO-findCustomerByLogin
+DAO-findCustomerByLogin
+dao: Inserted 1 customers
+customer creaded: Jesus
+DAO applyForAccount
+DAO-findCustomerByusername
+DAO findCustomerByUsername: Jesus
+DAO-getAccByUser
+DAO-findCustomerByLogin
+DAO loginOldCustomer: Tim
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-findCustomerByusername
+DAO findCustomerByUsername: Tim
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+deposit funds, DAO
+DAO-findCustomerByusername
+DAO findCustomerByUsername: Tim
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-findCustomerByusername
+DAO findCustomerByUsername: Tim
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO applyForAccount
+DAO-findCustomerByusername
+DAO findCustomerByUsername: Tim
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-findCustomerByusername
+DAO findCustomerByUsername: Tim
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-findCustomerByusername
+DAO findCustomerByUsername: Tim
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-findCustomerByusername
+DAO findCustomerByUsername: Tim
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-findCustomerByusername
+DAO findCustomerByUsername: Tim
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-findCustomerByusername
+DAO findCustomerByUsername: Tim
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-findCustomerByusername
+DAO findCustomerByUsername: Tim
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-findCustomerByusername
+DAO findCustomerByUsername: Tim
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-findCustomerByusername
+DAO findCustomerByUsername: Tim
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser

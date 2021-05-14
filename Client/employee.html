@@ -26,8 +26,8 @@
                     <button id="logout">Logout</button>
                 </div>
             </div>
-            
-<!-- login -->
+
+            <!-- login -->
             <div id="loginDiv" class="row">
                 <div class="col-8-lg">
                     <h2>Welcome <span id="userSpan">Employee</span></h2>
@@ -77,23 +77,31 @@
                 <h1>Welcome <span id="nameSpan">EmployeeNAME</span></h1>
                 <form>
                     <h3>Perform an Action</h3>
-                    <p id="bodyWarning" class="warning" ></p>
+                    <p id="bodyWarning" class="warning"></p>
                     <select id="actionSelect">
+                        <option value="selectr">Select An Option</option>
                         <option value="viewCustomer">View Customer Details</option>
                         <option value="viewAccount">View Account Details</option>
                         <option value="viewPending">View Pending Applications</option>
                         <option value="viewAllT">View All Transactons</option>
-                        <option value="viewTByDay">View All Transactons</option>
-                        <option value="viewTByAcc">View All Transactons</option>
-                        <!-- <option value="viewTByCustomer">View All Transactons</option> -->
-                        <!-- not implemented -view t by customer and decline... -->
-                        
-                        <!-- options to approve or delete once click on this! -->
-                        <!-- <option value="approve">Approve a Pending Application</option> -->
-                        <!-- <option value="Decl">Apply for New Account</option> -->
-                        <!-- refresh balance option? -->
+                        <option value="viewTByDay">View Transactons By Date</option>
+                        <option value="viewTByAcc">View Transactons By Account</option>
+                        <option value="viewTByCustomer">View Transactons By Customer</option>
+                        <option value="approve">Approve Account</option>
+                        <option value="deny">Deny Account</option>
+                    </select>
 
-                        <!-- 
+
+
+
+                    <!-- not implemented -view t by customer and decline... -->
+
+                    <!-- options to approve or delete once click on this! -->
+                    <!-- <option value="approve">Approve a Pending Application</option> -->
+                    <!-- <option value="Decl">Apply for New Account</option> -->
+                    <!-- refresh balance option? -->
+
+                    <!-- 
                             view all transactions   get- /api/transactions
                             view transactions by day    get- /api/transactions/day/:day
                             view transactions by user   get-/transactions/user/:user
@@ -104,31 +112,38 @@
                             view account by number
 
                      -->
-                    </select>
+
                     <br />
                     <select id="selectFrom" style="display: none;">
                         <!-- options of To, and FROM appear based on what is selected above -->
                     </select>
                     <br />
-                    <label for="amountInput">Amount</label>
-                    <input type="number" id="amountInput">
-                    <!-- need to validate above to 2 decimals! -->
-                    <select id="selectTo" style="display: none;">
-                        <!-- options of To, and FROM appear based on what is selected above -->
-                    </select>
-                    <br />
-                    <!-- maybe put button in a div... -->
-                    <button id="updateButton">Update Account</button>
-                    <!-- need better text on this button! -->
+                    <div id="numDiv" style="display: none;">
+                        <label for="accountInput">Search By Number</label>
+                        <input type="number" id="accountInput">
+                        <br />
+                    </div>
+
+                    <div id="textDiv" style="display: none;">
+                        <label for="customerInput">Search By Username</label>
+                        <input type="text" id="customerInput">
+
+                    </div>
+                    <button id="fetchButton">Fetch Data</button>
+                    <!-- next is ddmmyyyy -->
+
                 </form>
 
-<!-- WIP BELOW -->
+                <!-- WIP BELOW -->
+
+                <!-- need to at least be able to approve and see who approved...and deny -->
+
 
 
                 <h3>Accounts</h3>
                 <table id="accountTable">
                     <!-- fix the thead, since it will be replaced... -->
-                    <thead>
+                    <thead id="tableHead">
                         <tr>
                             <th scope="col">Account Number</th>
                             <th scope="col">Balance</th>
@@ -140,14 +155,11 @@
                     <tbody id="tableBody">
 
                         <tr>
-                            <td>test</td>
-                            <td>test2</td>
-                            <!-- temporary col  -->
-                            <!-- needs more space between columns -->
+
                         </tr>
                     </tbody>
                 </table>
-                
+
                 <div id="resultsDiv">
 
                 </div>
@@ -156,7 +168,7 @@
         </div>
     </div>
 
-<!-- things an employee should be able to do
+    <!-- things an employee should be able to do
 
        an employee can
             - approve account

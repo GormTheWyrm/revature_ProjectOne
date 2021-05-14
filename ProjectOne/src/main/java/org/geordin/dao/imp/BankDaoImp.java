@@ -318,26 +318,23 @@ log.trace("dao-findAccountsByUsername: "+ username);
         int executeUpdate=preparedStatement.executeUpdate();
         //need an if pw=pw and if user=user...
         if (executeUpdate !=1){
+            log.info("approve failed for account "+ accountNum);
             throw new BusinessException("Operation failed; Account not updated!");
         }
     }
-//    public void denyAccount(Long accountNum, String username, String password) throws SQLException, BusinessException{ //fixme - approves
-//        Connection connection = PostgresConnection.getConnection();
-////        String sql = "update gormbank.accounts set status ='active', approved_by = " +
-////                "(select userid from gormbank.employees e " +
-////                "where username = ? and password = ?)" +
-////                "where account_number = ? AND status = 'pending';";
-//        // not deleting yet
-//        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-//        preparedStatement.setLong(3, accountNum);
-//        preparedStatement.setString(1, username);
-//        preparedStatement.setString(2, password);
-//        int executeUpdate=preparedStatement.executeUpdate();
-//        //need an if pw=pw and if user=user...
-//        if (executeUpdate !=1){
-//            throw new BusinessException("Operation failed; Account not updated!");
-//        }
-//    }
+    public void denyAccount(Long accountNum) throws SQLException, BusinessException{ //fixme - approves
+        Connection connection = PostgresConnection.getConnection();
+        String sql = "delete from gormbank.accounts where status = 'pedning' and account_number = ? ;";
+        // not deleting yet
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setLong(1, accountNum);
+        int executeUpdate=preparedStatement.executeUpdate();
+        //need an if pw=pw and if user=user...
+        if (executeUpdate !=1){
+            log.info("denial failed for account "+ accountNum);
+            throw new BusinessException("Operation failed; Account not updated!");
+        }
+    } //fixme does not require passwird to delete acc if pending
 //TRANSACTIONS
 
 //        public void viewAllLogs () throws SQLException, BusinessException {}

@@ -40,11 +40,22 @@ let accountSelect = document.getElementById("accountSelect");
 let selectFrom = document.getElementById("selectFrom");
 let selectTo = document.getElementById("selectTo");
 
-let amountInput = document.getElementById("amountInput");//amount to transfer, deposit or withdraw
+let numDiv = document.getElementById("numDiv");
+let textDiv = document.getElementById("textDiv");
+
+let customerInput = document.getElementById("customerInput");//amount to transfer, deposit or withdraw
+let accountInput = document.getElementById("accountInput");
+let resultsDiv = document.getElementById("resultsDiv");
+
+let tableHead = document.getElementById("tableHead");
 
 let nameInput = document.getElementById("nameInput");
 let bodyWarning = document.getElementById("bodyWarning");
 let nameRow = document.getElementById("nameRow");
+
+
+let fetchButton = document.getElementById("fetchButton");
+fetchButton.addEventListener("click", fetchResults);
 
 let userSpan = document.getElementById("userSpan");
 // value variables
@@ -90,9 +101,6 @@ function signup(event) {
         if (validatePassword()) {
             //set api url for employee signup
             let url = baseUrl + "/api/employees";
-
-            //should probably validate name...
-
             attemptSignup(url);
         }
         else {
@@ -154,24 +162,6 @@ function attemptSignup(urlVar) {
                     nameSpan.innerText = username;
                     hideLoginDiv(); //hides login and shows body
                     let htmlStr = "";
-                    for (i = 0; i < data.accounts.length; i++) {
-                        let account = data.accounts[i];
-                        //set account info to a table row
-                        htmlStr += `<tr><td>${account.accountNumber}</td><td>${account.balance}</td><td>${account.status}</td></tr>`;
-                        //update select options with account numbers
-                        if (account.status == "active") {
-                            let ele = document.createElement("OPTION");
-                            ele.value = data.accounts[i].accountNumber;
-                            ele.innerText = "From Account Number: " + data.accounts[i].accountNumber;
-                            selectFrom.appendChild(ele);
-                            ele = document.createElement("OPTION");
-                            ele.value = data.accounts[i].accountNumber;
-                            ele.innerText = "Into Account Number: " + data.accounts[i].accountNumber;
-                            selectTo.appendChild(ele);
-                        }
-                    }
-                    let tableBody = document.getElementById("tableBody");
-                    tableBody.innerHTML = htmlStr; //will not work on IE...
                 }
                 else if (data.error) {
                     warning.innerHTML = "Username or Password incorrect";
@@ -214,31 +204,11 @@ function attemptLogin(urlVar) { //LOGIN
                     employeeName = data.name;
                     nameSpan.innerText = username;
                     hideLoginDiv(); //hides login and shows body
-                    let htmlStr = "";
-                    for (i = 0; i < data.accounts.length; i++) {
-                        let account = data.accounts[i];
-                        //set account info to a table row
-                        htmlStr += `<tr><td>${account.accountNumber}</td><td>${account.balance}</td><td>${account.status}</td></tr>`;
-                        //update select options with account numbers
-                        if (account.status == "active") {
-                        let ele = document.createElement("OPTION");
-                        ele.value = data.accounts[i].accountNumber;
-                        ele.innerText = "From Account Number: " + data.accounts[i].accountNumber;
-                        selectFrom.appendChild(ele);
-                        ele = document.createElement("OPTION");
-                        ele.value = data.accounts[i].accountNumber;
-                        ele.innerText = "Into Account Number: " + data.accounts[i].accountNumber;
-                        selectTo.appendChild(ele);
-                        }
-                    }
-                    let tableBody = document.getElementById("tableBody");
-                    tableBody.innerHTML = htmlStr; //will not work on IE...
                 }
                 else if (data.error) {
                     warning.innerHTML = "Username or Password incorrect";
                     warning.style.display = "";
                 }
-
             }
             else {
                 //if no data but no error... inform user there was a problem
@@ -312,212 +282,216 @@ function validatePassword() {
 
 //onSelect functions:
 actionSelect.addEventListener("change", function () {
-    if (actionSelect.value == "withdraw") {
-        showFrom();
+    if (actionSelect.value == "viewCustomer") {
+        showText();
     }
-    else if (actionSelect.value == "deposit") {
-        showTo();
+    else if (actionSelect.value == "viewAccount") {
+        showNum();
     }
-    else if (actionSelect.value == "transfer") {
-        showFromTo();
+    else if (actionSelect.value == "viewPending") {
+        showNone();
     }
-    else if (actionSelect.value == "apply") {
-        hideFromTo();
+    else if (actionSelect.value == "viewAllT") {
+        showNone();
+    }
+    else if (actionSelect.value == "viewTByDay") {
+        showDay();
+    }
+    else if (actionSelect.value == "viewTByAcc") {
+        showNum();
+    }
+    else if (actionSelect.value == "viewTByCustomer") {
+        showText();
+    }
+    else if (actionSelect.value == "approve") {
+        showNum();
+    }
+    else if (actionSelect.value == "deny") {
+        showNum();
     }
 })
-function showFrom() {
-    selectFrom.style.display = "";
-    selectTo.style.display = "none";
-    amountInput.style.display = "";
+function showText() {
+    //these variables need enaming
+    numDiv.style.display = "none";
+    textDiv.style.display = "";
 }
-function showTo() {
-    selectFrom.style.display = "none";
-    selectTo.style.display = "";
-    amountInput.style.display = "";
+function showNum() {
+    numDiv.style.display = "";
+    textDiv.style.display = "none";
 }
-function showFromTo() {
-    selectFrom.style.display = "";
-    selectTo.style.display = "";
-    amountInput.style.display = "";
-}
-function hideFromToAmount() {   //depreciated
-    selectFrom.style.display = "none";
-    selectTo.style.display = "none";
-    amountInput.style.display = "none";
-}
-function hideFromTo() {
-    selectFrom.style.display = "none";
-    selectTo.style.display = "none";
-    amountInput.style.display = "";
+function showNone() {
+    numDiv.style.display = "none";
+    textDiv.style.display = "none";
 }
 
-let updateButton = document.getElementById("updateButton");
-updateButton.addEventListener("click", function (event) {
-    event.preventDefault();
-    //this needs to updateaccounts and selectActions...
-    console.log("accountSelect");
-    //first set url based on what method being used...
-    //ifs...
-    console.log(actionSelect);
-    let fetchUrl = baseUrl;
-    //VALIDATE THE AMOUNT BEFORE RUNNINGTHIS
-    if (amountInput.value > 0) {
-        bodyWarning.style.display = "none";
-        if (actionSelect.value == "withdraw") {
-            console.log("this will withdraw");
-            // url = baseUrl + 
-            fetchUrl += "/api/accounts/withdraw";
-            //fetch to change DB
-            fetch(fetchUrl, {
-                method: "PUT",
-                body: JSON.stringify({
-                    username: username,
-                    password: password,
-                    accountNumber: selectFrom.value,
-                    amount: amountInput.value
-                }),
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8"
-                }
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.error) {
-                        bodyWarning.innerHTML = "Withdrawal Failed";
-                        bodyWarning.style.display = "";
-                    }
-                    updateAccounts(); //gets new account info
-                })
-                .catch(err => {
-                    console.log(err);
-                    //display some sort of warning to user
-                    warning.innerHTML = "Failed to connect to server";
-                    warning.style.display = "";
-                    //need to figure out other possible errors
-                    updateAccounts(); //gets new account info
-                });
-        }
-        else if (actionSelect.value == "deposit") {
-            console.log("this will deposit");
-            fetchUrl += "/api/accounts/deposit";
-            fetch(fetchUrl, {
-                method: "PUT",
-                body: JSON.stringify({
-                    username: username,
-                    password: password,
-                    accountNumber: selectTo.value,
-                    amount: amountInput.value
-                }),
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8"
-                }
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.error) {
-                        bodyWarning.innerHTML = "Deposit Failed";
-                        bodyWarning.style.display = "";
-                    }
-                    updateAccounts(); //gets new account info
-                })
-                .catch(err => {
-                    console.log(err);
-                    //display some sort of warning to user
-                    warning.innerHTML = "Failed to connect to server";
-                    warning.style.display = "";
-                    //need to figure out other possible errors
-                    updateAccounts(); //gets new account info
-                });
-        }
-        else if (actionSelect.value == "transfer") {
-            console.log("this will transfer");
-            fetchUrl += "/api/accounts/transfer";
-            fetch(fetchUrl, {
-                method: "PUT",
-                body: JSON.stringify({
-                    username: username,
-                    password: password,
-                    accountNumberFrom: selectFrom.value,
-                    accountNumberTo: selectTo.value,
-                    amount: amountInput.value
-                }),
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8"
-                }
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.error) {
-                        bodyWarning.innerHTML = "transfer Failed";
-                        bodyWarning.style.display = "";
-                    }
-                    updateAccounts(); //gets new account info
-                })
-                .catch(err => {
-                    console.log(err);
-                    //display some sort of warning to user
-                    warning.innerHTML = "Failed to connect to server";
-                    warning.style.display = "";
-                    //need to figure out other possible errors
-                    updateAccounts(); //gets new account info
-                });
-        }
-        else if (actionSelect.value == "apply") {
-            //apply for account
-            fetchUrl += "/api/accounts";
-            fetch(fetchUrl, {
-                method: "POST",
-                body: JSON.stringify({
-                    username: username,
-                    password: password,
-                    amount: amountInput.value
-                }),
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8"
-                }
-            })
-                .then(res => res.json())
-                .then(data => {
-                    console.log(data);
-                    if (data.error) {
-                        bodyWarning.innerHTML = "Application Failed";
-                        bodyWarning.style.display = "";
-                    }
-                    else if (data){
-                        
-                            bodyWarning.innerHTML = "Application successful. Please allow up to 48 hours for approval";
-                            bodyWarning.style.display = "";
-                        updateAccounts(); //gets new account info
-                    }
-                    else{
-                        bodyWarning.innerHTML = "An error occurred. Application May Have Failed";
-                        bodyWarning.style.display = "";
-                    }                    
-                })
-                .catch(err => {
-                    console.log(err);
-                    //display some sort of warning to user
-                    warning.innerHTML = "Failed to connect to server";
-                    warning.style.display = "";
-                    //need to figure out other possible errors
-                    updateAccounts(); //gets new account info
-                });
-        }
-        // add new actions /features here!
-        else if (actionSelect.value == "refresh") {
-            updateAccounts(); //gets new account info
-        }
-    }
-    else {
-        bodyWarning.innerHTML = "Amount must be greater than zero";
-        bodyWarning.style.display = "";
-    }
 
-});
-///WIP function!
+// let updateButton = document.getElementById("updateButton");
+// updateButton.addEventListener("click", function (event) {
+//     event.preventDefault();
+//     //this needs to updateaccounts and selectActions...
+//     console.log("accountSelect");
+//     //first set url based on what method being used...
+//     //ifs...
+//     console.log(actionSelect);
+//     let fetchUrl = baseUrl;
+//     //VALIDATE THE AMOUNT BEFORE RUNNINGTHIS
+//     if (amountInput.value > 0) {
+//         bodyWarning.style.display = "none";
+//         if (actionSelect.value == "withdraw") {
+//             console.log("this will withdraw");
+//             // url = baseUrl + 
+//             fetchUrl += "/api/accounts/withdraw";
+//             //fetch to change DB
+//             fetch(fetchUrl, {
+//                 method: "PUT",
+//                 body: JSON.stringify({
+//                     username: username,
+//                     password: password,
+//                     accountNumber: selectFrom.value,
+//                     amount: amountInput.value
+//                 }),
+//                 headers: {
+//                     "Content-type": "application/json; charset=UTF-8"
+//                 }
+//             })
+//                 .then(res => res.json())
+//                 .then(data => {
+//                     if (data.error) {
+//                         bodyWarning.innerHTML = "Withdrawal Failed";
+//                         bodyWarning.style.display = "";
+//                     }
+//                     updateAccounts(); //gets new account info
+//                 })
+//                 .catch(err => {
+//                     console.log(err);
+//                     //display some sort of warning to user
+//                     warning.innerHTML = "Failed to connect to server";
+//                     warning.style.display = "";
+//                     //need to figure out other possible errors
+//                     updateAccounts(); //gets new account info
+//                 });
+//         }
+//         else if (actionSelect.value == "deposit") {
+//             console.log("this will deposit");
+//             fetchUrl += "/api/accounts/deposit";
+//             fetch(fetchUrl, {
+//                 method: "PUT",
+//                 body: JSON.stringify({
+//                     username: username,
+//                     password: password,
+//                     accountNumber: selectTo.value,
+//                     amount: amountInput.value
+//                 }),
+//                 headers: {
+//                     "Content-type": "application/json; charset=UTF-8"
+//                 }
+//             })
+//                 .then(res => res.json())
+//                 .then(data => {
+//                     if (data.error) {
+//                         bodyWarning.innerHTML = "Deposit Failed";
+//                         bodyWarning.style.display = "";
+//                     }
+//                     updateAccounts(); //gets new account info
+//                 })
+//                 .catch(err => {
+//                     console.log(err);
+//                     //display some sort of warning to user
+//                     warning.innerHTML = "Failed to connect to server";
+//                     warning.style.display = "";
+//                     //need to figure out other possible errors
+//                     updateAccounts(); //gets new account info
+//                 });
+//         }
+//         else if (actionSelect.value == "transfer") {
+//             console.log("this will transfer");
+//             fetchUrl += "/api/accounts/transfer";
+//             fetch(fetchUrl, {
+//                 method: "PUT",
+//                 body: JSON.stringify({
+//                     username: username,
+//                     password: password,
+//                     accountNumberFrom: selectFrom.value,
+//                     accountNumberTo: selectTo.value,
+//                     amount: amountInput.value
+//                 }),
+//                 headers: {
+//                     "Content-type": "application/json; charset=UTF-8"
+//                 }
+//             })
+//                 .then(res => res.json())
+//                 .then(data => {
+//                     if (data.error) {
+//                         bodyWarning.innerHTML = "transfer Failed";
+//                         bodyWarning.style.display = "";
+//                     }
+//                     updateAccounts(); //gets new account info
+//                 })
+//                 .catch(err => {
+//                     console.log(err);
+//                     //display some sort of warning to user
+//                     warning.innerHTML = "Failed to connect to server";
+//                     warning.style.display = "";
+//                     //need to figure out other possible errors
+//                     updateAccounts(); //gets new account info
+//                 });
+//         }
+//         else if (actionSelect.value == "apply") {
+//             //apply for account
+//             fetchUrl += "/api/accounts";
+//             fetch(fetchUrl, {
+//                 method: "POST",
+//                 body: JSON.stringify({
+//                     username: username,
+//                     password: password,
+//                     amount: amountInput.value
+//                 }),
+//                 headers: {
+//                     "Content-type": "application/json; charset=UTF-8"
+//                 }
+//             })
+//                 .then(res => res.json())
+//                 .then(data => {
+//                     console.log(data);
+//                     if (data.error) {
+//                         bodyWarning.innerHTML = "Application Failed";
+//                         bodyWarning.style.display = "";
+//                     }
+//                     else if (data) {
+
+//                         bodyWarning.innerHTML = "Application successful. Please allow up to 48 hours for approval";
+//                         bodyWarning.style.display = "";
+//                         updateAccounts(); //gets new account info
+//                     }
+//                     else {
+//                         bodyWarning.innerHTML = "An error occurred. Application May Have Failed";
+//                         bodyWarning.style.display = "";
+//                     }
+//                 })
+//                 .catch(err => {
+//                     console.log(err);
+//                     //display some sort of warning to user
+//                     warning.innerHTML = "Failed to connect to server";
+//                     warning.style.display = "";
+//                     //need to figure out other possible errors
+//                     updateAccounts(); //gets new account info
+//                 });
+//         }
+//         // add new actions /features here!
+//         else if (actionSelect.value == "refresh") {
+//             updateAccounts(); //gets new account info
+//         }
+//     }
+//     else {
+//         bodyWarning.innerHTML = "Amount must be greater than zero";
+//         bodyWarning.style.display = "";
+//     }
+
+// });
+// ///WIP function!
 function updateAccounts() { //pass in url to fetch too
     //fetches from employee who is logged in
-    let url = baseUrl + "/api/employee/" + username;
+    let url = baseUrl + "/api/customer/" + customerInput.value;
     fetch(url)
         .then(res => res.json())
         .then(data => {
@@ -530,14 +504,14 @@ function updateAccounts() { //pass in url to fetch too
                     htmlStr += `<tr><td>${account.accountNumber}</td><td>${account.balance}</td><td>${account.status}</td></tr>`;
                     //update select options with account numbers
                     if (account.status == "active") {
-                    let ele = document.createElement("OPTION");
-                    ele.value = data.accounts[i].accountNumber;
-                    ele.innerText = "From Account Number: " + data.accounts[i].accountNumber;
-                    selectFrom.appendChild(ele);
-                    ele = document.createElement("OPTION");
-                    ele.value = data.accounts[i].accountNumber;
-                    ele.innerText = "Into Account Number: " + data.accounts[i].accountNumber;
-                    selectTo.appendChild(ele);
+                        let ele = document.createElement("OPTION");
+                        ele.value = data.accounts[i].accountNumber;
+                        ele.innerText = "From Account Number: " + data.accounts[i].accountNumber;
+                        selectFrom.appendChild(ele);
+                        ele = document.createElement("OPTION");
+                        ele.value = data.accounts[i].accountNumber;
+                        ele.innerText = "Into Account Number: " + data.accounts[i].accountNumber;
+                        selectTo.appendChild(ele);
                     }
                 }
                 let tableBody = document.getElementById("tableBody");
@@ -561,3 +535,99 @@ function updateAccounts() { //pass in url to fetch too
 //need to add approve method!!!!
 //need to add section for approved by - no, leave that in employee
 //need to build employee html and js...
+
+
+
+
+function fetchResults(event) {
+    event.preventDefault();
+    if (actionSelect.value == "approve") {
+
+    }
+    else if (actionSelect.value == "deny") {
+
+    }
+    else if (actionSelect.value == "viewCustomer") {
+        let url = baseUrl + "/api/customer/" + customerInput.value;
+        fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                if (data) {
+                    console.log(data);
+                    // hideLoginDiv(); //hides login and shows body
+                    let htmlStr = "";
+                    let headStr = "<tr><th scope='col'>Account Number</th><th scope='col'>Balance</th><th scope='col'>Status</th><th scope='col'>Approval ID</th></thead>";
+                    tableHead.innerHTML = headStr;
+                    console.log.data;
+                    for (i = 0; i < data.accounts.length; i++) {
+                        let account = data.accounts[i];
+                        //set account info to a table row
+                        htmlStr += `<tr><td>${account.accountNumber}</td><td>${account.balance}</td><td>${account.status}</td></tr>`;
+                        //update select options with account numbers
+                        if (account.status == "active") {
+                            let ele = document.createElement("OPTION");
+                            ele.value = data.accounts[i].accountNumber;
+                            ele.innerText = "From Account Number: " + data.accounts[i].accountNumber;
+                            if(data.accounts[i].approvedByEmployeeId){
+                                data+=data.accounts[i].approvedByEmployeeId;
+                                //not appearing!?!
+                            }  
+                            resultsDiv.appendChild(ele);
+                        }
+                    }
+                    let tableBody = document.getElementById("tableBody");
+                    tableBody.innerHTML = htmlStr; //will not work on IE...
+                }
+                else {
+                    warning.innerHTML = "Failed to connect to server";
+                    warning.style.display = "";
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                //display some sort of warning to user
+                warning.innerHTML = "Failed to connect to server";
+                warning.style.display = "";
+                //need to figure out other possible errors
+            });
+    }
+    else if (actionSelect.value == "viewAccount") {
+        let url = baseUrl + "/api/account/" + amountInput.value;
+        fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                if (data) {
+                    // hideLoginDiv(); //hides login and shows body
+                    let htmlStr = "";
+                    console.log.data;
+                    for (i = 0; i < data.accounts.length; i++) {
+                        let account = data.accounts[i];
+                        //set account info to a table row
+                        htmlStr += `<tr><td>${account.accountNumber}</td><td>${account.balance}</td><td>${account.status}</td></tr>`;
+                        //update select options with account numbers
+                        if (account.status == "active") {
+                            let ele = document.createElement("OPTION");
+                            ele.value = data.accounts[i].accountNumber;
+                            ele.innerText = "From Account Number: " + data.accounts[i].accountNumber + data.account.approvedBy;
+                            resultsDiv.appendChild(ele);
+                        }
+                    }
+                    let tableBody = document.getElementById("tableBody");
+                    tableBody.innerHTML = htmlStr; //will not work on IE...
+                }
+                else {
+                    warning.innerHTML = "Failed to connect to server";
+                    warning.style.display = "";
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                //display some sort of warning to user
+                warning.innerHTML = "Failed to connect to server";
+                warning.style.display = "";
+                //need to figure out other possible errors
+            });
+    }
+
+
+}
