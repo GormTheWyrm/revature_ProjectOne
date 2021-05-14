@@ -63,7 +63,13 @@ public class Account {
         this.username=username;
     }
 
-
+    public Account(long accountNumber, BigDecimal balance, String status, String username, long approvedByEmployeeId) {
+        this.accountNumber = accountNumber;
+        this.balance = balance;
+        this.status = status;
+        this.username = username;
+        this.approvedByEmployeeId = approvedByEmployeeId;
+    }
 
     @Override
     public int hashCode() {

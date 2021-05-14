@@ -1,25 +1,0 @@
-
-F
-java:S1128"0Remove this unused import 'java.util.ArrayList'.(÷‰îƒ
-k
-java:S1206["PThis class overrides "equals()" and should therefore also override "hashCode()".(İ¢êÍıÿÿÿÿ
-{
-java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(È›Ùı
-{
-java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Œõù±
-€
-java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Î•Å¤øÿÿÿÿ
-{
-java:S1149/"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ÈÁÓı
-B
-java:S2175*",A "Vector<Account>" cannot contain a "Long".(ÄÕ•
-1
-java:S1116."Remove this empty statement.(ŞÑ¹"
-E
-java:S1172/"/Remove this unused method parameter "accounts".(ÈÁÓı
-Z
-java:S11340"DTake the required action to fix the issue indicated by this comment.(Æ“ê 
-V	java:S1258"<This block of commented-out lines of code should be removed.(Ô‘ùÿÿÿÿ
-Q	java:S125K"<This block of commented-out lines of code should be removed.(İ ’ì
-Z
-java:S1134I"DTake the required action to fix the issue indicated by this comment.(Şæ²˜

@@ -1,6 +1,7 @@
 package org.geordin;
 
 import io.javalin.Javalin;
+import org.geordin.dao.imp.BankDaoImp;
 import org.geordin.model.Account;
 import org.geordin.model.Customer;
 import org.geordin.model.Employee;
@@ -23,7 +24,6 @@ public class Server {
                 start(9000);
         //maybe remove config..
         BankService bankService = new BankService();
-
 
 
         //CUSTOMER ROUTES

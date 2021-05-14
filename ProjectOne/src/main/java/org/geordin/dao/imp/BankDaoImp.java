@@ -1,6 +1,7 @@
 package org.geordin.dao.imp;
 
 import org.apache.log4j.Logger;
+import org.geordin.dao.BankDao;
 import org.geordin.dbutil.PostgresConnection;
 import org.geordin.model.Account;
 import org.geordin.model.Customer;
@@ -12,7 +13,7 @@ import java.math.BigDecimal;
 import java.sql.*;
 import java.util.Vector;
 
-public class BankDaoImp {
+public class BankDaoImp implements BankDao {
 //need to implement BankDao!!!
 
 
@@ -126,16 +127,8 @@ public class BankDaoImp {
             account.setBalance(resultSet.getBigDecimal("balance"));
             account.setUsername(resultSet.getString("username"));
             account.setStatus(resultSet.getString("status"));
-
-//            System.out.println("DAO RESULTS");
-//            System.out.print(" Account: " + resultSet.getLong("account_number"));
-//            System.out.print(" Balance : " + resultSet.getDouble("balance")); //wrong type, fixme
-//            System.out.print(" User: " + resultSet.getString("username"));
-//            System.out.print(" Name: " + resultSet.getString("name"));
-//            System.out.print(" User: " + resultSet.getString("name"));
-//            System.out.print(" Status: " + resultSet.getString("status"));
-//            System.out.println("\n");
             accounts.add(account);
+            //needs account approved by
         }
         return accounts;
     }
@@ -161,24 +154,16 @@ public class BankDaoImp {
         return accounts;
     }
 
-    public void applyForAccount(Customer customer) throws SQLException, BusinessException { //fixme current
-        Connection connection = PostgresConnection.getConnection();
-        String sql="INSERT INTO gormbank.accounts (balance, status, userid) VALUES(0, 'pending', " +
-                "(select userid from gormbank.customers c where username = ?));";
-        PreparedStatement preparedStatement=connection.prepareStatement(sql);
-        preparedStatement.setString(1, customer.getUsername());
-        int executeUpdate=preparedStatement.executeUpdate();
-        // no error handling yet!
-    }
-    public void applyForAccountByUsername(String username) throws SQLException, BusinessException { //fixme current
-        Connection connection = PostgresConnection.getConnection();
-        String sql="INSERT INTO gormbank.accounts (balance, status, userid) VALUES(0, 'pending', " +
-                "(select userid from gormbank.customers c where username = ?));";
-        PreparedStatement preparedStatement=connection.prepareStatement(sql);
-        preparedStatement.setString(1, username);
-        int executeUpdate=preparedStatement.executeUpdate();
-        // no error handling yet!
-    }
+//    public void applyForAccount(Customer customer) throws SQLException, BusinessException { //fixme current
+//        Connection connection = PostgresConnection.getConnection();
+//        String sql="INSERT INTO gormbank.accounts (balance, status, userid) VALUES(0, 'pending', " +
+//                "(select userid from gormbank.customers c where username = ?));";
+//        PreparedStatement preparedStatement=connection.prepareStatement(sql);
+//        preparedStatement.setString(1, customer.getUsername());
+//        int executeUpdate=preparedStatement.executeUpdate();
+//        // no error handling yet!
+//    }
+
     public void applyForAccountByUsernamePassword(String username, String password, BigDecimal amount) throws SQLException, BusinessException { //fixme current
         Connection connection = PostgresConnection.getConnection();
         String sql="INSERT INTO gormbank.accounts (balance, status, userid) VALUES(?, 'pending', " +
@@ -217,10 +202,7 @@ public class BankDaoImp {
         } //no errors, just no results, fixme
         return account;
     }
-    public Customer findCustomerByLoginNoPW(String username, String pw) throws SQLException, BusinessException{
-//        System.out.println("temp function");
-        return new Customer();
-    }
+
     public Vector<Account> getAccountsByUsernameOnly(String username) throws SQLException, BusinessException {   //used by employee and customer to view employees...
         //fixme
         Connection connection = PostgresConnection.getConnection();
@@ -496,8 +478,6 @@ public Employee findEmployeeByLogin(String username, String pw) throws SQLExcept
         Connection connection = PostgresConnection.getConnection();
 //        String sql = "select transaction_id, account_number, transaction_type, amount, time, username " +
 //                "FROM gormbank.transactions join gormbank.customers c on transaction_id = userid WHERE username = ?;";
-
-
         String sql =
         "select transaction_id, a.account_number, transaction_type, amount, time " +
         "from gormbank.customers c " +
@@ -506,9 +486,6 @@ public Employee findEmployeeByLogin(String username, String pw) throws SQLExcept
         "inner join gormbank.transactions t " +
         "on a.account_number = t.account_number " +
         "WHERE username = ?;";
-
-
-
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, user);    //variables sent into DB
         ResultSet resultSet = preparedStatement.executeQuery();

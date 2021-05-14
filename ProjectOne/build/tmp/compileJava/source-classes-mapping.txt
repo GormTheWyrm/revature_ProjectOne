@@ -1,22 +1,22 @@
 org/geordin/model/Transaction.java
  org.geordin.model.Transaction
-org/geordin/dao/BankDao.java
- org.geordin.dao.BankDao
-org/geordin/model/Employee.java
- org.geordin.model.Employee
 org/geordin/dbutil/PostgresConnection.java
  org.geordin.dbutil.PostgresConnection
-org/geordin/model/Customer.java
- org.geordin.model.Customer
-org/geordin/model/Account.java
- org.geordin.model.Account
-org/geordin/model/User.java
- org.geordin.model.User
+org/geordin/model/Employee.java
+ org.geordin.model.Employee
 org/geordin/service/BusinessException.java
  org.geordin.service.BusinessException
-org/geordin/service/BankService.java
- org.geordin.service.BankService
-org/geordin/dao/imp/BankDaoImp.java
- org.geordin.dao.imp.BankDaoImp
+org/geordin/model/User.java
+ org.geordin.model.User
 org/geordin/Server.java
  org.geordin.Server
+org/geordin/model/Account.java
+ org.geordin.model.Account
+org/geordin/model/Customer.java
+ org.geordin.model.Customer
+org/geordin/dao/imp/BankDaoImp.java
+ org.geordin.dao.imp.BankDaoImp
+org/geordin/service/BankService.java
+ org.geordin.service.BankService
+org/geordin/dao/BankDao.java
+ org.geordin.dao.BankDao

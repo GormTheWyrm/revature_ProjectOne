@@ -14,8 +14,16 @@ import java.util.Scanner;
 import java.util.Vector;
 
 public class BankService {
-    BankDaoImp bankImp = new BankDaoImp();
+    private BankDaoImp bankImp;
 
+
+    public BankService() {
+        this.bankImp = new BankDaoImp();
+    }
+
+    public BankService(BankDaoImp bankImp){
+        this.bankImp = bankImp;
+    }
     //need to reconfigure logging for this level
 
     //getReturningCustomerInfo
