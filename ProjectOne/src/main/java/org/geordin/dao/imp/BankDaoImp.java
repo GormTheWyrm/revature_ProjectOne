@@ -324,7 +324,7 @@ log.trace("dao-findAccountsByUsername: "+ username);
     }
     public void denyAccount(Long accountNum) throws SQLException, BusinessException{ //fixme - approves
         Connection connection = PostgresConnection.getConnection();
-        String sql = "delete from gormbank.accounts where status = 'pedning' and account_number = ? ;";
+        String sql = "delete from gormbank.accounts where status = 'pending' and account_number = ? ;";
         // not deleting yet
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setLong(1, accountNum);

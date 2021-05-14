@@ -577,7 +577,33 @@ function fetchResults(event) {
             });
     }
     else if (actionSelect.value == "deny") {
+        let url = baseUrl + "/api/account/"+ accountInput.value; //relatively resfull endpoint
+        fetch(url, {
+            method: "DELETE",
+            body: JSON.stringify({
+            //     accountNumber: accountInput.value
+            }),
+           })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                if (data.success) {
+                    bodyWarning.innerHTML = "Success! Account Deleted.";
+                    bodyWarning.style.display = "";
+                }
+                else {
+                    bodyWarning.innerHTML = "Failed to delete account";
+                    bodyWarning.style.display = "";
+                }
 
+            })
+            .catch(err => {
+                console.log(err);
+                //display some sort of warning to user
+                bodyWarning.innerHTML = "Failed to connect to server";
+                bodyWarning.style.display = "";
+                //need to figure out other possible errors
+            });
     }
     else if (actionSelect.value == "viewCustomer") {
         if (customerInput != "") {

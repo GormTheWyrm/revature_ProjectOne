@@ -14,9 +14,9 @@ org/geordin/dao/BankDao.java
  org.geordin.dao.BankDao
 org/geordin/model/Customer.java
  org.geordin.model.Customer
-org/geordin/Server.java
- org.geordin.Server
-org/geordin/dao/imp/BankDaoImp.java
- org.geordin.dao.imp.BankDaoImp
 org/geordin/service/BankService.java
  org.geordin.service.BankService
+org/geordin/dao/imp/BankDaoImp.java
+ org.geordin.dao.imp.BankDaoImp
+org/geordin/Server.java
+ org.geordin.Server

@@ -118,6 +118,9 @@ public class Server {
             //verify count is pending before deleting...
             try{
                 bankService.denyAccount(Long.parseLong(ctx.pathParam("num")));
+                HashMap<String, String> successObj = new HashMap<>();
+                successObj.put("success", "successfully deleted account");
+                ctx.json(successObj);
             }
             catch (BusinessException e){
                 HashMap<String, String> errorObj = new HashMap<>();
