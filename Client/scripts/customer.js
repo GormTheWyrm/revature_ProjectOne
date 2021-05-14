@@ -220,14 +220,14 @@ function attemptLogin(urlVar) { //LOGIN
                         htmlStr += `<tr><td>${account.accountNumber}</td><td>${account.balance}</td><td>${account.status}</td></tr>`;
                         //update select options with account numbers
                         if (account.status == "active") {
-                        let ele = document.createElement("OPTION");
-                        ele.value = data.accounts[i].accountNumber;
-                        ele.innerText = "From Account Number: " + data.accounts[i].accountNumber;
-                        selectFrom.appendChild(ele);
-                        ele = document.createElement("OPTION");
-                        ele.value = data.accounts[i].accountNumber;
-                        ele.innerText = "Into Account Number: " + data.accounts[i].accountNumber;
-                        selectTo.appendChild(ele);
+                            let ele = document.createElement("OPTION");
+                            ele.value = data.accounts[i].accountNumber;
+                            ele.innerText = "From Account Number: " + data.accounts[i].accountNumber;
+                            selectFrom.appendChild(ele);
+                            ele = document.createElement("OPTION");
+                            ele.value = data.accounts[i].accountNumber;
+                            ele.innerText = "Into Account Number: " + data.accounts[i].accountNumber;
+                            selectTo.appendChild(ele);
                         }
                     }
                     let tableBody = document.getElementById("tableBody");
@@ -352,6 +352,7 @@ function hideFromTo() {
 
 let updateButton = document.getElementById("updateButton");
 updateButton.addEventListener("click", function (event) {
+    resultsDiv.innerHTML = "";
     event.preventDefault();
     //this needs to updateaccounts and selectActions...
     console.log("accountSelect");
@@ -360,7 +361,7 @@ updateButton.addEventListener("click", function (event) {
     console.log(actionSelect);
     let fetchUrl = baseUrl;
     //VALIDATE THE AMOUNT BEFORE RUNNINGTHIS
-    if (amountInput.value > 0) {
+    if (amountInput.value > 0 || actionSelect.value == "log") { //let logs go thru if no value in amount
         bodyWarning.style.display = "none";
         if (actionSelect.value == "withdraw") {
             console.log("this will withdraw");
@@ -482,16 +483,60 @@ updateButton.addEventListener("click", function (event) {
                         bodyWarning.innerHTML = "Application Failed";
                         bodyWarning.style.display = "";
                     }
-                    else if (data){
-                        
-                            bodyWarning.innerHTML = "Application successful. Please allow up to 48 hours for approval";
-                            bodyWarning.style.display = "";
+                    else if (data) {
+
+                        bodyWarning.innerHTML = "Application successful. Please allow up to 48 hours for approval";
+                        bodyWarning.style.display = "";
                         updateAccounts(); //gets new account info
                     }
-                    else{
+                    else {
                         bodyWarning.innerHTML = "An error occurred. Application May Have Failed";
                         bodyWarning.style.display = "";
-                    }                    
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                    //display some sort of warning to user
+                    warning.innerHTML = "Failed to connect to server";
+                    warning.style.display = "";
+                    //need to figure out other possible errors
+                    updateAccounts(); //gets new account info
+                });
+        }
+        else if (actionSelect.value == "log") { //fixing!!!
+            fetchUrl = baseUrl + "/api/transactions/user/" + username;
+            fetch(fetchUrl)
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.error || data.data.length == 0) {
+                        bodyWarning.innerHTML = "No Transactions Available";
+                        bodyWarning.style.display = "";
+                    }
+                    else {
+                        // put table in results div... then add tds...
+                        //create table
+                        let htmlStr = `<tr><td>Account Number</td><td>Amount</td><td>Transaction Type</td> <td>Timestamp</td></tr>`;
+                        // resultsDiv.innerHTML = resultHtml;
+                        // let htmlStr = "";
+                        let endData;
+                        if (data.length > 20) {
+                            endData = 20;
+                        }
+                        else {
+                            endData = data.length;
+                        }
+                        for (i = 0; i < endData; i++) {
+                            //set transaction info to a table row
+                            htmlStr += `<tr><td>${data.data[i].accountNumber}</td><td>${data.data[i].amount}</td><td>${data.data[i].transactionType}</td>`;
+                            htmlStr += `<td>${new Date(data.data[i].timestamp)}`;
+                            //timestamp should be in if statement!
+                            htmlStr += "</tr>";
+                        }
+                        resultsDiv.innerHTML = htmlStr; //will not work on IE...
+                        resultsDiv.style.display = "";
+                    }
+                    // updateAccounts(); //gets new account info not needed...
                 })
                 .catch(err => {
                     console.log(err);
@@ -529,14 +574,14 @@ function updateAccounts() { //pass in url to fetch too
                     htmlStr += `<tr><td>${account.accountNumber}</td><td>${account.balance}</td><td>${account.status}</td></tr>`;
                     //update select options with account numbers
                     if (account.status == "active") {
-                    let ele = document.createElement("OPTION");
-                    ele.value = data.accounts[i].accountNumber;
-                    ele.innerText = "From Account Number: " + data.accounts[i].accountNumber;
-                    selectFrom.appendChild(ele);
-                    ele = document.createElement("OPTION");
-                    ele.value = data.accounts[i].accountNumber;
-                    ele.innerText = "Into Account Number: " + data.accounts[i].accountNumber;
-                    selectTo.appendChild(ele);
+                        let ele = document.createElement("OPTION");
+                        ele.value = data.accounts[i].accountNumber;
+                        ele.innerText = "From Account Number: " + data.accounts[i].accountNumber;
+                        selectFrom.appendChild(ele);
+                        ele = document.createElement("OPTION");
+                        ele.value = data.accounts[i].accountNumber;
+                        ele.innerText = "Into Account Number: " + data.accounts[i].accountNumber;
+                        selectTo.appendChild(ele);
                     }
                 }
                 let tableBody = document.getElementById("tableBody");
