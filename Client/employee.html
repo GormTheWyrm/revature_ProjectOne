@@ -79,7 +79,7 @@
                     <h3>Perform an Action</h3>
                     <p id="bodyWarning" class="warning"></p>
                     <select id="actionSelect">
-                        <option value="selectr">Select An Option</option>
+                        <option value="select">Select An Option</option>
                         <option value="viewCustomer">View Customer Details</option>
                         <option value="viewAccount">View Account Details</option>
                         <option value="viewPending">View Pending Applications</option>
@@ -139,16 +139,14 @@
                 <!-- need to at least be able to approve and see who approved...and deny -->
 
 
+                <div id="resultsDiv">
+                    <h3>Accounts</h3>
+                </div>
 
-                <h3>Accounts</h3>
                 <table id="accountTable">
                     <!-- fix the thead, since it will be replaced... -->
                     <thead id="tableHead">
-                        <tr>
-                            <th scope="col">Account Number</th>
-                            <th scope="col">Balance</th>
-                            <th scope="col">Status</th>
-                        </tr>
+
 
                     </thead>
                     <!-- need to set the headers and such properly, with styles... -->
@@ -160,9 +158,7 @@
                     </tbody>
                 </table>
 
-                <div id="resultsDiv">
 
-                </div>
 
             </div>
         </div>

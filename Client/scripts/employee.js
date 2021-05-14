@@ -542,54 +542,85 @@ function updateAccounts() { //pass in url to fetch too
 function fetchResults(event) {
     event.preventDefault();
     if (actionSelect.value == "approve") {
+        let url = baseUrl + "/api/accounts/approve";
+        fetch(url, {
+            method: "PUT",
+            body: JSON.stringify({
+                username: username,
+                password: password,
+                accountNumber: accountInput.value
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
 
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                if (data.success) {
+                    bodyWarning.innerHTML = "Success! Account Approved.";
+                    bodyWarning.style.display = "";
+                }
+                else {
+                    bodyWarning.innerHTML = "Failed to approve account";
+                    bodyWarning.style.display = "";
+                }
+
+            })
+            .catch(err => {
+                console.log(err);
+                //display some sort of warning to user
+                bodyWarning.innerHTML = "Failed to connect to server";
+                bodyWarning.style.display = "";
+                //need to figure out other possible errors
+            });
     }
     else if (actionSelect.value == "deny") {
 
     }
     else if (actionSelect.value == "viewCustomer") {
-        let url = baseUrl + "/api/customer/" + customerInput.value;
-        fetch(url)
-            .then(res => res.json())
-            .then(data => {
-                if (data) {
-                    console.log(data);
-                    // hideLoginDiv(); //hides login and shows body
-                    let htmlStr = "";
-                    let headStr = "<tr><th scope='col'>Account Number</th><th scope='col'>Balance</th><th scope='col'>Status</th><th scope='col'>Approval ID</th></thead>";
-                    tableHead.innerHTML = headStr;
-                    console.log.data;
-                    for (i = 0; i < data.accounts.length; i++) {
-                        let account = data.accounts[i];
-                        //set account info to a table row
-                        htmlStr += `<tr><td>${account.accountNumber}</td><td>${account.balance}</td><td>${account.status}</td></tr>`;
-                        //update select options with account numbers
-                        if (account.status == "active") {
-                            let ele = document.createElement("OPTION");
-                            ele.value = data.accounts[i].accountNumber;
-                            ele.innerText = "From Account Number: " + data.accounts[i].accountNumber;
-                            if(data.accounts[i].approvedByEmployeeId){
-                                data+=data.accounts[i].approvedByEmployeeId;
-                                //not appearing!?!
-                            }  
-                            resultsDiv.appendChild(ele);
+        if (customerInput != "") {
+            let url = baseUrl + "/api/customer/" + customerInput.value;
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+                    if (data) {
+                        console.log(data);
+                        // hideLoginDiv(); //hides login and shows body
+                        let resultHtml = `<h3>ID: ${data.id} Username: ${data.username}</h3><h3>Name: ${data.name}`;
+                        resultsDiv.innerHTML = resultHtml;
+                        let htmlStr = "";
+                        let headStr = "<tr><th scope='col'>Account Number</th><th scope='col'>Balance</th><th scope='col'>Status</th><th scope='col'>Approval ID</th></thead>";
+                        tableHead.innerHTML = headStr;
+                        console.log.data;
+                        for (i = 0; i < data.accounts.length; i++) {
+                            let account = data.accounts[i];
+                            //set account info to a table row
+
+                            htmlStr += `<tr><td>${account.accountNumber}</td><td>${account.balance}</td><td>${account.status}</td>`;
+                            if (data.accounts[i].approvedByEmployeeId) {
+                                htmlStr += `<td>${data.accounts[i].approvedByEmployeeId}</td>`
+
+                            }
+                            htmlStr += "</tr>";
                         }
+                        let tableBody = document.getElementById("tableBody");
+                        tableBody.innerHTML = htmlStr; //will not work on IE...
                     }
-                    let tableBody = document.getElementById("tableBody");
-                    tableBody.innerHTML = htmlStr; //will not work on IE...
-                }
-                else {
+                    else {
+                        bodyWarning.innerHTML = "Failed to connect to server";
+                        bodyWarning.style.display = "";
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                    //display some sort of warning to user
                     warning.innerHTML = "Failed to connect to server";
                     warning.style.display = "";
-                }
-            })
-            .catch(err => {
-                console.log(err);
-                //display some sort of warning to user
-                warning.innerHTML = "Failed to connect to server";
-                warning.style.display = "";
-                //need to figure out other possible errors
-            });
+                    //need to figure out other possible errors
+                });
+        }
     }
     else if (actionSelect.value == "viewAccount") {
         let url = baseUrl + "/api/account/" + amountInput.value;
@@ -603,14 +634,12 @@ function fetchResults(event) {
                     for (i = 0; i < data.accounts.length; i++) {
                         let account = data.accounts[i];
                         //set account info to a table row
-                        htmlStr += `<tr><td>${account.accountNumber}</td><td>${account.balance}</td><td>${account.status}</td></tr>`;
-                        //update select options with account numbers
-                        if (account.status == "active") {
-                            let ele = document.createElement("OPTION");
-                            ele.value = data.accounts[i].accountNumber;
-                            ele.innerText = "From Account Number: " + data.accounts[i].accountNumber + data.account.approvedBy;
-                            resultsDiv.appendChild(ele);
+                        htmlStr += `<tr><td>${account.accountNumber}</td><td>${account.balance}</td><td>${account.status}</td>`;
+                        if (data.accounts[i].approvedByEmployeeId) {
+                            htmlStr += `<td>${data.accounts[i].approvedByEmployeeId}</td>`
+
                         }
+                        htmlStr += "</tr>";
                     }
                     let tableBody = document.getElementById("tableBody");
                     tableBody.innerHTML = htmlStr; //will not work on IE...
@@ -628,6 +657,6 @@ function fetchResults(event) {
                 //need to figure out other possible errors
             });
     }
-
+    //viewpending, veiw allt, view tbyd, viewtbyacc
 
 }
