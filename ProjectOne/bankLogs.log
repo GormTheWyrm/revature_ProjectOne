@@ -195,3 +195,8 @@ DAO-getAccByUser
 DAO-getAccByUser
 DAO-getAccByUser
 denial failed for account 9
+DAO-findCustomerByusername
+DAO findCustomerByUsername: Tim
+DAO-getAccByUser
+DAO-getAccByUser
+DAO-getAccByUser

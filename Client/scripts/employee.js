@@ -325,170 +325,7 @@ function showNone() {
 }
 
 
-// let updateButton = document.getElementById("updateButton");
-// updateButton.addEventListener("click", function (event) {
-//     event.preventDefault();
-//     //this needs to updateaccounts and selectActions...
-//     console.log("accountSelect");
-//     //first set url based on what method being used...
-//     //ifs...
-//     console.log(actionSelect);
-//     let fetchUrl = baseUrl;
-//     //VALIDATE THE AMOUNT BEFORE RUNNINGTHIS
-//     if (amountInput.value > 0) {
-//         bodyWarning.style.display = "none";
-//         if (actionSelect.value == "withdraw") {
-//             console.log("this will withdraw");
-//             // url = baseUrl + 
-//             fetchUrl += "/api/accounts/withdraw";
-//             //fetch to change DB
-//             fetch(fetchUrl, {
-//                 method: "PUT",
-//                 body: JSON.stringify({
-//                     username: username,
-//                     password: password,
-//                     accountNumber: selectFrom.value,
-//                     amount: amountInput.value
-//                 }),
-//                 headers: {
-//                     "Content-type": "application/json; charset=UTF-8"
-//                 }
-//             })
-//                 .then(res => res.json())
-//                 .then(data => {
-//                     if (data.error) {
-//                         bodyWarning.innerHTML = "Withdrawal Failed";
-//                         bodyWarning.style.display = "";
-//                     }
-//                     updateAccounts(); //gets new account info
-//                 })
-//                 .catch(err => {
-//                     console.log(err);
-//                     //display some sort of warning to user
-//                     warning.innerHTML = "Failed to connect to server";
-//                     warning.style.display = "";
-//                     //need to figure out other possible errors
-//                     updateAccounts(); //gets new account info
-//                 });
-//         }
-//         else if (actionSelect.value == "deposit") {
-//             console.log("this will deposit");
-//             fetchUrl += "/api/accounts/deposit";
-//             fetch(fetchUrl, {
-//                 method: "PUT",
-//                 body: JSON.stringify({
-//                     username: username,
-//                     password: password,
-//                     accountNumber: selectTo.value,
-//                     amount: amountInput.value
-//                 }),
-//                 headers: {
-//                     "Content-type": "application/json; charset=UTF-8"
-//                 }
-//             })
-//                 .then(res => res.json())
-//                 .then(data => {
-//                     if (data.error) {
-//                         bodyWarning.innerHTML = "Deposit Failed";
-//                         bodyWarning.style.display = "";
-//                     }
-//                     updateAccounts(); //gets new account info
-//                 })
-//                 .catch(err => {
-//                     console.log(err);
-//                     //display some sort of warning to user
-//                     warning.innerHTML = "Failed to connect to server";
-//                     warning.style.display = "";
-//                     //need to figure out other possible errors
-//                     updateAccounts(); //gets new account info
-//                 });
-//         }
-//         else if (actionSelect.value == "transfer") {
-//             console.log("this will transfer");
-//             fetchUrl += "/api/accounts/transfer";
-//             fetch(fetchUrl, {
-//                 method: "PUT",
-//                 body: JSON.stringify({
-//                     username: username,
-//                     password: password,
-//                     accountNumberFrom: selectFrom.value,
-//                     accountNumberTo: selectTo.value,
-//                     amount: amountInput.value
-//                 }),
-//                 headers: {
-//                     "Content-type": "application/json; charset=UTF-8"
-//                 }
-//             })
-//                 .then(res => res.json())
-//                 .then(data => {
-//                     if (data.error) {
-//                         bodyWarning.innerHTML = "transfer Failed";
-//                         bodyWarning.style.display = "";
-//                     }
-//                     updateAccounts(); //gets new account info
-//                 })
-//                 .catch(err => {
-//                     console.log(err);
-//                     //display some sort of warning to user
-//                     warning.innerHTML = "Failed to connect to server";
-//                     warning.style.display = "";
-//                     //need to figure out other possible errors
-//                     updateAccounts(); //gets new account info
-//                 });
-//         }
-//         else if (actionSelect.value == "apply") {
-//             //apply for account
-//             fetchUrl += "/api/accounts";
-//             fetch(fetchUrl, {
-//                 method: "POST",
-//                 body: JSON.stringify({
-//                     username: username,
-//                     password: password,
-//                     amount: amountInput.value
-//                 }),
-//                 headers: {
-//                     "Content-type": "application/json; charset=UTF-8"
-//                 }
-//             })
-//                 .then(res => res.json())
-//                 .then(data => {
-//                     console.log(data);
-//                     if (data.error) {
-//                         bodyWarning.innerHTML = "Application Failed";
-//                         bodyWarning.style.display = "";
-//                     }
-//                     else if (data) {
-
-//                         bodyWarning.innerHTML = "Application successful. Please allow up to 48 hours for approval";
-//                         bodyWarning.style.display = "";
-//                         updateAccounts(); //gets new account info
-//                     }
-//                     else {
-//                         bodyWarning.innerHTML = "An error occurred. Application May Have Failed";
-//                         bodyWarning.style.display = "";
-//                     }
-//                 })
-//                 .catch(err => {
-//                     console.log(err);
-//                     //display some sort of warning to user
-//                     warning.innerHTML = "Failed to connect to server";
-//                     warning.style.display = "";
-//                     //need to figure out other possible errors
-//                     updateAccounts(); //gets new account info
-//                 });
-//         }
-//         // add new actions /features here!
-//         else if (actionSelect.value == "refresh") {
-//             updateAccounts(); //gets new account info
-//         }
-//     }
-//     else {
-//         bodyWarning.innerHTML = "Amount must be greater than zero";
-//         bodyWarning.style.display = "";
-//     }
-
-// });
-// ///WIP function!
+// ///WIP function! depreciated?
 function updateAccounts() { //pass in url to fetch too
     //fetches from employee who is logged in
     let url = baseUrl + "/api/customer/" + customerInput.value;
@@ -654,12 +491,15 @@ function fetchResults(event) {
             .then(res => res.json())
             .then(data => {
                 if (data) {
-                    // hideLoginDiv(); //hides login and shows body
+                    //need to set tableHead
+                    // let resultHtml = `<h3>ID: ${data.id} Username: ${data.username}</h3><h3>Name: ${data.name}`;
+                        // resultsDiv.innerHTML = resultHtml;
                     let htmlStr = "";
                     console.log.data;
                     for (i = 0; i < data.accounts.length; i++) {
                         let account = data.accounts[i];
                         //set account info to a table row
+                        
                         htmlStr += `<tr><td>${account.accountNumber}</td><td>${account.balance}</td><td>${account.status}</td>`;
                         if (data.accounts[i].approvedByEmployeeId) {
                             htmlStr += `<td>${data.accounts[i].approvedByEmployeeId}</td>`
@@ -682,6 +522,49 @@ function fetchResults(event) {
                 warning.style.display = "";
                 //need to figure out other possible errors
             });
+    }
+    else if (actionSelect.value == "viewAllT") {    //TRANSACTIONS - this will need a limit...
+        let url = baseUrl + "/api/transactions";
+        fetch(url)
+        .then(res => res.json())
+            .then(data => {
+                if (data) {
+                    //set table head
+                    let resultHtml = `<tr><td>Account Number</td><td>Amount</td><td>Transaction Type</td>`;
+                        resultsDiv.innerHTML = resultHtml;
+                    let htmlStr = "";
+                    console.log(data);
+                    let endData 
+                    if (data.length>100){
+                        endData = 100;
+                    }
+                    else{
+                        endData = data.length;
+                    }
+                    for (i = 0; i < endData; i++) {
+                        //set transaction info to a table row
+                        htmlStr += `<tr><td>${data.data[i].accountNumber}</td><td>${data.data[i].amount}</td><td>${data.data[i].transactionType}</td>`;
+                        htmlStr += `<td>${new Date(data.data[i].timestamp)}`;
+                        //timestamp in if statement?
+                        htmlStr += "</tr>";
+                    }
+                    let tableBody = document.getElementById("tableBody");
+                    tableBody.innerHTML = htmlStr; //will not work on IE...
+                }
+                else {
+                    warning.innerHTML = "Failed to connect to server";
+                    warning.style.display = "";
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                //display some sort of warning to user
+                warning.innerHTML = "Failed to connect to server";
+                warning.style.display = "";
+                //need to figure out other possible errors
+            });
+
+
     }
     //viewpending, veiw allt, view tbyd, viewtbyacc
 

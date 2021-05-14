@@ -339,6 +339,11 @@ public class Server {
                 //need to pass logs into here...
                 Vector<Transaction> transactions = bankService.getAllLogs();
                 ctx.json(transactions);
+                //does not get size of vector!
+                HashMap <String, Object >successObj = new HashMap<>();
+                successObj.put("length", transactions.size());
+                successObj.put("data", transactions);
+                ctx.json(successObj);
             }
             catch (BusinessException e){
                 //create error object for javascript
