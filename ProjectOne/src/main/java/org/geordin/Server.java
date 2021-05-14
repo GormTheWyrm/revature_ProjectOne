@@ -367,12 +367,15 @@ public class Server {
                 ctx.json(errorObj);
             }
         });
-        app.get("/transactions/user/:user", ctx -> {
+        app.get("/api/transactions/user/:user", ctx -> {
             //get all transactions for an account
             try{
                 //need to pass logs into here...
                 Vector<Transaction> transactions = bankService.getLogsByUser(ctx.pathParam("user"));
-                        ctx.json(transactions);
+                HashMap <String, Object >successObj = new HashMap<>();
+                successObj.put("length", transactions.size());
+                successObj.put("data", transactions);
+                ctx.json(successObj);
             }
             catch (BusinessException e){
                 //create error object for javascript

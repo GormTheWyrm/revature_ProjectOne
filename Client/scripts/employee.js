@@ -566,6 +566,51 @@ function fetchResults(event) {
 
 
     }
+    else if (actionSelect.value == "viewTByCustomer") {
+
+        let url = baseUrl + "/api/transactions/user/" + customerInput.value;
+        fetch(url)
+        .then(res => res.json())
+            .then(data => {
+                if (data) {
+                    //set table head
+                    let resultHtml = `<tr><td>Account Number</td><td>Amount</td><td>Transaction Type</td>`;
+                        resultsDiv.innerHTML = resultHtml;
+                    let htmlStr = "";
+                    console.log(data);
+                    let endData 
+                    if (data.length>100){
+                        endData = 100;
+                    }
+                    else{
+                        endData = data.length;
+                    }
+                    for (i = 0; i < endData; i++) {
+                        //set transaction info to a table row
+                        htmlStr += `<tr><td>${data.data[i].accountNumber}</td><td>${data.data[i].amount}</td><td>${data.data[i].transactionType}</td>`;
+                        htmlStr += `<td>${new Date(data.data[i].timestamp)}`;
+                        //timestamp in if statement?
+                        htmlStr += "</tr>";
+                    }
+                    let tableBody = document.getElementById("tableBody");
+                    tableBody.innerHTML = htmlStr; //will not work on IE...
+                }
+                else {
+                    warning.innerHTML = "Failed to connect to server";
+                    warning.style.display = "";
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                //display some sort of warning to user
+                warning.innerHTML = "Failed to connect to server";
+                warning.style.display = "";
+                //need to figure out other possible errors
+            });
+
+
+
+    }
     //viewpending, veiw allt, view tbyd, viewtbyacc
 
 }
