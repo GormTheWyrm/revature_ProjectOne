@@ -44,7 +44,7 @@ public class Customer extends User{
 
     //constructors
     public Customer(){};
-    public Customer(Long id, String username, String password, String name, Vector<Account> accounts){
+    public Customer(long id, String username, String password, String name, Vector<Account> accounts){
         //fixme added a long id to above
         setId(id);
         setUsername(username);
@@ -52,8 +52,8 @@ public class Customer extends User{
         setName(name);
         //need to set accounts
     }
-    public Customer(String username, String password, String name){ //no account collection
-//        setId(id);
+    public Customer(long id, String username, String password, String name){ //no account collection
+        setId(id);
         setUsername(username);
         setPassword(password);
         setName(name);

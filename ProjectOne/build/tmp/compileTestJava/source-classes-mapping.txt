@@ -1,4 +1,4 @@
-com/geordin/service/BusinessTests.java
- com.geordin.service.BusinessTests
 ModelTests.java
  ModelTests
+com/geordin/service/BusinessTests.java
+ com.geordin.service.BusinessTests

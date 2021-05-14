@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.geordin.service.BusinessTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-05-14T09:13:36" hostname="ORNHEIM" time="0.577">
+  <properties/>
+  <testcase name="testLoginCustomer()" classname="com.geordin.service.BusinessTests" time="0.577"/>
+  <system-out><![CDATA[Username: bob Name: bob saget
+Username: bob Name: bob saget
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

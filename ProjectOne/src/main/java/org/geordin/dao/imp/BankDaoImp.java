@@ -35,15 +35,16 @@ public class BankDaoImp implements BankDao {
         preparedStatement.setString(2, name);
         preparedStatement.setString(3, password);
         int c = preparedStatement.executeUpdate();
-        //fixme - should this be executeQuery instead?
-//        log.trace("Inserted "+ c + " records");
+        log.trace("dao: Inserted "+ c + " customers");
         if (c == 1) {
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) { //this is needed to get a response
+                customer.setId(resultSet.getLong(1));
                 customer.setUsername(resultSet.getString(2)); //index 1 should be userid
                 customer.setName(resultSet.getString(3));
                 customer.setPassword(resultSet.getString(4));
 //                log.trace(resultSet.getString(2)+ " added to user database");
+                log.trace("customer creaded: "+customer.getUsername());
             }
         } else {
             throw new BusinessException("Failure in registration... Please retry.....");
@@ -59,18 +60,14 @@ public class BankDaoImp implements BankDao {
         PreparedStatement preparedStatement = connection.prepareStatement(sql); //2nd par makes keys returnable...
         preparedStatement.setString(1, username);    //variables sent into DB
         preparedStatement.setString(2, pw);
-        //Step 4 - Execute Query
         ResultSet resultSet = preparedStatement.executeQuery();
-//        log.trace("DAO-findCustomerByLogin");
-        //Step 5 - Process Results  THIS WILL BE IMPORTANT~
-        //        while (resultSet.next()){
+        log.trace("DAO-findCustomerByLogin");
         if (resultSet.next()) {
             customer.setUsername(resultSet.getString("username"));
             customer.setName(resultSet.getString("name"));
             customer.setPassword(resultSet.getString("password"));
-            customer.setId(resultSet.getLong("userid")); //userId should never leave the backend/service layers
-            //is this necessarry?
-//            log.trace("DAO loginOldCustomer: " + customer.getUsername());
+            customer.setId(resultSet.getLong("userid"));
+            log.trace("DAO loginOldCustomer: " + customer.getUsername());
         }
         else {
             throw new BusinessException("No User Found");
@@ -88,24 +85,20 @@ public class BankDaoImp implements BankDao {
 
         //Step 4 - Execute Query
         ResultSet resultSet = preparedStatement.executeQuery();
-//        log.trace("DAO-findCustomerByLogin");
-        //Step 5 - Process Results  THIS WILL BE IMPORTANT~
-        //        while (resultSet.next()){
+        log.trace("DAO-findCustomerByusername");
+
         if (resultSet.next()) {
             customer.setUsername(resultSet.getString("username"));
             customer.setName(resultSet.getString("name"));
             customer.setPassword(resultSet.getString("password"));
             customer.setId(resultSet.getLong("userid")); //userId should never leave the backend/service layers
-            //is this necessarry?
-//            log.trace("DAO loginOldCustomer: " + customer.getUsername());
+            log.trace("DAO findCustomerByUsername: " + customer.getUsername());
         }
         else {
             throw new BusinessException("No User Found");
         } //if no results, throw exception
         return customer;
     }
-
-
 
     //ACCOUNTS
     public Vector<Account> findAccountsByUsername(String username) throws SQLException, BusinessException {   //used by employee and customer to view employees...
@@ -120,7 +113,7 @@ public class BankDaoImp implements BankDao {
         ResultSet resultSet = preparedStatement.executeQuery();
 //        System.out.println("Query executed - replace with trace");
         Vector<Account> accounts = new Vector<>();
-
+log.trace("dao-findAccountsByUsername: "+ username);
         while (resultSet.next()) {
             Account account = new Account();
             account.setAccountNumber(resultSet.getLong("account_number"));
@@ -141,7 +134,7 @@ public class BankDaoImp implements BankDao {
                 "WHERE status = 'pending';";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         ResultSet resultSet = preparedStatement.executeQuery();
-//        log.trace("DAO viewPendingApplications");
+        log.trace("DAO viewPendingApplications");
         Vector<Account> accounts = new Vector<>();
         while (resultSet.next()) {
             Account account = new Account();
@@ -173,6 +166,7 @@ public class BankDaoImp implements BankDao {
         preparedStatement.setString(2, username);
         preparedStatement.setString(3, password);
         int executeUpdate=preparedStatement.executeUpdate();
+        log.trace("DAO applyForAccount");
         // no error handling yet!
         if (executeUpdate !=1){
             throw new BusinessException("Operation failed; Account not updated!");
@@ -197,7 +191,7 @@ public class BankDaoImp implements BankDao {
             account.setUsername(resultSet.getString("name"));
             account.setApprovedByEmployeeId(resultSet.getLong("approved_by"));
             account.setStatus(resultSet.getString("status"));
-
+            log.trace("DAO-getAccByNum");
 
         } //no errors, just no results, fixme
         return account;
@@ -224,7 +218,7 @@ public class BankDaoImp implements BankDao {
 //            account.setApprovedByEmployeeId(resultSet.getLong("approved_by"));
             account.setStatus(resultSet.getString("status"));
             accounts.add(account);
-
+            log.trace("DAO-getAccByUser");
         } //no errors, just no results, fixme
         return accounts;
     }
@@ -247,17 +241,15 @@ public class BankDaoImp implements BankDao {
         preparedStatement.setString(4, password);
         int executeUpdate=preparedStatement.executeUpdate();
         if (executeUpdate !=1){
+            log.info("withdraw failed for account "+ accountNum);
             throw new BusinessException("Operation failed; Account not updated!");
         }
     }
 
     public void depositFunds(long accountNum, BigDecimal amount, String username, String password) throws SQLException, BusinessException {
-        //should i pass in customer and break it down here, or in business layer?
-        //user already logged in, should be ok... but will need to be fixed for webservice
+
         Connection connection = PostgresConnection.getConnection();
-//        log.trace("deposit funds, DAO");
-//        log.trace("amount:" + amount);
-//        log.trace("account" + accountNum);
+        log.trace("deposit funds, DAO");
         String sql= "update gormbank.accounts set balance = balance + ? " +
                 "where account_number = ? and status ='active' and userid in " +
                 "(SELECT userid from gormbank.customers WHERE username = ? AND password = ?);";
@@ -268,6 +260,7 @@ public class BankDaoImp implements BankDao {
         preparedStatement.setString(4, password);
         int executeUpdate=preparedStatement.executeUpdate();
         if (executeUpdate !=1){
+            log.info("deposit failed for account "+ accountNum);
             throw new BusinessException("Operation failed; Account not updated!");
         }
     }
@@ -301,8 +294,10 @@ public class BankDaoImp implements BankDao {
             if (executeUpdate2 !=1){
                 //this needs to rollback the first transaction
                 //https://www.tutorialspoint.com/jdbc/commit-rollback.htm
+                log.info("critical rollback failure: "+ accountNum2);
                 throw new BusinessException("Critical failure: " + amount+ " failed to be added to account "+ accountNum2 + ". Contact support immediately!");
                 //this needs to be logged... and fixed
+
             }
             else if (executeUpdate !=1){
             throw new BusinessException("Withdraw Operation failed; Transfer aborted!");

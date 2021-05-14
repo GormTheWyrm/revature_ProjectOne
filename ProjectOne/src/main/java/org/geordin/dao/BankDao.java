@@ -14,7 +14,7 @@ import java.util.Vector;
 
 public interface BankDao {
 
-    
+
     public Customer createNewCustomer(String username, String name, String password) throws SQLException, BusinessException;
     public Customer findCustomerByLogin(String username, String pw) throws SQLException, BusinessException;
     public Customer findCustomerByUsername(String username) throws SQLException, BusinessException;
