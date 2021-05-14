@@ -1,7 +1,3 @@
-//loginscript and login forms need reconfigure...
-//...need to separate employee from customer in api... for this script
-//...maybe I can get the text from a span somewhere...
-//this might need to be customerScript...
 
 let password;
 let username;
@@ -11,13 +7,6 @@ let customerName;
 //do I need name here?
 
 let baseUrl = "http://localhost:9000"; //update this
-// console.log("test");
-// userType = Employee or customer
-
-
-//login function will use fetch to check pw and user against api
-//if correct, pw and user should be saved
-//pw and user can then be sent in header for next query...
 
 
 //element variables and event handlers

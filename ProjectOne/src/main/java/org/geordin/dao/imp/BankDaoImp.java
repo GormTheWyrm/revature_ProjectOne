@@ -328,11 +328,7 @@ public class BankDaoImp {
         }
     }
     public void approveAccount(Long accountNum, String username, String password) throws SQLException, BusinessException{
-        //fixme next step - might work, test again (updated)
         Connection connection = PostgresConnection.getConnection();
-//        String sql = "update gormbank.accounts set balance = balance + ?, status ='active' " +
-//                "where account_number = ? AND status = 'pending';";
-
         String sql = "update gormbank.accounts set status ='active', approved_by = " +
                 "(select userid from gormbank.employees e " +
                 "where username = ? and password = ?)" +
@@ -347,9 +343,24 @@ public class BankDaoImp {
         if (executeUpdate !=1){
             throw new BusinessException("Operation failed; Account not updated!");
         }
-    //fixme ; need to set approvedbyid...
-        //use subquery
     }
+//    public void denyAccount(Long accountNum, String username, String password) throws SQLException, BusinessException{ //fixme - approves
+//        Connection connection = PostgresConnection.getConnection();
+////        String sql = "update gormbank.accounts set status ='active', approved_by = " +
+////                "(select userid from gormbank.employees e " +
+////                "where username = ? and password = ?)" +
+////                "where account_number = ? AND status = 'pending';";
+//        // not deleting yet
+//        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+//        preparedStatement.setLong(3, accountNum);
+//        preparedStatement.setString(1, username);
+//        preparedStatement.setString(2, password);
+//        int executeUpdate=preparedStatement.executeUpdate();
+//        //need an if pw=pw and if user=user...
+//        if (executeUpdate !=1){
+//            throw new BusinessException("Operation failed; Account not updated!");
+//        }
+//    }
 //TRANSACTIONS
 
 //        public void viewAllLogs () throws SQLException, BusinessException {}
@@ -528,16 +539,5 @@ public Employee findEmployeeByLogin(String username, String pw) throws SQLExcept
 
 
 
-
-
-
-
-//
-//    select transaction_id, account_number, transaction_type, amount, time
-//    from gormbank.transactions
-//            where
-//    time >= '2021-05-11 00:00:00'
-//    AND
-//    time <= '2021-05-11 23:59:59'
 
 }

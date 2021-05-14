@@ -283,6 +283,7 @@ public class BankService {
     }
 
     public void approveAccount(Long accountNum, String username, String password) throws BusinessException{
+        //note username must be employee
         try{
             bankImp.approveAccount(accountNum, username, password);
         }
@@ -296,8 +297,21 @@ public class BankService {
         //need to put employee id in account!
 
     }
+//    public void denyAccount(long accountNum, String employeeUser, String password){
+//        try{
+//            bankImp.denyAccount(accountNum, employeeUser, password);
+//        }
+//        catch (SQLException e) {
+////            log.trace(e.getMessage()); //hopefully that logs the actual error for the developers to find
+//            throw new BusinessException(e.getMessage());
+//        } catch (BusinessException e) {
+//            //if found someone
+//            throw new BusinessException("Error in database.");
+//        }
+//        //need to put employee id in account!
+//    }
 
-
+    //get pending
 
 
 

@@ -18,6 +18,10 @@ public class PostgresConnection {
             String url="jdbc:postgresql://localhost:5432/postgres";
             String username="postgres";
             String password="password"; //move this/these to an environmental variable eventually
+//                String url =
+//            String username =
+//            String password =
+
             connection= DriverManager.getConnection(url,username,password);
         } catch (ClassNotFoundException | SQLException e) {
             log.warn(e.getMessage()); //may need to handle this...

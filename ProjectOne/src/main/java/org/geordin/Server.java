@@ -173,7 +173,6 @@ public class Server {
                 //if success
                 HashMap<String, String> successObj = new HashMap<>();
                 successObj.put("success", "$" + amount +" withdrawn Successfully");
-                //fixme amount needs to be truncated... optimally return amount
                 ctx.json(successObj);
             }
             catch (BusinessException e){
@@ -393,6 +392,16 @@ public class Server {
 //* As an employee, I can view a log of all transactions.
 //	* 2 points
 
+        /*
+        an amployee can
+            - approve account
+            - see all accounts
+            - see logs...
+            - deny account
+            - see account info
+            - see customer info...
+         */
+
 /*
 do next
 0. fix approve and apply methods - approve currently has the amount and apply does not
@@ -432,21 +441,3 @@ still need...
     }
 
 }
-/*
-employees;
-get:
-
-
-customer;
-get:
-    get customer details;
-        - name, username, password
-        - accounts!
-POST:
-    apply for new account
-PUT:
-    withdraw
-    deposit
-    transfer
-
- */

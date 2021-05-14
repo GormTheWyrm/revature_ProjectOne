@@ -1,23 +1,13 @@
-//loginscript and login forms need reconfigure...
-//...need to separate employee from customer in api... for this script
-//...maybe I can get the text from a span somewhere...
-//this might need to be customerScript...
+
 
 let password;
 let username;
 let isLoggedIn = false;
 let accounts = [];
-let customerName;
+let employeeName;
 //do I need name here?
 
 let baseUrl = "http://localhost:9000"; //update this
-// console.log("test");
-// userType = Employee or customer
-
-
-//login function will use fetch to check pw and user against api
-//if correct, pw and user should be saved
-//pw and user can then be sent in header for next query...
 
 
 //element variables and event handlers
@@ -52,10 +42,15 @@ let selectTo = document.getElementById("selectTo");
 
 let amountInput = document.getElementById("amountInput");//amount to transfer, deposit or withdraw
 
+let nameInput = document.getElementById("nameInput");
+let bodyWarning = document.getElementById("bodyWarning");
+let nameRow = document.getElementById("nameRow");
+
 let userSpan = document.getElementById("userSpan");
 // value variables
 let userType = userSpan.textContent;
-//this gives us the employee or customer we need to call the api...
+//this gives us the employee or employee we need to call the api...
+//depreciateed
 
 function logout() {
     password = null;
@@ -64,71 +59,41 @@ function logout() {
     //need to worry about cache keeping pw and username?
 }
 
-
-//multi-part form!
-
-//choose to sign in or sign up...
-//sign up form shows at first
-//can click login to close signin form and open login form
-//opposite should be true
-// simply hide form!?
-//login and signin buttons make different fetch calls...
-//and employee/customer changes url...
-
-
 function login(event) {
     //called by hitting login button
     event.preventDefault();
     console.log("this will fetch log in");
     if (validateUsername()) {
         if (validatePassword()) {
-            // if (userType=="Employee"){
-            // let url = baseUrl+ "/api/employee/"; //login is sngular
-            // url += userInput.value;
-            // console.log(url);
-            // attemptLogin(url);
-            // }
-            // else if (userType=="Customer"){
-            let url = baseUrl + "/api/customer/";
+            //set up employeelogin api url
+            let url = baseUrl + "/api/employee/";
             url += userInput.value;
             console.log(url);
             attemptLogin(url);
-            // }
-            //NEED TO VALIDATE THESE URLS...!!!
-            //changing this to be customer specific!
         }
         else {
             //tells user password is not in acceptable format
-            console.log("bad password");
+            // console.log("bad password");
+            //validate password function informs user of error
         }
     }
     else {
         //tell user username is not in acceptable format
         console.log("username invalid")
     }
-    //if pass, attemptSignup
-    //might call attemptlogin... or make it part of signup...
-    //if pass
 }
 function signup(event) {
-    //called by hitting signin button...
+    //called by hitting signup button...
     event.preventDefault();
     console.log("this will fetch sign in");
     if (validateUsername()) {
         if (validatePassword()) {
-            //attempt signup - calls success if successful
-            // if (userType=="Employee"){
-            //     let url = baseUrl+ "/api/employee/";//signup is plural
-            //     url += userInput.value;
-            //     attemptSignup(url);
-            // }
-            // else if (userType=="Customer"){
-            let url = baseUrl + "/api/customer/";
-            url += userInput.value;
+            //set api url for employee signup
+            let url = baseUrl + "/api/employees";
+
+            //should probably validate name...
+
             attemptSignup(url);
-            // }
-            //NEED TO VALIDATE THESE URLS...!!!
-            //change this to just have customers?
         }
         else {
             //tells user password is not in acceptable format
@@ -139,10 +104,6 @@ function signup(event) {
         //tell user username is not in acceptable format
         console.log("username invalid")
     }
-    //if pass, attemptSignup
-    //might call attemptlogin... or make it part of signup...
-    //if pass
-
 }
 
 
@@ -152,14 +113,14 @@ function showSignup(event) {
     signupSpan.style.display = "none";
     loginSpan.style.display = "";
     signupSubmit.style.display = "";
-
+    nameRow.style.display = "";
 }
 function showLogin(event) {
     loginSubmit.style.display = "";
     signupSpan.style.display = "";
     loginSpan.style.display = "none";
     signupSubmit.style.display = "none";
-
+    nameRow.style.display = "none";
 }
 function loginSuccess() {
 
@@ -174,35 +135,64 @@ function hideLoginDiv() {
 
 function attemptSignup(urlVar) {
     //fetch
-    // fetch(url, )// replace with a post?
-    console.log("sign up fetch not connected yet");
+    console.log("sign up fetch ");
     fetch(urlVar, {
         method: "POST",
         body: JSON.stringify({
             username: userInput.value,
-            password: pwInput.value
+            password: pwInput.value,
+            name: nameInput.value
         })
-
     })
-        .then(res => {
-            res.json();
-        })
+        .then(res => res.json())    //copied from login
         .then(data => {
-            //set password, username...
-            // show accounts on results...
-            //...do I need to do something for actions?
+            if (data) {
+                if (data.username) {
+                    username = data.username;
+                    password = data.password;
+                    employeeName = data.name;
+                    nameSpan.innerText = username;
+                    hideLoginDiv(); //hides login and shows body
+                    let htmlStr = "";
+                    for (i = 0; i < data.accounts.length; i++) {
+                        let account = data.accounts[i];
+                        //set account info to a table row
+                        htmlStr += `<tr><td>${account.accountNumber}</td><td>${account.balance}</td><td>${account.status}</td></tr>`;
+                        //update select options with account numbers
+                        if (account.status == "active") {
+                            let ele = document.createElement("OPTION");
+                            ele.value = data.accounts[i].accountNumber;
+                            ele.innerText = "From Account Number: " + data.accounts[i].accountNumber;
+                            selectFrom.appendChild(ele);
+                            ele = document.createElement("OPTION");
+                            ele.value = data.accounts[i].accountNumber;
+                            ele.innerText = "Into Account Number: " + data.accounts[i].accountNumber;
+                            selectTo.appendChild(ele);
+                        }
+                    }
+                    let tableBody = document.getElementById("tableBody");
+                    tableBody.innerHTML = htmlStr; //will not work on IE...
+                }
+                else if (data.error) {
+                    warning.innerHTML = "Username or Password incorrect";
+                    warning.style.display = "";
+                }
+
+            }
+            else {
+                //if no data but no error... inform user there was a problem
+                warning.innerHTML = "Error processing request";
+                warning.style.display = "";
+            }
         })
         .catch(err => {
             console.log(err);
-            //data.error //would display the errormsg 
             //display some sort of warning to user
             warning.innerHTML = "Failed to connect to server";
             warning.style.display = "";
             //need to figure out other possible errors
-            //reset username and pw! ...right?
-
         });
-}//fix me!!!!!!!!!!!!!
+}
 function attemptLogin(urlVar) { //LOGIN
     warning.style.display = "none"; //clears old warning
     fetch(urlVar, {
@@ -218,28 +208,42 @@ function attemptLogin(urlVar) { //LOGIN
         .then(res => res.json())
         .then(data => {
             if (data) {
-                username = data.username;
-                password = data.password;
-                customerName = data.name;
-                nameSpan.innerText = username;
-                hideLoginDiv(); //hides login and shows body
-                let htmlStr = "";
-                for (i = 0; i < data.accounts.length; i++) {
-                    let account = data.accounts[i];
-                    //set account info to a table row
-                    htmlStr += `<tr><td>${account.accountNumber}</td><td>${account.balance}</td><td>${account.status}</td></tr>`;
-                    //update select options with account numbers
-                    let ele = document.createElement("OPTION");
-                    ele.value = data.accounts[i].accountNumber;
-                    ele.innerText = "From Account Number: " + data.accounts[i].accountNumber;
-                    selectFrom.appendChild(ele);
-                    ele = document.createElement("OPTION");
-                    ele.value = data.accounts[i].accountNumber;
-                    ele.innerText = "Into Account Number: " + data.accounts[i].accountNumber;
-                    selectTo.appendChild(ele);
+                if (data.username) {
+                    username = data.username;
+                    password = data.password;
+                    employeeName = data.name;
+                    nameSpan.innerText = username;
+                    hideLoginDiv(); //hides login and shows body
+                    let htmlStr = "";
+                    for (i = 0; i < data.accounts.length; i++) {
+                        let account = data.accounts[i];
+                        //set account info to a table row
+                        htmlStr += `<tr><td>${account.accountNumber}</td><td>${account.balance}</td><td>${account.status}</td></tr>`;
+                        //update select options with account numbers
+                        if (account.status == "active") {
+                        let ele = document.createElement("OPTION");
+                        ele.value = data.accounts[i].accountNumber;
+                        ele.innerText = "From Account Number: " + data.accounts[i].accountNumber;
+                        selectFrom.appendChild(ele);
+                        ele = document.createElement("OPTION");
+                        ele.value = data.accounts[i].accountNumber;
+                        ele.innerText = "Into Account Number: " + data.accounts[i].accountNumber;
+                        selectTo.appendChild(ele);
+                        }
+                    }
+                    let tableBody = document.getElementById("tableBody");
+                    tableBody.innerHTML = htmlStr; //will not work on IE...
                 }
-                let tableBody = document.getElementById("tableBody");
-                tableBody.innerHTML = htmlStr; //will not work on IE...
+                else if (data.error) {
+                    warning.innerHTML = "Username or Password incorrect";
+                    warning.style.display = "";
+                }
+
+            }
+            else {
+                //if no data but no error... inform user there was a problem
+                warning.innerHTML = "Error processing request";
+                warning.style.display = "";
             }
         })
         .catch(err => {
@@ -253,50 +257,58 @@ function attemptLogin(urlVar) { //LOGIN
 
 function validateUsername() { //validates username and password
     //return true-false
-    //if
     console.log(userInput.value);
     // if (userInput.value.test()){
     if (userInput.value != "") {
         //temp validation
+        if (userInput.value.match(/[^A-Za-z1234567890!@#$%-]/)) {
+            console.log("password fails validation");
+            //deploy warning msg!
+            warning.innerHTML = "username contains invalid symbols: valid symbols are letters, numbers and !@#$%-";
+            warning.style.display = "";
+            return false;
+        }
+        else {
+            return true;
 
-        console.log("username passes validation");
-        return true;
-        //search() returns index or -1; if index != 0...
-        //that may have issues...
+        }
     }
     else {
-        console.log("password fails validation");
+        console.log("password fails validation: cannot be empty");
+        //deploy warning msg!
+        warning.innerHTML = "username cannot be empty";
+        warning.style.display = "";
         return false;
     }
     //fix this!!!
 }
 function validatePassword() {
     if (pwInput.value != "") {
-        //temp validation
+        if (userInput.value.match(/[^A-Za-z1234567890!@#$%^&*()-+=]/)) {
+            console.log("password fails validation");
+            //deploy warning msg!
+            warning.innerHTML = "password contains invalid symbols: valid symbols are letters, numbers and !@#$%^&*()-+=";
+            warning.style.display = "";
+            return false;
+        }
+        else {
+            return true;
 
-        console.log("password passes validation");
-        return true;
-        //search() returns index or -1; if index != 0...
-        //that may have issues...
+        }
     }
     else {
         console.log("password fails validation");
+
+        warning.innerHTML = "password cannot be empty";
+        warning.style.display = "";
         return false;
     }
-} //fixme !!! needs better validation no /\... at least
+}
 
 
 
 
-//CUSTOMER ACTIONS
-//withdraw, deposit transfer
-//apply for account
-//view transactions for an account... 
-
-
-// let nameSpan = document.getElementById("nameSpan");
-// let tableBody = document.getElementById("tableBody");
-
+//employee ACTIONS
 
 //onSelect functions:
 actionSelect.addEventListener("change", function () {
@@ -338,11 +350,6 @@ function hideFromTo() {
     selectTo.style.display = "none";
     amountInput.style.display = "";
 }
-// need to set up options when get data...
-//get options info from accounts array!
-// ...updates to array...
-//update accounts function when getting new data
-//update select actions function? as part of above!
 
 let updateButton = document.getElementById("updateButton");
 updateButton.addEventListener("click", function (event) {
@@ -354,141 +361,163 @@ updateButton.addEventListener("click", function (event) {
     console.log(actionSelect);
     let fetchUrl = baseUrl;
     //VALIDATE THE AMOUNT BEFORE RUNNINGTHIS
-    if (actionSelect.value == "withdraw") {
-        console.log("this will withdraw");
-        // url = baseUrl + 
-        fetchUrl += "/api/accounts/withdraw";
-        //fetch to change DB
-        fetch(fetchUrl, {
-            method: "PUT",
-            body: JSON.stringify({
-                username: username,
-                password: password,
-                accountNumber: selectFrom.value,
-                amount: amountInput.value             
-            }),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            }
-        })
-        .then(res=>res.json())
-        .then(data =>{
-            //might need to catch "error" response and tell user what went wrong...
-            //...but its not vital
+    if (amountInput.value > 0) {
+        bodyWarning.style.display = "none";
+        if (actionSelect.value == "withdraw") {
+            console.log("this will withdraw");
+            // url = baseUrl + 
+            fetchUrl += "/api/accounts/withdraw";
+            //fetch to change DB
+            fetch(fetchUrl, {
+                method: "PUT",
+                body: JSON.stringify({
+                    username: username,
+                    password: password,
+                    accountNumber: selectFrom.value,
+                    amount: amountInput.value
+                }),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.error) {
+                        bodyWarning.innerHTML = "Withdrawal Failed";
+                        bodyWarning.style.display = "";
+                    }
+                    updateAccounts(); //gets new account info
+                })
+                .catch(err => {
+                    console.log(err);
+                    //display some sort of warning to user
+                    warning.innerHTML = "Failed to connect to server";
+                    warning.style.display = "";
+                    //need to figure out other possible errors
+                    updateAccounts(); //gets new account info
+                });
+        }
+        else if (actionSelect.value == "deposit") {
+            console.log("this will deposit");
+            fetchUrl += "/api/accounts/deposit";
+            fetch(fetchUrl, {
+                method: "PUT",
+                body: JSON.stringify({
+                    username: username,
+                    password: password,
+                    accountNumber: selectTo.value,
+                    amount: amountInput.value
+                }),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.error) {
+                        bodyWarning.innerHTML = "Deposit Failed";
+                        bodyWarning.style.display = "";
+                    }
+                    updateAccounts(); //gets new account info
+                })
+                .catch(err => {
+                    console.log(err);
+                    //display some sort of warning to user
+                    warning.innerHTML = "Failed to connect to server";
+                    warning.style.display = "";
+                    //need to figure out other possible errors
+                    updateAccounts(); //gets new account info
+                });
+        }
+        else if (actionSelect.value == "transfer") {
+            console.log("this will transfer");
+            fetchUrl += "/api/accounts/transfer";
+            fetch(fetchUrl, {
+                method: "PUT",
+                body: JSON.stringify({
+                    username: username,
+                    password: password,
+                    accountNumberFrom: selectFrom.value,
+                    accountNumberTo: selectTo.value,
+                    amount: amountInput.value
+                }),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.error) {
+                        bodyWarning.innerHTML = "transfer Failed";
+                        bodyWarning.style.display = "";
+                    }
+                    updateAccounts(); //gets new account info
+                })
+                .catch(err => {
+                    console.log(err);
+                    //display some sort of warning to user
+                    warning.innerHTML = "Failed to connect to server";
+                    warning.style.display = "";
+                    //need to figure out other possible errors
+                    updateAccounts(); //gets new account info
+                });
+        }
+        else if (actionSelect.value == "apply") {
+            //apply for account
+            fetchUrl += "/api/accounts";
+            fetch(fetchUrl, {
+                method: "POST",
+                body: JSON.stringify({
+                    username: username,
+                    password: password,
+                    amount: amountInput.value
+                }),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.error) {
+                        bodyWarning.innerHTML = "Application Failed";
+                        bodyWarning.style.display = "";
+                    }
+                    else if (data){
+                        
+                            bodyWarning.innerHTML = "Application successful. Please allow up to 48 hours for approval";
+                            bodyWarning.style.display = "";
+                        updateAccounts(); //gets new account info
+                    }
+                    else{
+                        bodyWarning.innerHTML = "An error occurred. Application May Have Failed";
+                        bodyWarning.style.display = "";
+                    }                    
+                })
+                .catch(err => {
+                    console.log(err);
+                    //display some sort of warning to user
+                    warning.innerHTML = "Failed to connect to server";
+                    warning.style.display = "";
+                    //need to figure out other possible errors
+                    updateAccounts(); //gets new account info
+                });
+        }
+        // add new actions /features here!
+        else if (actionSelect.value == "refresh") {
             updateAccounts(); //gets new account info
-        })
-        .catch(err => {
-            console.log(err);
-            //display some sort of warning to user
-            warning.innerHTML = "Failed to connect to server";
-            warning.style.display = "";
-            //need to figure out other possible errors
-            updateAccounts(); //gets new account info
-        });
-    }
-    else if (actionSelect.value == "deposit") {
-        console.log("this will deposit");
-        fetchUrl += "/api/accounts/deposit";
-        fetch(fetchUrl, {
-            method: "PUT",
-            body: JSON.stringify({
-                username: username,
-                password: password,
-                accountNumber: selectTo.value,
-                amount: amountInput.value             
-            }),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            }
-        })
-        .then(res=>res.json())
-        .then(data =>{
-            //might need to catch "error" response and tell user what went wrong...
-            //...but its not vital
-            updateAccounts(); //gets new account info
-        })
-        .catch(err => {
-            console.log(err);
-            //display some sort of warning to user
-            warning.innerHTML = "Failed to connect to server";
-            warning.style.display = "";
-            //need to figure out other possible errors
-            updateAccounts(); //gets new account info
-        });
-    }
-    else if (actionSelect.value == "transfer") {
-        console.log("this will transfer");
-        fetchUrl += "/api/accounts/transfer";
-        fetch(fetchUrl, {
-            method: "PUT",
-            body: JSON.stringify({
-                username: username,
-                password: password,
-                accountNumberFrom: selectFrom.value,
-                accountNumberTo: selectTo.value,
-                amount: amountInput.value             
-            }),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            }
-        })
-        .then(res=>res.json())
-        .then(data =>{
-            //might need to catch "error" response and tell user what went wrong...
-            //...but its not vital
-            updateAccounts(); //gets new account info
-        })
-        .catch(err => {
-            console.log(err);
-            //display some sort of warning to user
-            warning.innerHTML = "Failed to connect to server";
-            warning.style.display = "";
-            //need to figure out other possible errors
-            updateAccounts(); //gets new account info
-        });
-    }
-    else if (actionSelect.value == "apply") {
-        //apply for account
-        fetchUrl += "/api/accounts";
-        fetch(fetchUrl, {
-            method: "POST",
-            body: JSON.stringify({
-                username: username,
-                password: password,
-                amount: amountInput.value             
-            }),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            }
-        })
-        .then(res=>res.json())
-        .then(data =>{
-            //might need to catch "error" response and tell user what went wrong...
-            //...but its not vital
-            updateAccounts(); //gets new account info
-        })
-        .catch(err => {
-            console.log(err);
-            //display some sort of warning to user
-            warning.innerHTML = "Failed to connect to server";
-            warning.style.display = "";
-            //need to figure out other possible errors
-            updateAccounts(); //gets new account info
-        });
-    }
-    // add new actions /features here!
-    else if(actionSelect.value == "refresh"){
-        updateAccounts(); //gets new account info
+        }
     }
     else {
-        //avoid fetch somehow...
+        bodyWarning.innerHTML = "Amount must be greater than zero";
+        bodyWarning.style.display = "";
     }
-    
+
 });
 ///WIP function!
 function updateAccounts() { //pass in url to fetch too
-    //fetches from customer who is logged in
-    let url = baseUrl + "/api/customer/"+ username;
+    //fetches from employee who is logged in
+    let url = baseUrl + "/api/employee/" + username;
     fetch(url)
         .then(res => res.json())
         .then(data => {
@@ -500,6 +529,7 @@ function updateAccounts() { //pass in url to fetch too
                     //set account info to a table row
                     htmlStr += `<tr><td>${account.accountNumber}</td><td>${account.balance}</td><td>${account.status}</td></tr>`;
                     //update select options with account numbers
+                    if (account.status == "active") {
                     let ele = document.createElement("OPTION");
                     ele.value = data.accounts[i].accountNumber;
                     ele.innerText = "From Account Number: " + data.accounts[i].accountNumber;
@@ -508,6 +538,7 @@ function updateAccounts() { //pass in url to fetch too
                     ele.value = data.accounts[i].accountNumber;
                     ele.innerText = "Into Account Number: " + data.accounts[i].accountNumber;
                     selectTo.appendChild(ele);
+                    }
                 }
                 let tableBody = document.getElementById("tableBody");
                 tableBody.innerHTML = htmlStr; //will not work on IE...
