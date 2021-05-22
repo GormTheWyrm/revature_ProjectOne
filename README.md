@@ -32,7 +32,8 @@ The Online Bank App allows users to:
  Additionally, employees can:  
 
  * view customer details - but not passwords
- * 
+ * approve acounts
+ * deny pending accounts, deleting them from the system
 
  + Disclaimer: This application should not be used to store or manage real world funds.
 To-Do List
