@@ -250,3 +250,9 @@ DAO findCustomerByUsername: Tim
 DAO-getAccByUser
 DAO-getAccByUser
 DAO-getAccByUser
+dao: Inserted 1 customers
+customer creaded: gormyDragon
+DAO applyForAccount
+DAO-findCustomerByusername
+DAO findCustomerByUsername: gormyDragon
+DAO-getAccByUser

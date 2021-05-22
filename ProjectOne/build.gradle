@@ -25,7 +25,20 @@ dependencies {
     repositories { jcenter() }
     dependencies { testImplementation "org.mockito:mockito-core:3.+" }
 }
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'org.geordin.Server'
+        )
+    }
+//    run this by "./gradlew build" -> cd into the build/libs folder -> "java -jar gradle-cmd..."(the file there)
+}
 
+task runjar(type: JavaExec) {
+    main = 'org.geordin.Server'
+    classpath = sourceSets.main.runtimeClasspath
+
+}
 test {
     useJUnitPlatform()
 }
