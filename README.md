@@ -25,7 +25,10 @@ Logging with
 The Online Bank App 
 
  * 
-
+To-Do List
+ 1. set up environment so that it is easier to run after cloning
+    - handle DB credentials on startup or via property files
+ 2. optimize transaction rollback and exception handling
 
 ## Getting Started
 To use the Online Banking System, first create a folder for the github repository.
@@ -33,5 +36,9 @@ Clone the repository using ``` git init ``` and then ```git remote add origin ht
 
 Download and install the postgresSQL manager of your choice and run the seed.sql script within it to create the database.
 
+change directory into the "ProjectOne" folder and run the command
+...
+to start the server.
+Next open 
 
 Build the project with the command ```./gradlew task  runjar```
